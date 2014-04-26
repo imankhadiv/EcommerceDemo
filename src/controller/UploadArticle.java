@@ -152,9 +152,9 @@ public class UploadArticle extends HttpServlet {
         
 		// constructs the directory path toup store upload file
 		// this path is relative to application's directory
-        //		String uploadPath = getServletContext().getContextPath()
-        //				+ File.separator + UPLOAD_DIRECTORY;
-		String uploadPath = getServletContext().getRealPath("/WEB-INF/pdf");
+        		String uploadPath = getServletContext().getRealPath("")
+        				+ File.separator + UPLOAD_DIRECTORY;
+		///String uploadPath = getServletContext().getRealPath("/WEB-INF/pdf"); FILES SHOULD BE SAVED ON WEBCONTENT ROOT INSIDE RESOURCES
 		System.out.println(uploadPath);
         
 		// creates the directory if it does not exist
