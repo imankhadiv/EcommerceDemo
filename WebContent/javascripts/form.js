@@ -98,20 +98,6 @@ function createForm() {
 	// },
 	// data: jsonString
 	// });
-	// var http_request;
-	// try { http_request = new ActiveXObject('Msxml2.XMLHTTP'); }
-	// catch (e) {
-	// try { http_request = new ActiveXObject('Microsoft.XMLHTTP'); }
-	// catch (e2) {
-	// try { http_request = new XMLHttpRequest(); }
-	// catch (e3) { http_request = false; }
-	// } }
-	// http_request.open("Get", "FormServlet?json="+json, true);
-	// http_request.send();
-	// http_request.onreadystatechange = function(){
-	// if (http_request.readyState == 4 )
-	// alert(success);
-	// };
 	var http_request;
 	try {
 		http_request = new ActiveXObject('Msxml2.XMLHTTP');
@@ -129,19 +115,6 @@ function createForm() {
 			}
 		}
 	}
-	
-	
-//	var xhr = new XMLHttpRequest();
-//    xhr.onreadystatechange = function() {
-//        if (xhr.readyState == 4) {
-//        	var data = xhr.responseText;
-//            alert(data);
-//        }
-//    };
-//    xhr.open('POST', 'ReviewFormServlet', true);
-//    xhr.send(null);
-	
-	
 	http_request.open("POST", "ReviewFormServlet?json=" + jsonString ,
 			true);
 	http_request.send();
