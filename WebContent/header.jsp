@@ -12,6 +12,7 @@
 
 <script src="${pageContext.request.contextPath}/javascripts/myscript.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/form.js"></script>
+<script src="${pageContext.request.contextPath}/javascripts/upload.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/stylesheets/style.css" />
 <link

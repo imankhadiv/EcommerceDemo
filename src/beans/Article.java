@@ -1,5 +1,7 @@
 package beans;
 
+import java.util.ArrayList;
+
 public class Article {
 	private int id;
 	private String userId;
@@ -8,6 +10,7 @@ public class Article {
 	private String abst;
 	private String keywords;
 	private String pdfPath;
+	private ArrayList<User> users;
 	
 	public Article(String title,String abst,String userId,String keywords,String pdfPath) {
 		this.title = title;
@@ -43,6 +46,14 @@ public class Article {
 
 	public String getPdfPath() {
 		return pdfPath;
+	}
+
+	public ArrayList<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(ArrayList<User> users) {
+		this.users = users;
 	}
 	
 	

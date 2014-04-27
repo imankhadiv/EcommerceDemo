@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import beans.Article;
+import beans.User;
 
 public class ArticleTable {
 
@@ -113,6 +114,9 @@ public class ArticleTable {
 		stmt.executeUpdate();
 		stmt.close();
 		insertIntoKeywords();
+		String articleId = String.valueOf(getMaxIdFromTable("articles"));
+		insertIntoArticleAuthors(articleId, article.getUsers());
+		
 
 	}
 
@@ -157,6 +161,20 @@ public class ArticleTable {
 		stmt.executeUpdate();
 		stmt.close();
 
+	}
+	public void insertIntoArticleAuthors(String articleId,ArrayList<User> users) throws SQLException {
+		
+		String sql = "insert into article_authors(article_id,firstname,lastname,email) values(?,?,?,?) ";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		for(User user:users){
+		stmt.setString(1, articleId);
+		stmt.setString(2, user.getFirstname());
+		stmt.setString(3, user.getLastname());
+		stmt.setString(4, user.getEmail());
+		stmt.executeUpdate();
+		}
+		stmt.close();
+	
 	}
 
 	public void removeFromReviewerStatus(String reviewerId, String articleId)
@@ -211,7 +229,7 @@ public class ArticleTable {
 	 * @param reviewerId
 	 * @return
 	 * @throws SQLException
-	 *             .......................
+	 *            
 	 */
 	public ResultSet getSelectedArticleIds(String reviewerId)
 			throws SQLException {
@@ -259,6 +277,41 @@ public class ArticleTable {
 		s += (ids.get(size - 1) + ")");
 		return s;
 	}
+//	public  Integer insertQueryGetId(String query) throws SQLException {
+//	    Integer numero=0;
+//	    Integer risultato=-1;
+//	    
+//	        Statement stmt = conn.createStatement();
+//	        numero = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+//
+//
+//	        ResultSet rs = stmt.getGeneratedKeys();
+//	        if (rs.next()){
+//	            risultato=rs.getInt(1);
+//	        }
+//	        rs.close();
+//
+//	        stmt.close();
+//	    
+//	  return risultato;
+//	}
+	/**
+	 * This method is implemented to get the table name and return the id of the last record;
+	 * @param tableName
+	 * @return
+	 * @throws SQLException
+	 */
+	public  int getMaxIdFromTable(String tableName) throws SQLException {
+		String sql = "select MAX(id) from "+tableName;
+		Statement st = conn.createStatement();
+		ResultSet rs = st.executeQuery(sql) ;
+		int id = 0 ;
+		while(rs.next()){
+			id = rs.getInt(1);
+		}
+		return id;
+	}
+
 
 
 
