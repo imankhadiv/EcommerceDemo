@@ -7,8 +7,8 @@ public class Error {
 
 	}
 
-	public Error(String errorString) {
-		error = errorString;
+	public Error(String error) {
+		this.error = error;
 	}
 
 	public String getError() {

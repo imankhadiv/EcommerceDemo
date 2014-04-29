@@ -1,16 +1,20 @@
 package beans;
 
 public class Comment {
+	private int id;
+	private int reasonId;
 	private String title;
 	private String content;
+	private String createdAt;
+	
 
 	public Comment() {
 
 	}
 
-	public Comment(String _title, String _content) {
-		title = _title;
-		content = _content;
+	public Comment(String title, String content) {
+		this.title = title;
+		this.content = content;
 	}
 
 	public String getTitle() {
@@ -29,4 +33,28 @@ public class Comment {
 		this.content = content;
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(String createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public int getReasonId() {
+		return reasonId;
+	}
+
+	public void setReasonId(int reasonId) {
+		this.reasonId = reasonId;
+	}
+	
 }

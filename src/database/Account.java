@@ -122,15 +122,6 @@ public class Account {
 			return true;
 		}
 	}
-	
-	public static void main(String[] args) throws SQLException, ClassNotFoundException {
-		Class.forName("com.mysql.jdbc.Driver");
-		String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
-		Connection conn = DriverManager.getConnection(DB);
-		Account ac = new Account(conn);
-		String role = ac.getUserRole("irastkhadivmasouleh1@sheffield.ac.uk");
-		System.out.println(role);
-	}
 
 
 }

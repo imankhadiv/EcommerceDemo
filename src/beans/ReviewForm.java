@@ -3,51 +3,55 @@ package beans;
 import java.util.List;
 
 public class ReviewForm {
-	private int article_id;
-	
-	private int auther_id;
-	private int reviewer_id;
+	private int id;
+	private int articleId;
+	private int autherId;
+	private int reviewerId;
 	private String overall ;
 	private String level;
 	private String summary;
 	private String secrete;
+	private String formApproved;
+	private String articleApproved;
 	private List<Comment> commentList;
 	private List<Error> errors;
+	private List<Reason> reasons;
 
 	public ReviewForm()
 	{
 		
 	}
-	public ReviewForm(int _article_id, int _auther_id, int _reviewer_id, String _overall, String _level,String _summary, String _secrete, List<Comment> _commentList,List<Error> _errors)
+	public ReviewForm(int articleId, int authorId, int reviewerId, String overall, String level,String summary, String secrete, List<Comment> commentList,List<Error> errors)
 	{
-		article_id = _article_id;
-		auther_id = _auther_id;
-		reviewer_id = _reviewer_id;
-		overall = _overall;
-		level = _level;
-		summary = _summary;
-		secrete = _secrete;
-		commentList = _commentList;
-		errors = _errors;
+		this.articleId = articleId;
+		this.autherId = authorId;
+		this.reviewerId = reviewerId;
+		this.overall = overall;
+		this.level = level;
+		this.summary = summary;
+		this.secrete = secrete;
+		this.commentList = commentList;
+		this.errors = errors;
 	}
 	
-	public int getArticle_id() {
-		return article_id;
+	
+	public int getArticleId() {
+		return articleId;
 	}
-	public void setArticle_id(int article_id) {
-		this.article_id = article_id;
+	public void setArticleId(int articleId) {
+		this.articleId = articleId;
 	}
-	public int getAuther_id() {
-		return auther_id;
+	public int getAutherId() {
+		return autherId;
 	}
-	public void setAuther_id(int auther_id) {
-		this.auther_id = auther_id;
+	public void setAutherId(int autherId) {
+		this.autherId = autherId;
 	}
-	public int getReviewer_id() {
-		return reviewer_id;
+	public int getReviewerId() {
+		return reviewerId;
 	}
-	public void setReviewer_id(int reviewer_id) {
-		this.reviewer_id = reviewer_id;
+	public void setReviewerId(int reviewerId) {
+		this.reviewerId = reviewerId;
 	}
 	public String getOverall() {
 		return overall;
@@ -85,4 +89,30 @@ public class ReviewForm {
 	public void setErrors(List<Error> errors) {
 		this.errors = errors;
 	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getFormApproved() {
+		return formApproved;
+	}
+	public void setFormApproved(String formApproved) {
+		this.formApproved = formApproved;
+	}
+	public String getArticleApproved() {
+		return articleApproved;
+	}
+	public void setArticleApproved(String articleApproved) {
+		this.articleApproved = articleApproved;
+	}
+	public List<Reason> getReasons() {
+		return reasons;
+	}
+	public void setReasons(List<Reason> reasons) {
+		this.reasons = reasons;
+	}
+	
+	
 }

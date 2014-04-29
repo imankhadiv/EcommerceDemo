@@ -6,6 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+
+import beans.Article;
+import beans.ReviewForm;
 
 public class Form {
 
@@ -52,6 +56,33 @@ public class Form {
 		stmt.close();
 		// insertIntoKeywords();
 
+	}
+	public ArrayList<ReviewForm> getAuthorReviewForms(int articleId) throws SQLException {
+		Statement stst = conn.createStatement();
+		ResultSet rs = stst
+				.executeQuery("select * from forms where user_id = "
+						+ articleId);
+		ArrayList<ReviewForm> forms = new ArrayList<ReviewForm>();
+		while(rs.next()){
+			ReviewForm form = new ReviewForm();
+			form.setId(rs.getInt("id"));
+			form.setArticleId(rs.getInt("article_id"));
+			form.setAutherId(rs.getInt("author_id"));
+			form.setReviewerId(rs.getInt("reviewer_id"));
+			form.setLevel(rs.getString("level"));
+			form.setOverall(rs.getString("overall"));
+			form.setSummary(rs.getString("summery"));
+			form.setSecrete(rs.getString("secret_message"));
+			form.setFormApproved(rs.getString("form_approve"));
+			form.setArticleApproved(rs.getString("article_approve"));
+			form.setReasons(new ReasonTable(conn).getFormReasons(rs.getInt("id")));
+//			form.setCommentList(commentList);
+//			form.setErrors(errors);
+		
+		}
+		return forms;
+		
+		
 	}
 
 

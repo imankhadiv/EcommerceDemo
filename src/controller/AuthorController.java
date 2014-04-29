@@ -53,10 +53,6 @@ public class AuthorController extends HttpServlet {
 			request.getRequestDispatcher("/home.jsp")
 					.forward(request, response);
 			
-			
-			
-			
-			
 		}
 		
 		else{
