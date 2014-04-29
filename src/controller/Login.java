@@ -54,6 +54,7 @@ public class Login extends HttpServlet {
 		// TODO Auto-generated method stub
 		if (request.getParameter("action").equals("logout")) {
 			request.getSession().removeAttribute("user");
+			request.getSession().removeAttribute("sometih");
 			request.getRequestDispatcher("/home.jsp")
 					.forward(request, response);
 		}
@@ -113,6 +114,8 @@ public class Login extends HttpServlet {
 			try {
 				if (account.login(email, password)) {
 					HttpSession session = request.getSession();
+					user.setRole(account.getUserRole(email));
+					user.setId(account.getUserId(email));
 					session.setAttribute("user", user);
 					request.getRequestDispatcher("/home.jsp").forward(request,
 							response);

@@ -7,6 +7,7 @@ package beans;
  */
 
 public class User {
+	private int id;
 	private String email;
 	private String password;
 	private String message = " ";
@@ -77,5 +78,14 @@ public class User {
 	public void setRole(String role) {
 		this.role = role;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 
 }

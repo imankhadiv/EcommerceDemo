@@ -42,13 +42,13 @@
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>Temp</display-name>
-    <servlet-name>Temp</servlet-name>
-    <servlet-class>controller.Temp</servlet-class>
+    <display-name>AuthorController</display-name>
+    <servlet-name>AuthorController</servlet-name>
+    <servlet-class>controller.AuthorController</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Temp</servlet-name>
-    <url-pattern>/Temp</url-pattern>
+    <servlet-name>AuthorController</servlet-name>
+    <url-pattern>/AuthorController</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>

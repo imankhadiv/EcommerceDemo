@@ -21,9 +21,9 @@
 <link
 	href="${pageContext.request.contextPath}/bootstrap/css/bootstrap-responsive.css"
 	rel="stylesheet" />
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
-
-
+ 
 
 <title>${param.title}</title>
 </head>
@@ -38,6 +38,14 @@
 				<li><a href="${pageContext.request.contextPath}/views/userguide.jsp"><i class="icon-book"></i>User Guide</a></li>
 				<li><a href="${pageContext.request.contextPath}/views/upload-instructions.jsp"><i class="icon-upload"></i>Upload</a></li>
 				<li><a href="${pageContext.request.contextPath}/Login?action=users"><i class="icon-user"></i>Users</a></li>
+				<li class="dropdown">
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Author<b class="caret"></b></a>
+				
+					<ul class="dropdown-menu">
+					<li><a href="${pageContext.request.contextPath}/AuthorController">My Articles</a></li>
+					
+					</ul>
+				</li>
 
 			</ul>
 

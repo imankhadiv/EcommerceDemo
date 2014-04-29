@@ -1,6 +1,7 @@
 package database;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +12,11 @@ import java.util.List;
 
 import beans.Article;
 import beans.User;
-
+/**
+ * 
+ * @author Iman Rastkhadiv
+ *
+ */
 public class ArticleTable {
 
 	private Connection conn;
@@ -311,6 +316,54 @@ public class ArticleTable {
 		}
 		return id;
 	}
+//	public ResultSet getAuthorArticles(int user_id) throws SQLException {
+//		Statement stst = conn.createStatement();
+//		ResultSet resultSet = stst
+//				.executeQuery("select * from articles where user_id = "
+//						+ user_id);
+//		return resultSet;
+//	}
+	
+	public ArrayList<Article> getAuthorArticles(int user_id) throws SQLException {
+		Statement stst = conn.createStatement();
+		ResultSet rs = stst
+				.executeQuery("select * from articles where user_id = "
+						+ user_id);
+		ArrayList<Article> articles = new ArrayList<Article>();
+		while(rs.next()){
+			Article article = new Article();
+			article.setId(rs.getInt("id"));
+			article.setTitle(rs.getString("title"));
+			article.setAbst(rs.getString("abstract"));
+			article.setUserId(rs.getString("user_id"));
+			article.setStatus(rs.getString("status"));
+			article.setCreatedAt(String.valueOf(rs.getDate("created_at")));
+			article.setEdition(rs.getString("edition"));
+			article.setVolume(rs.getString("volume"));
+			article.setReview_count(rs.getInt("review_count"));
+			articles.add(article);
+		}
+		return articles;
+		
+		
+	}
+//	public static void main(String[] args) {
+//		try {
+//			Class.forName("com.mysql.jdbc.Driver");
+//			String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+//			Connection conn;
+//			conn = DriverManager.getConnection(DB);
+//			ArticleTable table = new ArticleTable(conn);
+//			//table.getAuthorArticles2(1);
+//			System.out.println(table.getAuthorArticles(1).get(0).getId());
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 
 
 

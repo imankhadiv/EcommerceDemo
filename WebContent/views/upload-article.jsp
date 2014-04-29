@@ -110,7 +110,7 @@
 				 -->
 
 			</div>
-			<!-- <div class="span4">
+			<!-- <div class="span4"> 
 			<h4>More than one authors?</h4>
 			<div class="authors">
 				<input type="text" id="hiddenc" name="numberOfAuthors"

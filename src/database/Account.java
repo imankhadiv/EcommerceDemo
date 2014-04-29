@@ -3,6 +3,7 @@ package database;
  * 
  */
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -60,6 +61,25 @@ public class Account {
 		return resultSet;
 
 	}
+	/**
+	 * This method is implemented to return the user's role.
+	 * @param email
+	 * @return
+	 * @throws SQLException
+	 */
+	
+	public String getUserRole(String email) throws SQLException {
+		String sql = "select * from users where email=?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, email);
+		ResultSet rs = stmt.executeQuery();
+		String role="";
+		if (rs.next()) {
+			role= (rs.getString("role"));
+			return role;
+		}
+		return role;
+	}
 	public int getUserId(String email) throws SQLException {
 		
 		String sql = "select * from users where email=?";
@@ -101,6 +121,15 @@ public class Account {
 
 			return true;
 		}
+	}
+	
+	public static void main(String[] args) throws SQLException, ClassNotFoundException {
+		Class.forName("com.mysql.jdbc.Driver");
+		String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+		Connection conn = DriverManager.getConnection(DB);
+		Account ac = new Account(conn);
+		String role = ac.getUserRole("irastkhadivmasouleh1@sheffield.ac.uk");
+		System.out.println(role);
 	}
 
 

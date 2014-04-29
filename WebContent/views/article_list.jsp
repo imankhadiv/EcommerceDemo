@@ -5,7 +5,7 @@
  <c:param name="title" value="Users"></c:param>
 </c:import>
 
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 	<thead>
  <tr>
 	  <th>title</th>
