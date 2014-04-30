@@ -1,5 +1,6 @@
 package beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReviewForm {
@@ -15,7 +16,7 @@ public class ReviewForm {
 	private String articleApproved;
 	private List<Comment> commentList;
 	private List<Error> errors;
-	private List<Reason> reasons;
+	private ArrayList<Reason> reasons;
 
 	public ReviewForm()
 	{
@@ -107,12 +108,13 @@ public class ReviewForm {
 	public void setArticleApproved(String articleApproved) {
 		this.articleApproved = articleApproved;
 	}
-	public List<Reason> getReasons() {
+	public ArrayList<Reason> getReasons() {
 		return reasons;
 	}
-	public void setReasons(List<Reason> reasons) {
+	public void setReasons(ArrayList<Reason> reasons) {
 		this.reasons = reasons;
 	}
+	
 	
 	
 }
