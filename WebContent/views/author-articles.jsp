@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="java.sql.ResultSet"%>
 <%@ page import="java.util.*"%>
-<%@ page import="beans.Article"%>
+<%@ page import="beans.*"%>
 
 <c:import url="/header.jsp">
 	<c:param name="title" value="Users"></c:param>
@@ -30,6 +30,11 @@
 		<%
 			int id = Integer.valueOf(request.getParameter("id"));
 		%>
+		<% if(id >= articles.size()){ %>
+				<c:redirect url="../home.jsp"></c:redirect>
+		
+		
+		<%} %>
 		<%
 			Article article = articles.get(id);
 		%>
@@ -56,26 +61,29 @@
 			<div>
 				<hr>
 				<h3>Reviews</h3>
-		<table style="border:solid 2px blue" "class="table table-striped table-hover table-borderd">
+				<table class="table table-striped table-hover table-borderd">
 					<tr>
 						<th>Editor Accepted</th>
 						<th>Judgment</th>
 						<th>Expertise</th>
 						<th>Action</th>
-						
+
 					</tr>
+					<% for(ReviewForm form:article.getForms()){ %>
 					<tr>
-						<td><%=article.getStatus()%></td>
-						<td><%=article.getCreatedAt()%></td>
-						<td>
-						<td><a
-					href="${pageContext.request.contextPath}/views/author-articles.jsp?id=<%= articles.indexOf(article)
+						<td><%= form.getFormApproved() %></td>
+						<td><%= form.getOverall() %></td>
+						<td><%= form.getLevel() %></td>
+
+						 <td><a
+							href="${pageContext.request.contextPath}/views/author-articles.jsp?id=<%= articles.indexOf(article)
   
  %>"
-					class="btn btn-primary btn-lg active" role="button btn-sm">view</a></td>
+							class="btn btn-primary btn-lg active">view</a></td>
 
-				</td>
+						
 					</tr>
+						<% } %>
 
 
 

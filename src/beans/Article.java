@@ -20,6 +20,7 @@ public class Article {
 	private String status;
 	private String createdAt;
 	private ArrayList<User> users;
+	private ArrayList<ReviewForm> forms;
 	
 	public Article(String title,String abst,String userId,String keywords,String pdfPath) {
 		this.title = title;
@@ -109,9 +110,12 @@ public class Article {
 	public void setUsers(ArrayList<User> users) {
 		this.users = users;
 	}
-	
-	
-	
+	public ArrayList<ReviewForm> getForms() {
+		return forms;
+	}
+	public void setForms(ArrayList<ReviewForm> forms) {
+		this.forms = forms;
+	}
 	
 	
 }

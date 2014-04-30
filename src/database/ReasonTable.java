@@ -5,8 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import beans.Comment;
 import beans.Reason;
 
 /**
@@ -34,7 +32,7 @@ public class ReasonTable {
 	public ArrayList<Reason> getFormReasons(int formId) throws SQLException {
 		Statement stst = conn.createStatement();
 		ResultSet rs = stst
-				.executeQuery("select * from reviewer_reason_list where user_id = "
+				.executeQuery("select * from reviewer_reason_list where form_id = "
 						+ formId);
 		ArrayList<Reason> reasons = new ArrayList<Reason>();
 		while(rs.next()){
@@ -44,10 +42,10 @@ public class ReasonTable {
 			reason.setReviewerId(rs.getInt("reviewer_id"));
 			reason.setFormId(rs.getInt("form_id"));
 			reason.setComments(new CommentDB(conn).getFormReasonComments(rs.getInt("id")));
+			reasons.add(reason);
 		
 		}
 		return reasons;
-		
 		
 	}
 

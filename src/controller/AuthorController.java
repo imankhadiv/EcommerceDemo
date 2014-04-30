@@ -62,6 +62,7 @@ public class AuthorController extends HttpServlet {
 				conn = DriverManager.getConnection(DB);
 				ArticleTable article = new ArticleTable(conn);
 				ArrayList<Article> articles = article.getAuthorArticles(user.getId());
+				System.out.println(articles.get(0).getForms());
 				HttpSession articlesSession = request.getSession();
 				articlesSession.setAttribute("articles", articles);
 				request.getRequestDispatcher("/views/author-articles.jsp").forward(request, response);

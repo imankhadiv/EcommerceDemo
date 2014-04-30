@@ -341,10 +341,12 @@ public class ArticleTable {
 			article.setEdition(rs.getString("edition"));
 			article.setVolume(rs.getString("volume"));
 			article.setReview_count(rs.getInt("review_count"));
+			article.setForms(new Form(conn).getAuthorReviewForms(rs.getInt("id")));
 			articles.add(article);
 		}
 		return articles;
 		
 	}
+	
 
 }

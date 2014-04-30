@@ -60,7 +60,7 @@ public class Form {
 	public ArrayList<ReviewForm> getAuthorReviewForms(int articleId) throws SQLException {
 		Statement stst = conn.createStatement();
 		ResultSet rs = stst
-				.executeQuery("select * from forms where user_id = "
+				.executeQuery("select * from forms where article_id = "
 						+ articleId);
 		ArrayList<ReviewForm> forms = new ArrayList<ReviewForm>();
 		while(rs.next()){
@@ -71,19 +71,18 @@ public class Form {
 			form.setReviewerId(rs.getInt("reviewer_id"));
 			form.setLevel(rs.getString("level"));
 			form.setOverall(rs.getString("overall"));
-			form.setSummary(rs.getString("summery"));
+			form.setSummary(rs.getString("summary"));
 			form.setSecrete(rs.getString("secret_message"));
 			form.setFormApproved(rs.getString("form_approve"));
 			form.setArticleApproved(rs.getString("article_approve"));
 			form.setReasons(new ReasonTable(conn).getFormReasons(rs.getInt("id")));
+			forms.add(form);
+			
 //			form.setCommentList(commentList);
 //			form.setErrors(errors);
 		
 		}
 		return forms;
-		
-		
 	}
-
 
 }
