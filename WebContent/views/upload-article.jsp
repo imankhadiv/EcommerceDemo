@@ -1,129 +1,76 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <c:import url="/header.jsp">
-	<c:param name="title" value="HomePage"></c:param>
+ <c:param name="title" value="HomePage"></c:param>
 </c:import>
 
 <h1>Upload your article</h1>
 <div class="hero-unit " id="container">
-	<form action="../UploadArticle" method="post"
-		enctype="multipart/form-data">
-		<legend>Form For Submitting Article</legend>
-
-		<div class="row">
-			<div class="span6">
-				<table>
-					<tr>
-						<td>Firstname:</td>
-						<td>
-							<div class="input-prepend">
-								<span class="add-on"><i class="icon-user"></i></span> <input
-									type="text" name="firstname" placeholder="Firstname" value="">
-							</div>
-						</td>
-					</tr>
-					<!-- <h4>More than one authors?</h4>
-					<div class="authors">
-						<input type="text" id="hiddenc" name="numberOfAuthors" style="visibility:hidden" value="0">
-
-					</div>
- -->
-					<tr>
-						<td>Lastname:</td>
-						<td>
-							<div class="input-prepend">
-								<span class="add-on"><i class="icon-user"></i></span> <input
-									type="text" name="lastname" placeholder="Lastname" value="">
-							</div>
-					</tr>
-					<tr>
-						<td>Email:</td>
-						<td>
-							<div class="input-prepend">
-								<span class="add-on"><i class="icon-envelope"></i></span> <input
-									type="text" name="email" placeholder="Email" value="">
-							</div>
-						</td>
-						<td class="text-error" id="emailerror"></td>
-					</tr>
-					<tr>
-
-						<td id="author" onclick="addAuthor()"><span id="author"
-							class="add-on">Add author<i class="icon-plus"></i></span></td>
-					</tr>
-					<tr>
-						<td>
-							<div class="authors" style="position: fixed, top:30px, right:5px">
-								<input type="text" id="hiddenc" name="numberOfAuthors"
-									style="visibility: hidden" value="0">
-
-							</div>
-
-						</td>
-					<tr>
-						<td>Title:</td>
-						<td>
-							<div class="input-prepend">
-								<span class="add-on"><i class="icon-pencil"></i></span> <input
-									type="text" name="title" placeholder="Title" value="">
-							</div>
-						</td>
-						<td class="text-error" id=""></td>
-					</tr>
-					<tr>
-						<td>Abstract:</td>
-						<td><textarea rows="5" cols="30" name="abstract"
-								placeholder="Abstract"></textarea></td>
-					</tr>
-					<tr>
-						<td>Keywords:</td>
-						<td>
-							<div class="input-prepend">
-								<span class="add-on"><i class="icon-pencil"></i></span> <input
-									type="text" name="keywords"
-									placeholder="Enter Maximum 10 keywords seperated by comma"
-									value="">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>upload your article:</td>
-						<td><input type="file" name="file" /></td>
-					</tr>
-
-					<tr>
-						<td><button type="submit" class="btn">Upload</button></td>
-					</tr>
-
-				</table>
-
-				<%-- <p class="text-error">
-					<b><%=request.getAttribute("message")%></b>
-				</p>
- --%>
-
-				<!-- 
-				<p id="author" onclick="addAuthor()">
-					<span id="author" class="add-on">Add author<i
-						class="icon-plus"></i></span>
-				</p>
-				 -->
-
-			</div>
-			<!-- <div class="span4"> 
-			<h4>More than one authors?</h4>
-			<div class="authors">
-				<input type="text" id="hiddenc" name="numberOfAuthors"
-					value="5" />
-
-			</div>
-			<p id="author" onclick="addAuthor()">
-				<span id="author" class="add-on">Add author<i
-					class="icon-plus"></i></span>
-			</p>
-		</div> -->
-			<p class="text-error" id="error"></p>
-		</div>
-	</form>
+ <form class="form" action="../UploadArticle" method="post"enctype="multipart/form-data">
+ 
+  <legend>Form For Submitting Article</legend>
+   <div>
+  <div style="width:200px;display:inline-block"><b>Firstname:</b> </div>
+  <div class="input-prepend" style="width:250px;display:inline-block">
+  <span class="add-on"><i class="icon-user"></i></span> 
+   <input type="text" size="30" name="firstname" value="" placeholder="" />
+  </div>
+ </div>
+    <div>
+  <div style="width:200px;display:inline-block"><b>Lastname:</b> </div>
+  <div class="input-prepend" style="width:250px;display:inline-block">
+  <span class="add-on"><i class="icon-user"></i></span> 
+   <input type="text" size="30" name="lastname" value="" placeholder="Lastname" />
+  </div>
+ </div>
+       <div>
+  <div style="width:200px;display:inline-block"><b>Email:</b> </div>
+  <div class="input-prepend" style="width:250px;display:inline-block">
+  <span class="add-on"><i class="icon-envelope"></i></span> 
+   <input type="text" size="30" name="email" value="" placeholder="Email" />
+  </div>
+ </div>
+      <div id="author" onclick="addAuthor()"><span id="author"
+       class="add-on"><b>Add more author</b><i class="icon-plus"></i></span>
+     </div>
+    
+       <div class="authors" style="position: fixed, top:30px, right:5px">
+        <input type="text" id="hiddenc" name="numberOfAuthors"
+         style="visibility: hidden" value="0">
+       </div>
+       
+          <div>
+  <div style="width:200px;display:inline-block"><b>Title:</b> </div>
+  <div class="input-prepend" style="width:250px;display:inline-block">
+  <span class="add-on"><i class="icon-pencil"></i></span> 
+   <input type="text" size="30" name="title" value="" placeholder="Title" />
+  </div>
+ </div>
+        <div>
+  <div style="width:200px;display:inline-block"><b>Abstract:</b> </div>
+  <div style="width:250px;display:inline-block"> 
+   <textarea rows="5" cols="25" name="firstname"  placeholder="Enter Maximum 10 keywords seperated by comma" ></textarea>
+  </div>
+ </div>
+     
+          <div>
+  <div style="width:200px;display:inline-block"><b>Keywords:</b> </div>
+  <div class="input-prepend" style="width:250px;display:inline-block">
+  <span class="add-on"><i class="icon-pencil"></i></span> 
+   <input type="text" size="30" name="keywords" value="" placeholder="Enter Maximum 10 keywords seperated by comma" />
+  </div>
+ </div>
+ <div>
+ 
+  <div style="width:200px;display:inline-block"><b>Upload your article:</b> </div>
+  <div  style="width:250px;display:inline-block">
+   <input size="30" type="file" name="file"/>
+  </div>
+     <br>
+     <br>
+    <div><button class="btn btn-primary btn-large" type="submit" >Upload</button></div>
+   </div>
+ </form>
+ <a href="../DownloadServlet">Click to download</a>
 </div>
 <c:import url="/footer.jsp"></c:import>
