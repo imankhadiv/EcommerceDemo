@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 import beans.Comment;
 import beans.Error;
 import beans.ReviewForm;
+import beans.User;
 import database.Form;
 
 /**
@@ -52,6 +54,11 @@ public class ReviewFormServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		String jsonString = request.getParameter("json");
 		System.out.println(jsonString);
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		//this is the user id
+		user.getId();
+		
 		try {
 			// start connection with database
 			Class.forName("com.mysql.jdbc.Driver");

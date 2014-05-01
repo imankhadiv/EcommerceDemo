@@ -57,6 +57,32 @@ public class Form {
 		// insertIntoKeywords();
 
 	}
+	
+	// for editor to approve the form
+	public boolean setApproveToForms(int article_id, int reviewer_id) {
+		Statement stst;
+		try {
+			stst = conn.createStatement();
+			try {
+				stst.executeQuery("update forms set form_approve=true where article_id = '"
+						+ article_id
+						+ "' and reviewer_id = '"
+						+ article_id
+						+ "' ");
+				return true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+
+				e.printStackTrace();
+				return false;
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return false;
+		}
+	}
+	
 	public ArrayList<ReviewForm> getAuthorReviewForms(int articleId) throws SQLException {
 		Statement stst = conn.createStatement();
 		ResultSet rs = stst
@@ -73,9 +99,9 @@ public class Form {
 			form.setOverall(rs.getString("overall"));
 			form.setSummary(rs.getString("summary"));
 			form.setSecrete(rs.getString("secret_message"));
-			form.setFormApproved(rs.getString("form_approve"));
+//			form.setFormApproved(rs.getString("form_approve"));
 			form.setArticleApproved(rs.getString("article_approve"));
-			form.setReasons(new ReasonTable(conn).getFormReasons(rs.getInt("id")));
+//			form.setReasons(new ReasonTable(conn).getFormReasons(rs.getInt("id")));
 			forms.add(form);
 			
 //			form.setCommentList(commentList);

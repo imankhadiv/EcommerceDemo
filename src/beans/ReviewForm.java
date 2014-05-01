@@ -15,7 +15,7 @@ public class ReviewForm {
 	private String articleApproved;
 	private List<Comment> commentList;
 	private List<Error> errors;
-	private List<Reason> reasons;
+//	private List<Reason> reasons;
 
 	public ReviewForm()
 	{
@@ -107,12 +107,12 @@ public class ReviewForm {
 	public void setArticleApproved(String articleApproved) {
 		this.articleApproved = articleApproved;
 	}
-	public List<Reason> getReasons() {
-		return reasons;
-	}
-	public void setReasons(List<Reason> reasons) {
-		this.reasons = reasons;
-	}
+//	public List<Reason> getReasons() {
+//		return reasons;
+//	}
+//	public void setReasons(List<Reason> reasons) {
+//		this.reasons = reasons;
+//	}
 	
 	
 }
