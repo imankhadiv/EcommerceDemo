@@ -46,6 +46,15 @@
 					
 					</ul>
 				</li>
+				<li class="dropdown">
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Reviewer<b class="caret"></b></a>
+				
+					<ul class="dropdown-menu">
+					<li><a href="${pageContext.request.contextPath}/">My Reviews</a></li>
+					<li><a href="${pageContext.request.contextPath}/">Review Articles</a></li>
+					
+					</ul>
+				</li>
 
 			</ul>
 

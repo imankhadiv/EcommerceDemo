@@ -36,7 +36,7 @@ public class CommentDB {
 			comment.setId(rs.getInt("id"));
 			comment.setReasonId(rs.getInt("reason_id"));
 			comment.setContent(rs.getString("content"));
-			comment.setContent(String.valueOf(rs.getDate("created_at")));
+			comment.setCreatedAt(String.valueOf(rs.getDate("created_at")));
 			comments.add(comment);
 		}
 		return comments;

@@ -76,9 +76,9 @@
 						<td><%= form.getLevel() %></td>
 
 						 <td><a
-							href="${pageContext.request.contextPath}/views/author-articles.jsp?id=<%= articles.indexOf(article)
+							href="${pageContext.request.contextPath}/views/author-form.jsp?formId=<%= article.getForms().indexOf(form)
   
- %>"
+ %>&articleId=<%= articles.indexOf(article) %>"
 							class="btn btn-primary btn-lg active">view</a></td>
 
 						
