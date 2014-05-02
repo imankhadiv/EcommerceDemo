@@ -14,6 +14,7 @@ public class User {
 	private String firstname;
 	private String lastname;
 	private String role;
+	private String affiliation;
 
 	public User() {
 
@@ -86,6 +87,15 @@ public class User {
 	public void setId(int id) {
 		this.id = id;
 	}
+
+	public String getAffiliation() {
+		return affiliation;
+	}
+
+	public void setAffiliation(String affiliation) {
+		this.affiliation = affiliation;
+	}
+	
 	
 
 }

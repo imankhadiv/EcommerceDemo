@@ -1,21 +1,27 @@
 package database;
 
 import java.sql.Connection;
-
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 import beans.Article;
 import beans.User;
+
 /**
  * 
  * @author Iman Rastkhadiv
- *
+ * 
  */
 public class ArticleTable {
 
@@ -32,66 +38,6 @@ public class ArticleTable {
 	}
 
 	public ArticleTable() {
-
-	}
-
-	/**
-	 * This method checks if the keyword exists in the keywords table
-	 * 
-	 * @param word
-	 * @return
-	 * @throws SQLException
-	 */
-	public boolean checkKeyword(String word) throws SQLException {
-		String sql = "select count(*) as count from keywords where word=? ";
-
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setString(1, word);
-		ResultSet rs = stmt.executeQuery();
-		int count = 0;
-		if (rs.next()) {
-			count = rs.getInt("count");
-		}
-		rs.close();
-		if (count == 0) {
-			return false;
-		} else {
-
-			return true;
-		}
-	}
-
-	public void insertIntoKeywords() throws SQLException {
-		String[] keyWords = article.getKeywords().split(",");
-		for (String word : keyWords) {
-			if (!checkKeyword(word)) {
-				String sql = "insert into keywords(word) values(?) ";
-
-				PreparedStatement stmt = conn.prepareStatement(sql);
-				stmt.setString(1, word);
-
-				stmt.executeUpdate();
-				stmt.close();
-			}
-			String sql = "insert into article_keywords(keyword_id,article_id) values(?,?)";
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, String.valueOf(getKeywordId(word)));
-			stmt.setString(2, String.valueOf(getArticleId(article.getTitle())));
-			stmt.executeUpdate();
-			stmt.close();
-		}
-	}
-
-	public int getKeywordId(String word) throws SQLException {
-		String sql = "select * from keywords where word=?";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setString(1, word);
-		ResultSet rs = stmt.executeQuery();
-		if (rs.next()) {
-			int id = Integer.valueOf(rs.getString("id"));
-			return id;
-		}
-		return 0;
 
 	}
 
@@ -118,10 +64,11 @@ public class ArticleTable {
 		stmt.setString(4, article.getPdfPath());
 		stmt.executeUpdate();
 		stmt.close();
-		insertIntoKeywords();
 		String articleId = String.valueOf(getMaxIdFromTable("articles"));
+		KeywordTable keyword = new KeywordTable(conn);
+		article.setId(Integer.valueOf(articleId));
+		keyword.insertIntoKeywords(article);
 		insertIntoArticleAuthors(articleId, article.getUsers());
-		
 
 	}
 
@@ -146,16 +93,6 @@ public class ArticleTable {
 
 	}
 
-	// public ResultSet getSelectedArticles(int currentUserId) throws
-	// SQLException {
-	// Statement stst = conn.createStatement();
-	// ResultSet resultSet =
-	// stst.executeQuery("select * from reviewer_status where status = 'unpublished' and user_id != "+
-	// currentUserId);
-	// resultSet.
-	// return resultSet;
-	//
-	// }
 	public void insertIntoReviewerStatus(String reviewerId, String articleId)
 			throws SQLException {
 
@@ -167,19 +104,21 @@ public class ArticleTable {
 		stmt.close();
 
 	}
-	public void insertIntoArticleAuthors(String articleId,ArrayList<User> users) throws SQLException {
-		
+
+	public void insertIntoArticleAuthors(String articleId, ArrayList<User> users)
+			throws SQLException {
+
 		String sql = "insert into article_authors(article_id,firstname,lastname,email) values(?,?,?,?) ";
 		PreparedStatement stmt = conn.prepareStatement(sql);
-		for(User user:users){
-		stmt.setString(1, articleId);
-		stmt.setString(2, user.getFirstname());
-		stmt.setString(3, user.getLastname());
-		stmt.setString(4, user.getEmail());
-		stmt.executeUpdate();
+		for (User user : users) {
+			stmt.setString(1, articleId);
+			stmt.setString(2, user.getFirstname());
+			stmt.setString(3, user.getLastname());
+			stmt.setString(4, user.getEmail());
+			stmt.executeUpdate();
 		}
 		stmt.close();
-	
+
 	}
 
 	public void removeFromReviewerStatus(String reviewerId, String articleId)
@@ -193,12 +132,12 @@ public class ArticleTable {
 
 	}
 
-	public ResultSet getPublishedArticles() throws SQLException {
-		Statement stst = conn.createStatement();
-		ResultSet resultSet = stst.executeQuery("select * from articles");
-		return resultSet;
-
-	}
+	// public ResultSet getPublishedArticles() throws SQLException {
+	// Statement stst = conn.createStatement();
+	// ResultSet resultSet = stst.executeQuery("select * from articles");
+	// return resultSet;
+	//
+	// }
 
 	public ResultSet getDownloadedArticles(List<String> downloadedIds)
 			throws SQLException {
@@ -229,12 +168,12 @@ public class ArticleTable {
 	}
 
 	/**
-	 * This method implemented to
+	 * This method implemented to ...
 	 * 
 	 * @param reviewerId
 	 * @return
 	 * @throws SQLException
-	 *            
+	 * 
 	 */
 	public ResultSet getSelectedArticleIds(String reviewerId)
 			throws SQLException {
@@ -272,9 +211,35 @@ public class ArticleTable {
 		return list;
 	}
 
-	public String getIds(List<String> ids) {
+	/**
+	 * 
+	 * @param ids
+	 * @return
+	 */
+	private String getIds(List<String> ids) {
 		int size = ids.size();
 		String s = "(";
+		if (ids.size() == 0) {
+			return "(0)";
+		}
+		for (int i = 0; i < size - 1; i++) {
+			s += (ids.get(i) + ",");
+		}
+		s += (ids.get(size - 1) + ")");
+		return s;
+	}
+
+	/**
+	 * 
+	 * @param ids
+	 * @return
+	 */
+	private String getIds2(List<Integer> ids) {
+		int size = ids.size();
+		String s = "(";
+		if (ids.size() == 0) {
+			return "(0)";
+		}
 
 		for (int i = 0; i < size - 1; i++) {
 			s += (ids.get(i) + ",");
@@ -282,71 +247,182 @@ public class ArticleTable {
 		s += (ids.get(size - 1) + ")");
 		return s;
 	}
-//	public  Integer insertQueryGetId(String query) throws SQLException {
-//	    Integer numero=0;
-//	    Integer risultato=-1;
-//	    
-//	        Statement stmt = conn.createStatement();
-//	        numero = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-//
-//
-//	        ResultSet rs = stmt.getGeneratedKeys();
-//	        if (rs.next()){
-//	            risultato=rs.getInt(1);
-//	        }
-//	        rs.close();
-//
-//	        stmt.close();
-//	    
-//	  return risultato;
-//	}
+
 	/**
-	 * This method is implemented to get the table name and return the id of the last record;
+	 * This method is implemented to get the table name and return the id of the
+	 * last record;
+	 * 
 	 * @param tableName
 	 * @return
 	 * @throws SQLException
 	 */
-	public  int getMaxIdFromTable(String tableName) throws SQLException {
-		String sql = "select MAX(id) from "+tableName;
+	public int getMaxIdFromTable(String tableName) throws SQLException {
+		String sql = "select MAX(id) from " + tableName;
 		Statement st = conn.createStatement();
-		ResultSet rs = st.executeQuery(sql) ;
-		int id = 0 ;
-		while(rs.next()){
+		ResultSet rs = st.executeQuery(sql);
+		int id = 0;
+		while (rs.next()) {
 			id = rs.getInt(1);
 		}
+		rs.close();
 		return id;
 	}
-//	public ResultSet getAuthorArticles(int user_id) throws SQLException {
-//		Statement stst = conn.createStatement();
-//		ResultSet resultSet = stst
-//				.executeQuery("select * from articles where user_id = "
-//						+ user_id);
-//		return resultSet;
-//	}
-	
-	public ArrayList<Article> getAuthorArticles(int user_id) throws SQLException {
+
+	public ArrayList<Article> getAuthorArticles(int user_id)
+			throws SQLException {
 		Statement stst = conn.createStatement();
 		ResultSet rs = stst
 				.executeQuery("select * from articles where user_id = "
 						+ user_id);
+		return getArticlesFromResultSet(rs);
+
+	}
+
+	/**
+	 * 
+	 * @param title
+	 * @return
+	 * @throws SQLException
+	 */
+	public ArrayList<Article> getArticlesByTitle(String title)
+			throws SQLException {
+		Statement stst = conn.createStatement();
+		ResultSet rs = stst
+				.executeQuery("select * from articles where status = 'published' and title = '"
+						+ title + "'");
+
+		return getArticlesFromResultSet(rs);
+
+	}
+
+	/**
+	 * This method implemented to enable readers to search an article by author
+	 * name. Since there are two tables for authors in the
+	 * system(user,article_authors) both tables should be searched"
+	 * 
+	 * @param authorName
+	 * @return
+	 * @throws SQLException
+	 */
+	public ArrayList<Article> getArticlesByAuthorName(String authorName)
+			throws SQLException {
+		Statement stst = conn.createStatement();
+		ArticleAuthorTable articleAuthorTable = new ArticleAuthorTable(conn);
+		ArrayList<Integer> userIds = articleAuthorTable
+				.getUserIdsByName(authorName);
+		ArrayList<Integer> articleIds = articleAuthorTable
+				.getArticleIdsByAuthorName(authorName);
+		System.out.println("user ids are" + articleIds);
+		String ids = getIds2(userIds);
+		ResultSet rs = stst
+				.executeQuery("select * from articles where status = 'published' and user_id in "
+						+ ids);
+
+		while (rs.next()) {
+			articleIds.add(rs.getInt("id"));
+
+		}
+		HashSet<Integer> hs = new HashSet<Integer>();
+		hs.addAll(articleIds);
+		articleIds.clear();
+		articleIds.addAll(hs);
+		String ids2 = getIds2(articleIds);
+
+		ResultSet rs2 = stst
+				.executeQuery("select * from articles where status = 'published' and id in "
+						+ ids2);
+
+		return getArticlesFromResultSet(rs2);
+
+	}
+
+	public ArrayList<Article> getArticlesByKeywords(String keyword)
+			throws SQLException {
+		KeywordTable keywordTable = new KeywordTable(conn);
+		ArrayList<Integer> articleIds = keywordTable
+				.getArticleIdsByKeywrod(keyword);
+		String ids = getIds2(articleIds);
+		Statement stst = conn.createStatement();
+		ResultSet rs = stst
+				.executeQuery("select * from articles where status = 'published' and id in "
+						+ ids);
+		return getArticlesFromResultSet(rs);
+
+	}
+
+	/**
+	 * This method is implemented to avoid code duplications
+	 * 
+	 * @param rs
+	 * @return
+	 * @throws SQLException
+	 */
+	private ArrayList<Article> getArticlesFromResultSet(ResultSet rs)
+			throws SQLException {
 		ArrayList<Article> articles = new ArrayList<Article>();
-		while(rs.next()){
+		while (rs.next()) {
 			Article article = new Article();
 			article.setId(rs.getInt("id"));
+			article.setUserId(rs.getString("user_id"));
 			article.setTitle(rs.getString("title"));
 			article.setAbst(rs.getString("abstract"));
-			article.setUserId(rs.getString("user_id"));
-			article.setStatus(rs.getString("status"));
 			article.setCreatedAt(String.valueOf(rs.getDate("created_at")));
+			article.setStatus(rs.getString("status"));
+			article.setReview_count(rs.getInt("review_count"));
 			article.setEdition(rs.getString("edition"));
 			article.setVolume(rs.getString("volume"));
-			article.setReview_count(rs.getInt("review_count"));
-			article.setForms(new Form(conn).getAuthorReviewForms(rs.getInt("id")));
+			article.setPdfPath(rs.getString("pdf_path"));
+			article.setUsers(new ArticleAuthorTable(conn)
+					.getUsersByArticleId(rs.getInt("id")));// each article may
+															// have a list of
+			article.setForms(new Form(conn).getAuthorReviewForms(rs
+					.getInt("id"))); // authors
 			articles.add(article);
+
 		}
+		rs.close();
 		return articles;
-		
 	}
-	
+
+	public static void main(String[] args) throws java.text.ParseException {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+			Connection conn = DriverManager.getConnection(DB);
+			ArticleTable articleTable = new ArticleTable(conn);
+			ArrayList<Article> articles = articleTable
+					.getArticlesByKeywords("key1");
+			// System.out.println(articles.get(0).getTitle());
+			for (Article article : articles) {
+				System.out.println(article.getId());
+				System.out.println(article.getTitle());
+			}
+			long DAY_IN_MS = 1000 * 60 * 60 * 24;
+			Date date = new Date(System.currentTimeMillis() - (7 * DAY_IN_MS));
+			System.out.println(date);
+			for (Article article : articles) {
+				String startDateString = article.getCreatedAt();
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				Date startDate;
+				try {
+					startDate = df.parse(startDateString);
+					String newDateString = df.format(startDate);
+					if (date.before(startDate)) {
+						System.out.println("hello");
+					}
+					System.out.println(newDateString);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+			// System.out.println(articles.size());
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }

@@ -71,4 +71,15 @@
     <url-pattern>/views/ReviewFormServlet</url-pattern>
    <!--  remember to add /views when create a new servlet(because of the path) -->
   </servlet-mapping>
+   <servlet>
+    <description></description>
+    <display-name>ReaderController</display-name>
+    <servlet-name>ReaderController</servlet-name>
+    <servlet-class>controller.ReaderController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ReaderController</servlet-name>
+    <url-pattern>/ReaderController</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

@@ -13,6 +13,7 @@
 <script src="${pageContext.request.contextPath}/javascripts/myscript.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/form.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/upload.js"></script>
+<script src="${pageContext.request.contextPath}/javascripts/reader.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/stylesheets/style.css" />
 <link
@@ -21,6 +22,9 @@
 <link
 	href="${pageContext.request.contextPath}/bootstrap/css/bootstrap-responsive.css"
 	rel="stylesheet" />
+	
+	
+	
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
  
