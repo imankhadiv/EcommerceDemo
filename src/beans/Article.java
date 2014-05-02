@@ -12,21 +12,25 @@ public class Article {
 	private String abst;
 	private String userId;
 	private int review_count;
-	private String keywords;
+	//private String keywords;
+	
 	private String pdfPath;
 	private String volume;
 	private String edition;
 	private String reviewed;
 	private String status;
 	private String createdAt;
+	private User mainUser;//this is implemented to get main user details when we set the article object.
+	private ArrayList<Keyword> keywords;
 	private ArrayList<User> users;
 	private ArrayList<ReviewForm> forms;
 	
-	public Article(String title,String abst,String userId,String keywords,String pdfPath) {
+	public Article(String title,String abst,String userId,String pdfPath) {
 		this.title = title;
 		this.abst = abst;
 		this.userId = userId;
-		this.keywords = keywords;
+		//this.keywords = keywords;
+		//this.keywords = keywords;
 		this.pdfPath = pdfPath;
 	}
 	public Article() {
@@ -62,12 +66,12 @@ public class Article {
 	public void setReview_count(int review_count) {
 		this.review_count = review_count;
 	}
-	public String getKeywords() {
-		return keywords;
-	}
-	public void setKeywords(String keywords) {
-		this.keywords = keywords;
-	}
+//	public String getKeywords() {
+//		return keywords;
+//	}
+//	public void setKeywords(String keywords) {
+//		this.keywords = keywords;
+//	}
 	public String getPdfPath() {
 		return pdfPath;
 	}
@@ -116,6 +120,19 @@ public class Article {
 	public void setForms(ArrayList<ReviewForm> forms) {
 		this.forms = forms;
 	}
+	public User getMainUser() {
+		return mainUser;
+	}
+	public void setMainUser(User mainUser) {
+		this.mainUser = mainUser;
+	}
+	public ArrayList<Keyword> getKeywords() {
+		return keywords;
+	}
+	public void setKeywords(ArrayList<Keyword> keywords) {
+		this.keywords = keywords;
+	}
+	
 	
 	
 }

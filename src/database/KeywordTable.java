@@ -7,8 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import beans.Article;
+import beans.Keyword;
 
 public class KeywordTable {
 	
@@ -48,20 +50,21 @@ public class KeywordTable {
 		}
 	}
 	public void insertIntoKeywords(Article article) throws SQLException {
-		String[] keyWords = article.getKeywords().split(",");
-		for (String word : keyWords) {
-			if (!checkKeyword(word)) {
+		//String[] keyWords = article.getKeywords().split(",");
+//		for (String word : keyWords) {
+			for(Keyword key: article.getKeywords()){
+			if (!checkKeyword(key.getWord())) {
 				String sql = "insert into keywords(word) values(?) ";
 
 				PreparedStatement stmt = conn.prepareStatement(sql);
-				stmt.setString(1, word);
+				stmt.setString(1, key.getWord());
 
 				stmt.executeUpdate();
 				stmt.close();
 			}
 			String sql = "insert into article_keywords(keyword_id,article_id) values(?,?)";
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, String.valueOf(getKeywordId(word)));
+			stmt.setString(1, String.valueOf(getKeywordId(key.getWord())));
 			//stmt.setString(2, String.valueOf(getArticleId(article.getTitle())));
 			stmt.setString(2, String.valueOf(article.getId()));
 			stmt.executeUpdate();
@@ -100,21 +103,59 @@ public class KeywordTable {
 		return articleIds;
 						
 	}
-//	public static void main(String[] args) {
-//		try {
-//			Class.forName("com.mysql.jdbc.Driver");
-//			String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
-//			Connection conn = DriverManager.getConnection(DB);
-//			KeywordTable words = new KeywordTable(conn);
-//			System.out.println(words.getArticleIdsByKeywrod(""));
-//		} catch (ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
+	public ArrayList<Keyword> getKeywordsByArticleId(int articleId) throws SQLException {
+		ArrayList<Integer> keywordIds = new ArrayList<Integer>();
+		Statement stst = conn.createStatement();
+		ResultSet st = stst.executeQuery("select * from article_keywords where article_id = "+ articleId);
+		while(st.next()){
+			keywordIds.add(st.getInt("keyword_id"));
+		}
+		st.close();
+		
+		ArrayList<Keyword> keywords = new ArrayList<Keyword>();
+		String ids = getIds(keywordIds);
+		Statement statement = conn.createStatement();
+		ResultSet rss = statement.executeQuery("select * from keywords where id in "+ids);
+		while(rss.next()){
+			Keyword keyword = new Keyword();
+			keyword.setId(rss.getInt("id"));
+			keyword.setWord(rss.getString("word"));
+			keywords.add(keyword);
+		}
+		rss.close();
+		return keywords;
+		
+	}
+
+	public static void main(String[] args) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+			Connection conn = DriverManager.getConnection(DB);
+			KeywordTable words = new KeywordTable(conn);
+			System.out.println(words.getKeywordsByArticleId(69).size());
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	private String getIds(List<Integer> ids) {
+		int size = ids.size();
+		String s = "(";
+		if (ids.size() == 0) {
+			return "(0)";
+		}
+
+		for (int i = 0; i < size - 1; i++) {
+			s += (ids.get(i) + ",");
+		}
+		s += (ids.get(size - 1) + ")");
+		return s;
+	}
+
 
 
 }

@@ -3,7 +3,6 @@ package controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,6 +23,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import beans.Article;
+import beans.Keyword;
 import beans.User;
 import database.Account;
 import database.ArticleTable;
@@ -149,7 +149,16 @@ public class UploadArticle extends HttpServlet {
 			 account.changeRole("Author", userId);
 			 Article article = new Article(title, abst,
 			 String.valueOf(userId),
-			 keywords, file);
+			  file);
+			String[] keyword = keywords.split(",");
+			ArrayList<Keyword> words = new ArrayList<Keyword>();
+			for(String item:keyword) {
+				Keyword k = new Keyword();
+				k.setWord(item);
+				words.add(k);
+			}
+			article.setKeywords(words);
+
 			 article.setUsers(this.getUsers(list));
 			// article.setUsers(users);
 			 ArticleTable articleTable = new ArticleTable(conn, article);

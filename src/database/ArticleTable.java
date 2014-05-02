@@ -13,10 +13,10 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
-
 import beans.Article;
 import beans.User;
+
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 /**
  * 
@@ -364,8 +364,11 @@ public class ArticleTable {
 			Article article = new Article();
 			article.setId(rs.getInt("id"));
 			article.setUserId(rs.getString("user_id"));
+			article.setMainUser(new Account(conn).getUserById(rs.getInt("user_id")));
 			article.setTitle(rs.getString("title"));
 			article.setAbst(rs.getString("abstract"));
+			article.setKeywords(new KeywordTable(conn).getKeywordsByArticleId(rs.getInt("id")));
+			System.out.println("///"+article.getKeywords());
 			article.setCreatedAt(String.valueOf(rs.getDate("created_at")));
 			article.setStatus(rs.getString("status"));
 			article.setReview_count(rs.getInt("review_count"));
@@ -390,17 +393,18 @@ public class ArticleTable {
 			String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
 			Connection conn = DriverManager.getConnection(DB);
 			ArticleTable articleTable = new ArticleTable(conn);
-			ArrayList<Article> articles = articleTable
-					.getArticlesByKeywords("key1");
+			ArrayList<Article> articles = articleTable.getArticlesByTitle("sample");
 			// System.out.println(articles.get(0).getTitle());
 			for (Article article : articles) {
 				System.out.println(article.getId());
 				System.out.println(article.getTitle());
+				System.out.println(article.getAbst());
 			}
 			long DAY_IN_MS = 1000 * 60 * 60 * 24;
 			Date date = new Date(System.currentTimeMillis() - (7 * DAY_IN_MS));
 			System.out.println(date);
 			for (Article article : articles) {
+				//System.out.println(article.get);
 				String startDateString = article.getCreatedAt();
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 				Date startDate;
