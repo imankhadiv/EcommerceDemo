@@ -69,6 +69,15 @@
   <servlet-mapping>
     <servlet-name>ReviewFormServlet</servlet-name>
     <url-pattern>/views/ReviewFormServlet</url-pattern>
-   <!--  remember to add /views when create a new servlet(because of the path) -->
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>JDBServlet</display-name>
+    <servlet-name>JDBServlet</servlet-name>
+    <servlet-class>controller.JDBServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>JDBServlet</servlet-name>
+    <url-pattern>/JDBServlet</url-pattern>
   </servlet-mapping>
 </web-app>

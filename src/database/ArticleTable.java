@@ -199,6 +199,14 @@ public class ArticleTable {
 		return resultSet;
 
 	}
+	
+	public ResultSet getArticlesToSelect() throws SQLException {
+		Statement stst = conn.createStatement();
+		ResultSet resultSet = stst.executeQuery("select * from articles");
+		return resultSet;
+
+	}
+	
 
 	public ResultSet getDownloadedArticles(List<String> downloadedIds)
 			throws SQLException {

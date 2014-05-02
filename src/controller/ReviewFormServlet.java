@@ -56,6 +56,20 @@ public class ReviewFormServlet extends HttpServlet {
 		System.out.println(jsonString);
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
+		
+		if (session.getAttribute("user") == null) {
+			request.setAttribute("message",
+					"You need to login to view your articles");
+			request.getRequestDispatcher("/home.jsp")
+					.forward(request, response);
+
+		} else if (user.getRole().equals("reader")) {
+			request.setAttribute("message",
+					"You logged is as a reader. You do not have permission to open the page");
+			request.getRequestDispatcher("/home.jsp")
+					.forward(request, response);
+			
+		}
 		//this is the user id
 		user.getId();
 		

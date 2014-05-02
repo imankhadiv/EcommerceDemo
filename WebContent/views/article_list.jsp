@@ -8,6 +8,7 @@
 <table class="table table-striped ">
 	<thead>
  <tr>
+ 	  <th>select</th>
 	  <th>title</th>
 	  <th>abstract</th>
 	  <th>auther id</th>
@@ -24,6 +25,7 @@
  %>
  <tbody>
  <tr>
+  <td><input type="checkbox"></td>
   <td><%=articles.getString("title")%></td>
   <td><%=articles.getString("abstract")%></td>
   <td><%=articles.getInt("auth_id")%></td>
