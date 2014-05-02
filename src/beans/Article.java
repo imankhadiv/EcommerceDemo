@@ -1,5 +1,6 @@
 package beans;
 import java.util.ArrayList;
+import java.util.Date;
 /**
  * 
  * @author Iman Rastkhadiv
@@ -19,7 +20,7 @@ public class Article {
 	private String edition;
 	private String reviewed;
 	private String status;
-	private String createdAt;
+	private Date createdAt;
 	private User mainUser;//this is implemented to get main user details when we set the article object.
 	private ArrayList<Keyword> keywords;
 	private ArrayList<User> users;
@@ -102,10 +103,11 @@ public class Article {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public String getCreatedAt() {
+	
+	public Date getCreatedAt() {
 		return createdAt;
 	}
-	public void setCreatedAt(String createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 	public ArrayList<User> getUsers() {

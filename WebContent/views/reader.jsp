@@ -54,7 +54,7 @@
 				<td><a
 					href="${pageContext.request.contextPath}/views/reader.jsp?id=<%= articles.indexOf(article) %>"><%=article.getTitle()%></a></td>
 
-				<td><%=article.getCreatedAt()%></td>
+				<td><%= String.valueOf(article.getCreatedAt()) %></td>
 				<td><a
 					href="${pageContext.request.contextPath}/views/reader.jsp?id=<%= articles.indexOf(article) %>"
 					class="btn btn-primary btn-lg active">view</a></td>

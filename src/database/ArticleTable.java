@@ -1,23 +1,15 @@
 package database;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-
 import beans.Article;
 import beans.User;
-
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
-
 /**
  * 
  * @author Iman Rastkhadiv
@@ -377,7 +369,7 @@ public class ArticleTable {
 			article.setAbst(rs.getString("abstract"));
 			article.setKeywords(new KeywordTable(conn).getKeywordsByArticleId(rs.getInt("id")));
 			System.out.println("///"+article.getKeywords());
-			article.setCreatedAt(String.valueOf(rs.getDate("created_at")));
+			article.setCreatedAt(rs.getDate("created_at"));
 			article.setStatus(rs.getString("status"));
 			article.setReview_count(rs.getInt("review_count"));
 			article.setEdition(rs.getString("edition"));
@@ -395,46 +387,46 @@ public class ArticleTable {
 		return articles;
 	}
 
-	public static void main(String[] args) throws java.text.ParseException {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
-			Connection conn = DriverManager.getConnection(DB);
-			ArticleTable articleTable = new ArticleTable(conn);
-			ArrayList<Article> articles = articleTable.getArticlesByTitle("sample");
-			// System.out.println(articles.get(0).getTitle());
-			for (Article article : articles) {
-				System.out.println(article.getId());
-				System.out.println(article.getTitle());
-				System.out.println(article.getAbst());
-			}
-			long DAY_IN_MS = 1000 * 60 * 60 * 24;
-			Date date = new Date(System.currentTimeMillis() - (7 * DAY_IN_MS));
-			System.out.println(date);
-			for (Article article : articles) {
-				//System.out.println(article.get);
-				String startDateString = article.getCreatedAt();
-				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-				Date startDate;
-				try {
-					startDate = df.parse(startDateString);
-					String newDateString = df.format(startDate);
-					if (date.before(startDate)) {
-						System.out.println("hello");
-					}
-					System.out.println(newDateString);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-			}
-			// System.out.println(articles.size());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String[] args) throws java.text.ParseException {
+//		try {
+//			Class.forName("com.mysql.jdbc.Driver");
+//			String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+//			Connection conn = DriverManager.getConnection(DB);
+//			ArticleTable articleTable = new ArticleTable(conn);
+//			ArrayList<Article> articles = articleTable.getArticlesByTitle("sample");
+//			// System.out.println(articles.get(0).getTitle());
+//			for (Article article : articles) {
+//				System.out.println(article.getId());
+//				System.out.println(article.getTitle());
+//				System.out.println(article.getAbst());
+//			}
+//			long DAY_IN_MS = 1000 * 60 * 60 * 24;
+//			Date date = new Date(System.currentTimeMillis() - (7 * DAY_IN_MS));
+//			System.out.println(date);
+//			for (Article article : articles) {
+//				//System.out.println(article.get);
+//				String startDateString = article.getCreatedAt();
+//				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//				Date startDate;
+//				try {
+//					startDate = df.parse(startDateString);
+//					String newDateString = df.format(startDate);
+//					if (date.before(startDate)) {
+//						System.out.println("hello");
+//					}
+//					System.out.println(newDateString);
+//				} catch (ParseException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//			// System.out.println(articles.size());
+//		} catch (ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 
 }
