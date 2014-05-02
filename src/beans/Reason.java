@@ -9,7 +9,6 @@ public class Reason {
 	private int reviewerId;
 	private String title;
 	private ArrayList<Comment> comments;
-	
 	public Reason() {
 		
 	}

@@ -99,9 +99,9 @@ public class Form {
 			form.setOverall(rs.getString("overall"));
 			form.setSummary(rs.getString("summary"));
 			form.setSecrete(rs.getString("secret_message"));
-//			form.setFormApproved(rs.getString("form_approve"));
+			form.setFormApproved(rs.getString("form_approve"));
 			form.setArticleApproved(rs.getString("article_approve"));
-//			form.setReasons(new ReasonTable(conn).getFormReasons(rs.getInt("id")));
+			form.setReasons(new ReasonTable(conn).getFormReasons(rs.getInt("id")));
 			forms.add(form);
 			
 //			form.setCommentList(commentList);

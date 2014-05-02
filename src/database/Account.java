@@ -3,11 +3,12 @@ package database;
  * 
  */
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import beans.User;
 /**
  * 
  * @author Iman Rastkhadiv
@@ -100,6 +101,18 @@ public class Account {
 		
 
 		//stst.addBatch("update bankAccount SET checkingBalance = checkingBalance - "+big+" where id = "+id);
+	}
+	public User getUserById(int userId) throws SQLException {
+		User user = new User();
+		Statement stst= conn.createStatement();
+		ResultSet rs = stst.executeQuery("select * from users where id = "+userId);
+		while(rs.next()){
+			user.setId(rs.getInt("id"));
+			user.setFirstname(rs.getString("first_name"));
+			user.setLastname(rs.getString("last_name"));
+			user.setEmail(rs.getString("email"));
+		}
+		return user;
 	}
 
 

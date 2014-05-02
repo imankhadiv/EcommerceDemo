@@ -117,8 +117,4 @@ public class ReviewForm {
 	public void setReasons(ArrayList<Reason> reasons) {
 		this.reasons = reasons;
 	}
-
-	
-	
-	
 }

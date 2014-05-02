@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=US-ASCII"
 	pageEncoding="US-ASCII"%>
+	<%@ page import="java.sql.ResultSet"%>
+<%@ page import="java.util.*"%>
+<%@ page import="beans.*"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -13,6 +16,7 @@
 <script src="${pageContext.request.contextPath}/javascripts/myscript.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/form.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/upload.js"></script>
+<script src="${pageContext.request.contextPath}/javascripts/reader.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/stylesheets/style.css" />
 <link
@@ -21,6 +25,9 @@
 <link
 	href="${pageContext.request.contextPath}/bootstrap/css/bootstrap-responsive.css"
 	rel="stylesheet" />
+	
+	
+	
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
  
