@@ -65,9 +65,9 @@ public class ArticleTable {
 		stmt.executeUpdate();
 		stmt.close();
 		String articleId = String.valueOf(getMaxIdFromTable("articles"));
-		KeywordTable keyword = new KeywordTable(conn);
+//		KeywordTable keyword = new KeywordTable(conn);
 		article.setId(Integer.valueOf(articleId));
-		keyword.insertIntoKeywords(article);
+//		keyword.insertIntoKeywords(article);
 		insertIntoArticleAuthors(articleId, article.getUsers());
 
 	}
@@ -312,51 +312,51 @@ public class ArticleTable {
 	 * @return
 	 * @throws SQLException
 	 */
-	public ArrayList<Article> getArticlesByAuthorName(String authorName)
-			throws SQLException {
-		Statement stst = conn.createStatement();
-		ArticleAuthorTable articleAuthorTable = new ArticleAuthorTable(conn);
-		ArrayList<Integer> userIds = articleAuthorTable
-				.getUserIdsByName(authorName);
-		ArrayList<Integer> articleIds = articleAuthorTable
-				.getArticleIdsByAuthorName(authorName);
-		System.out.println("user ids are" + articleIds);
-		String ids = getIds2(userIds);
-		ResultSet rs = stst
-				.executeQuery("select * from articles where status = 'published' and user_id in "
-						+ ids);
+//	public ArrayList<Article> getArticlesByAuthorName(String authorName)
+//			throws SQLException {
+//		Statement stst = conn.createStatement();
+//		ArticleAuthorTable articleAuthorTable = new ArticleAuthorTable(conn);
+//		ArrayList<Integer> userIds = articleAuthorTable
+//				.getUserIdsByName(authorName);
+//		ArrayList<Integer> articleIds = articleAuthorTable
+//				.getArticleIdsByAuthorName(authorName);
+//		System.out.println("user ids are" + articleIds);
+//		String ids = getIds2(userIds);
+//		ResultSet rs = stst
+//				.executeQuery("select * from articles where status = 'published' and user_id in "
+//						+ ids);
+//
+//		while (rs.next()) {
+//			articleIds.add(rs.getInt("id"));
+//
+//		}
+//		HashSet<Integer> hs = new HashSet<Integer>();
+//		hs.addAll(articleIds);
+//		articleIds.clear();
+//		articleIds.addAll(hs);
+//		String ids2 = getIds2(articleIds);
+//
+//		ResultSet rs2 = stst
+//				.executeQuery("select * from articles where status = 'published' and id in "
+//						+ ids2);
+//
+//		return getArticlesFromResultSet(rs2);
+//
+//	}
 
-		while (rs.next()) {
-			articleIds.add(rs.getInt("id"));
-
-		}
-		HashSet<Integer> hs = new HashSet<Integer>();
-		hs.addAll(articleIds);
-		articleIds.clear();
-		articleIds.addAll(hs);
-		String ids2 = getIds2(articleIds);
-
-		ResultSet rs2 = stst
-				.executeQuery("select * from articles where status = 'published' and id in "
-						+ ids2);
-
-		return getArticlesFromResultSet(rs2);
-
-	}
-
-	public ArrayList<Article> getArticlesByKeywords(String keyword)
-			throws SQLException {
-		KeywordTable keywordTable = new KeywordTable(conn);
-		ArrayList<Integer> articleIds = keywordTable
-				.getArticleIdsByKeywrod(keyword);
-		String ids = getIds2(articleIds);
-		Statement stst = conn.createStatement();
-		ResultSet rs = stst
-				.executeQuery("select * from articles where status = 'published' and id in "
-						+ ids);
-		return getArticlesFromResultSet(rs);
-
-	}
+//	public ArrayList<Article> getArticlesByKeywords(String keyword)
+//			throws SQLException {
+////		KeywordTable keywordTable = new KeywordTable(conn);
+//		ArrayList<Integer> articleIds = keywordTable
+//				.getArticleIdsByKeywrod(keyword);
+//		String ids = getIds2(articleIds);
+//		Statement stst = conn.createStatement();
+//		ResultSet rs = stst
+//				.executeQuery("select * from articles where status = 'published' and id in "
+//						+ ids);
+//		return getArticlesFromResultSet(rs);
+//
+//	}
 
 	/**
 	 * This method is implemented to avoid code duplications
@@ -375,16 +375,16 @@ public class ArticleTable {
 			article.setMainUser(new Account(conn).getUserById(rs.getInt("user_id")));
 			article.setTitle(rs.getString("title"));
 			article.setAbst(rs.getString("abstract"));
-			article.setKeywords(new KeywordTable(conn).getKeywordsByArticleId(rs.getInt("id")));
-			System.out.println("///"+article.getKeywords());
+//			article.setKeywords(new KeywordTable(conn).getKeywordsByArticleId(rs.getInt("id")));
+//			System.out.println("///"+article.getKeywords());
 			article.setCreatedAt(String.valueOf(rs.getDate("created_at")));
 			article.setStatus(rs.getString("status"));
 			article.setReview_count(rs.getInt("review_count"));
 			article.setEdition(rs.getString("edition"));
 			article.setVolume(rs.getString("volume"));
 			article.setPdfPath(rs.getString("pdf_path"));
-			article.setUsers(new ArticleAuthorTable(conn)
-					.getUsersByArticleId(rs.getInt("id")));// each article may
+//			article.setUsers(new ArticleAuthorTable(conn)
+//					.getUsersByArticleId(rs.getInt("id")));// each article may
 															// have a list of
 			article.setForms(new Form(conn).getAuthorReviewForms(rs
 					.getInt("id"))); // authors

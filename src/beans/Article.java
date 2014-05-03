@@ -21,7 +21,7 @@ public class Article {
 	private String status;
 	private String createdAt;
 	private User mainUser;//this is implemented to get main user details when we set the article object.
-	private ArrayList<Keyword> keywords;
+//	private ArrayList<Keyword> keywords;
 	private ArrayList<User> users;
 	private ArrayList<ReviewForm> forms;
 	
@@ -126,12 +126,12 @@ public class Article {
 	public void setMainUser(User mainUser) {
 		this.mainUser = mainUser;
 	}
-	public ArrayList<Keyword> getKeywords() {
-		return keywords;
-	}
-	public void setKeywords(ArrayList<Keyword> keywords) {
-		this.keywords = keywords;
-	}
+//	public ArrayList<Keyword> getKeywords() {
+//		return keywords;
+//	}
+//	public void setKeywords(ArrayList<Keyword> keywords) {
+//		this.keywords = keywords;
+//	}
 	
 	
 	
