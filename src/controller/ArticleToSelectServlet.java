@@ -1,9 +1,7 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -16,30 +14,27 @@ import beans.User;
 
 import com.mysql.jdbc.Connection;
 
-import database.ArticleTable;
+import database.Form;
 
 /**
- * Servlet implementation class JDBServlet
+ * Servlet implementation class ArticleToSelectServlet
  */
-public class JDBServlet extends HttpServlet {
+public class ArticleToSelectServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public JDBServlet() {
+    public ArticleToSelectServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
 
@@ -54,34 +49,36 @@ public class JDBServlet extends HttpServlet {
 			request.getRequestDispatcher("/home.jsp")
 					.forward(request, response);
 		}
-		String action = null;
-		action = request.getParameter("action");
+		
+		System.out.println("jump success");
+		String[] article_id_list = request.getParameterValues("article_id");
 		Connection conn;
-
-		if (action == null || action.equals("select_article")) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
 			try {
-				Class.forName("com.mysql.jdbc.Driver");
-				String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
 				conn = (Connection) DriverManager.getConnection(DB);
-				ArticleTable articleTable = new ArticleTable(conn);
-				ResultSet result = articleTable.getArticlesToSelect(user.getId());
-				request.setAttribute("article", result);
-				request.getRequestDispatcher("/views/article_list.jsp")
-						.forward(request, response);
-
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Form form = new Form(conn);
+				
+				for(int i=0;i<article_id_list.length;i++)
+				{
+					int article_id = Integer.parseInt(article_id_list[i]);
+					//TODO create form
+					//form.setApproveToForms(article_id, user.getId());
+				}
+				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				PrintWriter out = response.getWriter();
-				out.println("Sorry the sql connection is failing");
 			}
-
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
+		
+		
 	}
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

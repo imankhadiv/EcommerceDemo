@@ -53,6 +53,7 @@ public class ArticleTable {
 		return 0;
 
 	}
+	
 
 	public void insertIntoArticles() throws SQLException {
 
@@ -139,9 +140,12 @@ public class ArticleTable {
 
 	}
 	
-	public ResultSet getArticlesToSelect() throws SQLException {
+	// return result of article list
+	// filter result with the approved forms with the same reviewer_id
+	public ResultSet getArticlesToSelect(int reviewer_id) throws SQLException {
 		Statement stst = conn.createStatement();
-		ResultSet resultSet = stst.executeQuery("select * from articles");
+		ResultSet resultSet = stst.executeQuery("SELECT * FROM team107.articles as a where a.id "+
+				"in (select article_id from forms where reviewer_id='"+reviewer_id+"' and form_approve=true);");
 		return resultSet;
 
 	}
