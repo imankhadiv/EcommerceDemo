@@ -5,15 +5,16 @@
  <c:param name="title" value="Users"></c:param>
 </c:import>
 
-<form action="ArticleToSelectServlet" method="get">
 <table class="table table-striped table-hover table-borderd">
 	<thead>
  <tr>
- 	  <th>select</th>
 	  <th>title</th>
 	  <th>abstract</th>
 	  <th>main auther</th>
 	  <th>created at</th>
+	  <th>download</th>
+	  <th>review</th>
+	  
  </tr>
 	  </thead>
  <%
@@ -24,18 +25,16 @@
  %>
  <tbody>
  <tr>
-  <td><input type="checkbox" name="article_id" value=<%=articles.getString("id")%> /></td>
   <td><%=articles.getString("title")%></td>
   <td><%=articles.getString("abstract")%></td>
   <td></td>
-  <%-- <td><a href='<%=articles.getString("pdf_path")%>'><%=articles.getString("pdf_path")%></a></td> --%>
   <td><%=articles.getString("created_at")%></td>
+  <td><a href='<%=articles.getString("pdf_path")%>'><%=articles.getString("pdf_path")%></a></td> 
+  <td><a href="${pageContext.request.contextPath}/JDBServlet?article_id=<%=articles.getString("id")%>&action=get_form">review</a></td>
  </tr>
   </tbody>
  <%
  }
 %>
 </table>
-<input type="submit" value="select"/>
-</form>
 <c:import url="/footer.jsp"></c:import>

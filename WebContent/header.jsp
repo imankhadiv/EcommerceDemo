@@ -54,7 +54,8 @@
 					<ul class="dropdown-menu">
 					<li><a href="${pageContext.request.contextPath}/">My Reviews</a></li>
 					<li><a href="${pageContext.request.contextPath}/">Review Articles</a></li>
-					
+					<li><a href="${pageContext.request.contextPath}/JDBServlet?action=select_article">Select Articles to review</a></li>
+					<li><a href="${pageContext.request.contextPath}/JDBServlet?action=approved_article">Approved Articles to review</a></li>
 					</ul>
 				</li>
 

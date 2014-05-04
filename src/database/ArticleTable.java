@@ -45,6 +45,7 @@ public class ArticleTable {
 		return 0;
 
 	}
+	
 
 	public void insertIntoArticles() throws SQLException {
 
@@ -131,13 +132,29 @@ public class ArticleTable {
 
 	}
 	
-	public ResultSet getArticlesToSelect() throws SQLException {
+	// return result of unpublished article list
+	// filter result with the approved forms with the same reviewer_id
+	public ResultSet getArticlesToSelect(int reviewer_id) throws SQLException {
 		Statement stst = conn.createStatement();
-		ResultSet resultSet = stst.executeQuery("select * from articles");
+		ResultSet resultSet = stst.executeQuery("SELECT distinct a.id,a.title,a.abstract,b.first_name,b.last_name,a.created_at FROM articles as a, users as b where a.id "+
+				"not in (select article_id from forms where reviewer_id='"+reviewer_id
+				+"' and article_approve=true) and status='unpublished' and a.user_id = b.id order by created_at;");
 		return resultSet;
-
 	}
 	
+	//to get the article list which the application of review has already been approved
+	public ResultSet getApprovedArticles(int reviewer_id) throws SQLException {
+		Statement stst = conn.createStatement();
+		ResultSet resultSet = stst.executeQuery("select * from articles where id in (select article_id from forms where reviewer_id ='"+reviewer_id+"' and article_approve=true )");
+		return resultSet;
+	}
+	
+	public ResultSet getArticleByID(int article_id) throws SQLException {
+		Statement stst = conn.createStatement();
+		ResultSet resultSet;
+		resultSet = stst.executeQuery("select * from articles where id='"+ article_id +"'");
+		return resultSet;
+	}
 
 	public ResultSet getDownloadedArticles(List<String> downloadedIds)
 			throws SQLException {

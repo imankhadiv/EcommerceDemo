@@ -117,23 +117,12 @@ public class ReviewFormServlet extends HttpServlet {
 						}
 						System.out.println(criticismJsonArray.getJSONObject(0));
 					}
-					
 					int article_id = jsonObject.getInt("article_id");
-					int auther_id = jsonObject.getInt("auther_id");
-					int reviewer_id = jsonObject.getInt("reviewer_id");
 					String level = jsonObject.getString("level").toString();
 					String summary = jsonObject.getString("summary").toString();
 					String secret = jsonObject.getString("secret").toString();
 					String overall = jsonObject.getString("overall").toString();
-					
-					ReviewForm reviewForm = new ReviewForm(article_id,
-							auther_id, reviewer_id, overall, level, summary,
-							secret, criticismList, errorList);
-
-					form.insertIntoForm(
-							article_id,auther_id , reviewer_id,
-							level,summary,secret
-							,overall);
+					form.updateForm(article_id,user.getId(), level, summary, secret, overall);
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

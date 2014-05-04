@@ -1,16 +1,21 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@ page import="java.sql.ResultSet"%>
 <c:import url="/header.jsp">
 	<c:param name="title" value="Form"></c:param>
 </c:import>
+ <%  
+ ResultSet form = (ResultSet) request.getAttribute("form"); %>
+ <%  form.next();  %>
+ <%  String overallstr = form.getString("overall");
+ System.out.println(overallstr);%>
 
 	<div class="row">
 		<div class="span4">
 			<p>Overall Judgment</p>
 			<select id="overall">
-				<option value="champion">champion</option>
-				<option value="favourable">favourable</option>
-				<option value="indifferent">indifferent</option>
+				<option value="champion" >champion</option>
+				<option value="favourable" <c:if test="${overallstr==favourable}">select='selected'</c:if>>favourable</option>
+				<option value="indifferent" >indifferent</option>
 				<option value="detractor">detractor</option>
 			</select>
 
@@ -25,7 +30,7 @@
 			</select>
 
 			<h4>Summary</h4>
-			<textarea name="summary" id="summary" rows="5" cols="10">Summary</textarea>
+			<textarea name="summary" id="summary" rows="5" cols="10" default="summary"></textarea>
 
 			<h4>Secret Message</h4>
 			<textarea name="secret" id="secret" rows="5" cols="10">enter your secret messsage to edittor</textarea>
@@ -50,8 +55,6 @@
 		<div class="span4">
 			<h3>Errors</h3>
 			<div class="errors">
-				<!-- <input id="hiddene" name="numberOfErrors" style="visibility: hidden"
-					value="" /> -->
 
 				<h1 id="myerrors" onclick="addErrors()">Add More</h1>
 			</div>

@@ -23,7 +23,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import beans.Article;
-import beans.Keyword;
+//import beans.Keyword;
 import beans.User;
 import database.Account;
 import database.ArticleTable;
@@ -151,13 +151,13 @@ public class UploadArticle extends HttpServlet {
 			 String.valueOf(userId),
 			  file);
 			String[] keyword = keywords.split(",");
-			ArrayList<Keyword> words = new ArrayList<Keyword>();
-			for(String item:keyword) {
-				Keyword k = new Keyword();
-				k.setWord(item);
-				words.add(k);
-			}
-			article.setKeywords(words);
+//			ArrayList<Keyword> words = new ArrayList<Keyword>();
+//			for(String item:keyword) {
+//				Keyword k = new Keyword();
+//				k.setWord(item);
+//				words.add(k);
+//			}
+//			article.setKeywords(words);
 
 			 article.setUsers(this.getUsers(list));
 			// article.setUsers(users);
