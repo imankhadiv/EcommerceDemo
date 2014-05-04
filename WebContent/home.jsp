@@ -6,12 +6,20 @@
 <c:import url="header.jsp">
 	<c:param name="title" value="HomePage"></c:param>
 </c:import>
+<% String message = (String) request.getAttribute("message"); %>
 
-<c:if test="${message != ''}">
+<%-- <c:if test="${message != ''}">
 
 	<h5 id="flash-message">${message}</h5>
 
-</c:if>
+</c:if> --%>
+<% if(message != null){ %>
+<div class="alert alert-error">
+			<a href="#" class="close" data-dismiss="error">&times;</a> <strong>Error!</strong>
+			<%= message %>
+			<br/>
+		</div>
+<%} %>
 
 <div class="hero-unit " id="container">
 
@@ -32,8 +40,12 @@
 		</div>
 		<br /> <a id="search" href="" class="btn btn-primary btn-large">Search</a>
 	</div>
+	<div class="progress">
+ <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+   <span class="sr-only">60% Complete</span>
+ </div>
+</div>
 
-	
 </div>
 
 <c:import url="footer.jsp"></c:import>

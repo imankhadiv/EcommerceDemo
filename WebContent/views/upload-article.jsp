@@ -71,6 +71,5 @@
     <div><button class="btn btn-primary btn-large" type="submit" >Upload</button></div>
    </div>
  </form>
- <a href="../DownloadServlet">Click to download</a>
 </div>
 <c:import url="/footer.jsp"></c:import>

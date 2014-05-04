@@ -41,7 +41,7 @@ public class AuthorController extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
-		if (session.getAttribute("user") == null) {
+		if (user == null) {
 			request.setAttribute("message",
 					"You need to login to view your articles");
 			request.getRequestDispatcher("/home.jsp")
@@ -66,6 +66,7 @@ public class AuthorController extends HttpServlet {
 				HttpSession articlesSession = request.getSession();
 				articlesSession.setAttribute("articles", articles);
 				request.getRequestDispatcher("/views/author-articles.jsp").forward(request, response);
+				System.out.println("hello world form servlet");
 				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -92,7 +93,8 @@ public class AuthorController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
+		
 	}
 
 }

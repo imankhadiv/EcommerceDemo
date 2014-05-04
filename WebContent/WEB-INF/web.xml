@@ -90,5 +90,15 @@
     <servlet-name>ReaderController</servlet-name>
     <url-pattern>/ReaderController</url-pattern>
   </servlet-mapping>
+   <servlet>
+    <description></description>
+    <display-name>FormController</display-name>
+    <servlet-name>FormController</servlet-name>
+    <servlet-class>controller.FormController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FormController</servlet-name>
+    <url-pattern>/FormController</url-pattern>
+  </servlet-mapping>
   
 </web-app>

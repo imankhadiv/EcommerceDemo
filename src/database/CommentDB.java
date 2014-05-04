@@ -1,6 +1,7 @@
 package database;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -42,6 +43,15 @@ public class CommentDB {
 		return comments;
 		
 		
+	}
+	public void insertIntoComments(int reasonId,String comment) throws SQLException {
+		String sql = "insert into comments(reason_id,content) values(?,?) ";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, reasonId);
+		stmt.setString(2, comment);
+		stmt.executeUpdate();
+		//stmt.addBatch();
+		stmt.close();
 	}
 
 }

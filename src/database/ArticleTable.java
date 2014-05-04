@@ -294,6 +294,18 @@ public class ArticleTable {
 		return getArticlesFromResultSet(rs);
 
 	}
+//	public ArrayList<User> getAuthors(int articleId) throws SQLException {
+//		ArrayList<User> users = new ArrayList<User>();
+//		Statement stst = conn.createStatement();
+//		ResultSet rs = stst
+//				.executeQuery("select * from article_authors where user_id = "+articleId);
+//		while(rs.next()){
+//			User user = new User();
+//			user.sete
+//		}
+//		return users;
+//		
+//	}
 
 	/**
 	 * This method implemented to enable readers to search an article by author

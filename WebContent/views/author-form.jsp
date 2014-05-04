@@ -17,17 +17,43 @@
 	<c:otherwise>
 
 		<%
-			Article article = ((ArrayList<Article>) session
+			int number = 0;
+					String articleId = request.getParameter("articleId");
+					String formId = request.getParameter("formId");
+					Article article = ((ArrayList<Article>) session
 							.getAttribute("articles")).get(Integer
-							.valueOf(request.getParameter("articleId")));
+							.valueOf(articleId));
 					ReviewForm form = article.getForms().get(
-							Integer.valueOf(request.getParameter("formId")));
+							Integer.valueOf(formId));
 		%>
+		<% if((form.getReasons().size() == 0) || (form.getReasons().get(0).getComments().size() == 0))
+		{ %>
+		<jsp:forward page="/views/author-articles.jsp">
+		
+			<jsp:param value="<%=articleId %>" name="id"/>
+			<jsp:param value="This form has not approved by the author" name="formmessage"/>
+		
+		
+		</jsp:forward>
+		<% } %>
+		<!--  (if the author have already replied the form before it gets the info box message) -->
+		<% if((form.getReasons().get(0).getComments().size()%2) == 0){ %>
+		<div class="alert alert-info">
+			<a href="#" class="close" data-dismiss="alert">&times;</a> <strong>Info!</strong>
+			You have already replied to this reviewer<br> Pleas reply to
+			other reviewer's form and submit a revised pdf.
+		</div>
+		<% } %>
 		<div class="hero-unit ">
 			<h1>Summary</h1>
 			<p><%=form.getSummary()%></p>
 			<h3>Criticism</h3>
-			<form name="author" method="get" id="reply" action="" >
+			<form name="author" method="get" id="reply"
+				action="<%=response.encodeUrl(request.getContextPath())
+							+ "/FormController"%>">
+				<input type="hidden" name="articleId" value="<%=articleId%>">
+				<input type="hidden" name="formId" value="<%=formId%>">
+
 
 				<%
 					for (Reason reason : form.getReasons()) {
@@ -38,7 +64,7 @@
 						<div class="span4 offset5">
 							<h4>
 								Title:
-								<%=reason.getTitle()%></h3>
+								<%=reason.getTitle()%>
 							</h4>
 						</div>
 					</div>
@@ -60,11 +86,11 @@
 								date:
 								<%=comments.get(i).getCreatedAt()%>
 							</p>
-							<textarea style="background-color:gray;"rows="8" cols="8">Reviewer said:<%=comments.get(i).getContent()%></textarea>
+							<textarea style="background-color: gray;" rows="8" cols="8">Reviewer said:<%=comments.get(i).getContent()%></textarea>
 
 						</div>
 						<%
-							}else{
+							} else {
 						%>
 						<div class="span3">
 							<p>
@@ -72,11 +98,11 @@
 
 								<%=comments.get(i).getCreatedAt()%>
 							</p>
-							<textarea style="background-color:#C0C0C0 ;" rows="8" cols="8">You replied:<%=comments.get(i).getContent()%></textarea>
+							<textarea style="background-color: #C0C0C0;" rows="8" cols="8">You replied:<%=comments.get(i).getContent()%></textarea>
 
 
 						</div>
-						
+
 
 						<%
 							}
@@ -84,21 +110,37 @@
 										if (comments.size() % 2 != 0) {
 						%>
 						<div class="span3">
-						<br/>
-							<textarea rows="8" cols="8">Reply</textarea>
+							<br />
+							<textarea rows="8" cols="8" name="reason<%=reason.getId()%>">Reply</textarea>
+							<%
+								number += 1;
+							%>
 						</div>
 						<%
-							}%>
-							</div>
-							<% }%>
-									
-
-
-		</form>
+							}
+						%>
 					</div>
 					</div>
+					<%
+						}
+					%>
 
-		
+					<%
+						if (number > 0) {
+					%>
+
+					<input type="submit" class="btn btn-success">
+					
+
+					<%
+						}
+					%>
+				
+			</form>
+		</div>
+<!-- 		 </div> 
+ -->
+
 
 	</c:otherwise>
 </c:choose>

@@ -25,12 +25,7 @@
 <link
 	href="${pageContext.request.contextPath}/bootstrap/css/bootstrap-responsive.css"
 	rel="stylesheet" />
-	
-	
-	
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-
- 
 
 <title>${param.title}</title>
 </head>
@@ -78,7 +73,6 @@
 					}else {
 				%>
 				
-
 				<input type="text" placeholder="Email" name="email" /> <input
 					type="password" name="password" placeholder="Password" />
 				<button type="submit" class="btn btn-primary" onclick="return validateLogin()">Sign in</button>
