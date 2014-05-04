@@ -50,8 +50,6 @@
 		<div class="span4">
 			<h3>Errors</h3>
 			<div class="errors">
-				<!-- <input id="hiddene" name="numberOfErrors" style="visibility: hidden"
-					value="" /> -->
 
 				<h1 id="myerrors" onclick="addErrors()">Add More</h1>
 			</div>

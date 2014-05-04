@@ -84,6 +84,32 @@ public class JDBServlet extends HttpServlet {
 			}
 
 		}
+		else if (action == null || action.equals("approved_article"))
+		{
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+				conn = (Connection) DriverManager.getConnection(DB);
+				// get article details
+				ArticleTable articleTable = new ArticleTable(conn);
+				ResultSet result = articleTable.getApprovedArticles(user.getId());
+				request.setAttribute("article", result);
+				// get authors of article
+				
+				
+				request.getRequestDispatcher("/views/article_approved_forms.jsp")
+						.forward(request, response);
+
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				PrintWriter out = response.getWriter();
+				out.println("Sorry the sql connection is failing");
+			}
+		}
 
 	}
 

@@ -1,12 +1,40 @@
-<%@ page language="java" contentType="text/html; charset=US-ASCII"
-    pageEncoding="US-ASCII"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Insert title here</title>
-</head>
-<body>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="java.sql.ResultSet"%>
 
-</body>
-</html>
+<c:import url="/header.jsp">
+ <c:param name="title" value="Users"></c:param>
+</c:import>
+
+<table class="table table-striped table-hover table-borderd">
+	<thead>
+ <tr>
+	  <th>title</th>
+	  <th>abstract</th>
+	  <th>main auther</th>
+	  <th>created at</th>
+	  <th>download</th>
+	  <th>review</th>
+	  
+ </tr>
+	  </thead>
+ <%
+  ResultSet articles = (ResultSet) request.getAttribute("article");
+ %>
+ <%
+  while (articles.next()) {
+ %>
+ <tbody>
+ <tr>
+  <td><%=articles.getString("title")%></td>
+  <td><%=articles.getString("abstract")%></td>
+  <td></td>
+  <td><%=articles.getString("created_at")%></td>
+  <td><a href='<%=articles.getString("pdf_path")%>'><%=articles.getString("pdf_path")%></a></td> 
+  <td><a href="${pageContext.request.contextPath}/views/form.jsp?article_id=<%=articles.getString("id")%>">review</a></td>
+ </tr>
+  </tbody>
+ <%
+ }
+%>
+</table>
+<c:import url="/footer.jsp"></c:import>

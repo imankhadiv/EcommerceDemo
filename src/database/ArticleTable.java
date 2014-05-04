@@ -150,6 +150,13 @@ public class ArticleTable {
 		return resultSet;
 	}
 	
+	//to get the article list which the application of review has already been approved
+	public ResultSet getApprovedArticles(int reviewer_id) throws SQLException {
+		Statement stst = conn.createStatement();
+		ResultSet resultSet = stst.executeQuery("select * from articles where id in (select article_id from forms where reviewer_id ='"+reviewer_id+"' and article_approve=true )");
+		return resultSet;
+	}
+	
 	public ResultSet getArticleByID(int article_id) throws SQLException {
 		Statement stst = conn.createStatement();
 		ResultSet resultSet;

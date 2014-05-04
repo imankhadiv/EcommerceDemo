@@ -1,6 +1,19 @@
 var numberOfCriticism = 0;
 var numberOfErrors = 0;
 var numberOfTitles = 0;
+var form_id ;
+
+// TODO values to areas when the window is loaded
+window.onload = function() {
+//	form_id = getUrlParam('form_id');
+};
+
+function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);  
+    if (r != null) return unescape(r[2]); return null; 
+}
+
 function addCriticism() {
 
 	$('.criticism')
@@ -66,18 +79,18 @@ function createForm() {
 	var level = $("#level").val();
 	var secret = $("#secret").val();
 	var summary = $("#summary").val();
-	var auther_id = 1;
-	// auther_id = getUrlParam('auther_id');
-	var reviewer_id = 38;
-	// reviewer_id = getUrlParam('reviewer_id');
-	var article_id = 1;
-	// article_id = getUrlParam('article_id');
+	var article_id = getUrlParam('article_id');
+	
+//	var auther_id = 1;
+//	// auther_id = getUrlParam('auther_id');
+//	var reviewer_id = 38;
+//	// reviewer_id = getUrlParam('reviewer_id');
+//	var article_id = 1;
+//	// article_id = getUrlParam('article_id');
 	
 	// form the json
 	var json = {
 		article_id : article_id,
-		auther_id : auther_id,
-		reviewer_id : reviewer_id,
 		overall : overall,
 		level : level,
 		summary : summary,
