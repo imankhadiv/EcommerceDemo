@@ -6,15 +6,13 @@
 </c:import>
 
 <form action="ArticleToSelectServlet" method="get">
-<table class="table table-striped ">
+<table class="table table-striped table-hover table-borderd">
 	<thead>
  <tr>
  	  <th>select</th>
 	  <th>title</th>
 	  <th>abstract</th>
-	  <th>auther</th>
-	  <th>review count</th>
-	  <th>pdf path</th>
+	  <th>main auther</th>
 	  <th>created at</th>
  </tr>
 	  </thead>
@@ -30,8 +28,7 @@
   <td><%=articles.getString("title")%></td>
   <td><%=articles.getString("abstract")%></td>
   <td></td>
-  <td><%=articles.getString("review_count")%></td>
-  <td><a href='<%=articles.getString("pdf_path")%>'><%=articles.getString("pdf_path")%></a></td>
+  <%-- <td><a href='<%=articles.getString("pdf_path")%>'><%=articles.getString("pdf_path")%></a></td> --%>
   <td><%=articles.getString("created_at")%></td>
  </tr>
   </tbody>

@@ -58,13 +58,50 @@ public class Form {
 
 	}
 	
+	public void createForm(int article_id, int author_id,
+ int reviewer_id)
+			throws SQLException {
+		
+		Statement st = conn.createStatement();
+		String sql_validString = "select count(*) as count from forms where article_id = '"
+				+ article_id
+				+ "' and author_id='"
+				+ author_id
+				+ "' and reviewer_id='" + reviewer_id + "'";
+		ResultSet resultSet = st
+				.executeQuery(sql_validString);
+		resultSet.next();
+		if(resultSet.getInt("count")==0)
+		{
+			String sql = "insert into forms(article_id,author_id,reviewer_id) values(?,?,?) ";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, article_id);
+			stmt.setInt(2, author_id);
+			stmt.setInt(3, reviewer_id);
+			stmt.executeUpdate();
+			stmt.close();
+		}
+		else{
+			// nothing
+		}
+//		st.close();
+	}
+	
+	public void updateForm(int form_id,String level,String summary, String secret, String overall) throws SQLException {
+		String sql = "update forms set level='"+level+"', summary='"
+			+summary+"', secret_message='"+secret+"', overall='"+overall+"' where id ='"+form_id+"'";
+		Statement st = conn.createStatement();
+		st.execute(sql);
+		st.close();
+	}
+	
 	// for editor to approve the form
 	public boolean setApproveToForms(int article_id, int reviewer_id) {
 		Statement stst;
 		try {
 			stst = conn.createStatement();
 			try {
-				stst.executeQuery("update forms set form_approve=true where article_id = '"
+				stst.executeQuery("update forms set article_approve=true where article_id = '"
 						+ article_id
 						+ "' and reviewer_id = '"
 						+ article_id

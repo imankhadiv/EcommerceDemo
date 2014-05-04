@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import beans.User;
 
 import com.mysql.jdbc.Connection;
 
+import database.ArticleTable;
 import database.Form;
 
 /**
@@ -59,11 +61,19 @@ public class ArticleToSelectServlet extends HttpServlet {
 			try {
 				conn = (Connection) DriverManager.getConnection(DB);
 				Form form = new Form(conn);
+				ArticleTable articleTable = new ArticleTable(conn);
 				
 				for(int i=0;i<article_id_list.length;i++)
 				{
 					int article_id = Integer.parseInt(article_id_list[i]);
+					System.out.println(article_id);
 					//TODO create form
+					ResultSet resultSet = articleTable.getArticleByID(article_id);
+					resultSet.next();
+					int author_id = resultSet.getInt("user_id");
+					System.out.println(author_id);
+					form.createForm(article_id, author_id, user.getId());
+					
 					//form.setApproveToForms(article_id, user.getId());
 				}
 				
