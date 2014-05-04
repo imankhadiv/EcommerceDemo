@@ -136,7 +136,17 @@ public class Form {
 			return false;
 		}
 	}
-	
+
+	public ResultSet getReviewFormsByArticle_Reviewer(int article_id,
+			int reviewer_id) throws SQLException {
+		Statement stst = conn.createStatement();
+		ResultSet rs = stst
+				.executeQuery("select * from forms where article_id = '"
+						+ article_id + "' and reviewer_id='" + reviewer_id
+						+ "'");
+		return rs;
+	}
+
 	public ArrayList<ReviewForm> getAuthorReviewForms(int articleId) throws SQLException {
 		Statement stst = conn.createStatement();
 		ResultSet rs = stst

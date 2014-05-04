@@ -30,7 +30,7 @@
   <td></td>
   <td><%=articles.getString("created_at")%></td>
   <td><a href='<%=articles.getString("pdf_path")%>'><%=articles.getString("pdf_path")%></a></td> 
-  <td><a href="${pageContext.request.contextPath}/views/form.jsp?article_id=<%=articles.getString("id")%>">review</a></td>
+  <td><a href="${pageContext.request.contextPath}/JDBServlet?article_id=<%=articles.getString("id")%>&action=get_form">review</a></td>
  </tr>
   </tbody>
  <%

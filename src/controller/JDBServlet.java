@@ -17,6 +17,7 @@ import beans.User;
 import com.mysql.jdbc.Connection;
 
 import database.ArticleTable;
+import database.Form;
 
 /**
  * Servlet implementation class JDBServlet
@@ -95,8 +96,6 @@ public class JDBServlet extends HttpServlet {
 				ResultSet result = articleTable.getApprovedArticles(user.getId());
 				request.setAttribute("article", result);
 				// get authors of article
-				
-				
 				request.getRequestDispatcher("/views/article_approved_forms.jsp")
 						.forward(request, response);
 
@@ -110,6 +109,36 @@ public class JDBServlet extends HttpServlet {
 				out.println("Sorry the sql connection is failing");
 			}
 		}
+		else if (action == null || action.equals("get_form"))
+		{
+
+			// to get article_id
+			int article_id = Integer.parseInt(request.getParameter("article_id"));
+			
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+				conn = (Connection) DriverManager.getConnection(DB);
+				// get form details
+				Form form = new Form(conn);
+				
+				ResultSet result = form.getReviewFormsByArticle_Reviewer(article_id, user.getId());
+				request.setAttribute("form", result);
+				// get authors of article
+				request.getRequestDispatcher("/views/form.jsp?article_id="+article_id)
+						.forward(request, response);
+
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				PrintWriter out = response.getWriter();
+				out.println("Sorry the sql connection is failing");
+			}
+		}
+
 
 	}
 
