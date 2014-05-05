@@ -31,7 +31,6 @@
 		<jsp:forward page="/views/author-articles.jsp">
 		
 			<jsp:param value="<%=articleId %>" name="id"/>
-			<jsp:param value="This form has not approved by the author" name="formmessage"/>
 		
 		
 		</jsp:forward>
@@ -45,9 +44,9 @@
 		</div>
 		<% } %>
 		<div class="hero-unit ">
-			<h1>Summary</h1>
+			<h3>Summary</h3>
 			<p><%=form.getSummary()%></p>
-			<h3>Criticism</h3>
+			<h4>Criticism</h4>
 			<form name="author" method="get" id="reply"
 				action="<%=response.encodeUrl(request.getContextPath())
 							+ "/FormController"%>">

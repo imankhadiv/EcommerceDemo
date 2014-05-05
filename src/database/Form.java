@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import beans.Article;
 import beans.ReviewForm;
+import beans.User;
 
 public class Form {
 
@@ -173,6 +174,25 @@ public class Form {
 		
 		}
 		return forms;
+	}
+	/**
+	 * 
+	 * @param articleId
+	 * @return
+	 * @throws SQLException
+	 */
+	public ArrayList<User> getReviewersOfTheArticle(int articleId) throws SQLException {
+		Statement stst = conn.createStatement();
+		ResultSet rs = stst
+				.executeQuery("select * from forms where article_id = "
+						+ articleId);
+		ArrayList<User> authors = new ArrayList<User>();
+		while(rs.next()){
+			User author = new User();
+			author = new Account(conn).getUserById(rs.getInt("reviewer_id"));
+			authors.add(author);
+		}
+		return authors;
 	}
 
 }

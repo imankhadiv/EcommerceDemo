@@ -20,27 +20,34 @@ import beans.User;
 import database.CommentDB;
 
 /**
- * Servlet implementation class FormController
+ * 
+ * @author Iman Rastkhadiv
+ *
  */
 public class FormController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public FormController() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession() ;
+	public FormController() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
 		@SuppressWarnings("unchecked")
-		ArrayList<Article> articles = (ArrayList<Article>) session.getAttribute("articles");
+		ArrayList<Article> articles = (ArrayList<Article>) session
+				.getAttribute("articles");
+		System.out.println(articles);
 		User user = (User) session.getAttribute("user");
+		System.out.println(user);
 		if (user == null) {
 			request.setAttribute("message",
 					"You need to login to view your articles");
@@ -52,14 +59,13 @@ public class FormController extends HttpServlet {
 					"You logged is as a reader. You do not have permission to open the page");
 			request.getRequestDispatcher("/home.jsp")
 					.forward(request, response);
-			
-//		} else if(articles == null ){
-//			request.setAttribute("message",
-//					"Session is expired, try again");
-//			request.getRequestDispatcher("/home.jsp")
-//					.forward(request, response);
-		}
-		else {
+
+			// } else if(articles == null ){
+			// request.setAttribute("message",
+			// "Session is expired, try again");
+			// request.getRequestDispatcher("/home.jsp")
+			// .forward(request, response);
+		} else {
 			int articleId = Integer.valueOf(request.getParameter("articleId"));
 			int formId = Integer.valueOf(request.getParameter("formId"));
 			System.out.println(articleId);
@@ -69,25 +75,34 @@ public class FormController extends HttpServlet {
 				String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
 				Connection conn = DriverManager.getConnection(DB);
 				CommentDB com = new CommentDB(conn);
-				//Article article = articles.get(articleId);
-				Article article = articles.get(articleId);//this is not article id in the table
-				ReviewForm form = article.getForms().get(formId); 
+				// Article article = articles.get(articleId);
+				Article article = articles.get(articleId);// this is not article
+															// id in the table
+				ReviewForm form = article.getForms().get(formId);
 				ArrayList<Reason> reasons = form.getReasons();
 				System.out.println(request.getParameterNames());
-				for(Reason reason:reasons){
-					//adding the new comment to the list of comments for each reason
-					String c = request.getParameter("reason"+reason.getId()); //this 'reasoni' parameter is defiend in the view (author-form.jsp)
-					//reason.getComments().add(new Comment(reason.getId(),reason.getTitle(),com));
+				for (Reason reason : reasons) {
+					// adding the new comment to the list of comments for each
+					// reason
+					String c = request.getParameter("reason" + reason.getId()); // this
+																				// 'reasoni'
+																				// parameter
+																				// is
+																				// defiend
+																				// in
+																				// the
+																				// view
+																				// (author-form.jsp)
+					// reason.getComments().add(new
+					// Comment(reason.getId(),reason.getTitle(),com));
 					com.insertIntoComments(reason.getId(), c);
-					
+
 					System.out.println(com);
 				}
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/AuthorController");
-				dispatcher.forward(request,response);
-			
-				
-					
-				
+				RequestDispatcher dispatcher = request
+						.getRequestDispatcher("/AuthorController");
+				dispatcher.forward(request, response);
+
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -96,25 +111,15 @@ public class FormController extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-//			Article article = articles.get(0);//this is not article id in the table
-//			ReviewForm form = article.getForms().get(formId); 
-//			ArrayList<Reason> reasons = form.getReasons();
-//			for(Reason reason:reasons){
-//				//adding the new comment to the list of comments for each reason
-//				int i = 0 ;
-//				String com = request.getParameter("reason"+i); //this 'reasoni' parameter is defiend in the view (author-form.jsp)
-//				reason.getComments().add(new Comment(reason.getId(),reason.getTitle(),com));
-//				System.out.println(com);
-//			}
-//			System.out.println(reasons.get(0).getComments());
-//		}
-//		
+
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	}
 

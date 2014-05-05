@@ -23,14 +23,16 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import beans.Article;
-//import beans.Keyword;
 import beans.User;
 import database.Account;
 import database.ArticleTable;
 import database.Email;
 
+//import beans.Keyword;
 /**
- * Servlet implementation class UploadArticle
+ * 
+ * @author Iman Rastkhadiv
+ * 
  */
 public class UploadArticle extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -48,8 +50,7 @@ public class UploadArticle extends HttpServlet {
 	private String keywords;
 	private String file;
 	private String numberOfAuthors;
-	private ArrayList<User> users;
-	private ArrayList<String> list ;
+	private ArrayList<String> list;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -130,45 +131,33 @@ public class UploadArticle extends HttpServlet {
 			uploadFile(request, response);
 			Email mail = new Email();
 			if (account.exists(email)) {
-				// request.setAttribute("message",
-				// "An account already exists with this email!");
-				// request.getRequestDispatcher("/views/upload-article.jsp")
-				// .forward(request, response);
-				mail.sendEmailForUploadArticle(email,
-				firstname);
+				
+				User user = account.getUserById(account.getUserId(email));
+				mail.setBody("Dear "+user.getFirstname()+",<br/>Thank you for uploading your article.<br>You can use your previous password to login to the system<br/>("+user.getPassword()+").");
+				mail.setSubject("Successfully Uploaded");
+				mail.sendEmail();
 
 			} else {
 				String password = mail.generatePassword();
 				account.create(email, password, firstname, lastname);
-				mail.sendEmailForUploadArticle(email,
-				firstname, password);
+				mail.sendEmailForUploadArticle(email, firstname, password);
 
 			}
 
-			 int userId = account.getUserId(email);
-			 account.changeRole("Author", userId);
-			 Article article = new Article(title, abst,
-			 String.valueOf(userId),
-			  file);
-			String[] keyword = keywords.split(",");
-//			ArrayList<Keyword> words = new ArrayList<Keyword>();
-//			for(String item:keyword) {
-//				Keyword k = new Keyword();
-//				k.setWord(item);
-//				words.add(k);
-//			}
-//			article.setKeywords(words);
-
-			 article.setUsers(this.getUsers(list));
-			// article.setUsers(users);
-			 ArticleTable articleTable = new ArticleTable(conn, article);
+			int userId = account.getUserId(email);
+			account.changeRole("Author", userId);
+			Article article = new Article(title, abst, String.valueOf(userId),
+					file);
+		
+			article.setUsers(this.getUsers(list));
+			ArticleTable articleTable = new ArticleTable(conn, article);
 			articleTable.insertIntoArticles();
-			System.out.println("this is list"+list);
+			System.out.println("this is list" + list);
 			System.out.println(getUsers(list));
-			for( User item:getUsers(list)){
-				System.out.println(item.getFirstname()+"/"+item.getLastname()+"/"+item.getEmail());
+			for (User item : getUsers(list)) {
+				System.out.println(item.getFirstname() + "/"
+						+ item.getLastname() + "/" + item.getEmail());
 			}
-			
 
 			request.setAttribute("message",
 					"Your artilce was uploaded sucessfully. You will receive an email shortly");
@@ -234,7 +223,7 @@ public class UploadArticle extends HttpServlet {
 
 		try {
 			// parses the request's content to extract file data
-		//	@SuppressWarnings("unchecked")
+			// @SuppressWarnings("unchecked")
 			List<FileItem> formItems = upload.parseRequest(request);
 
 			if (formItems != null && formItems.size() > 0) {
@@ -252,14 +241,14 @@ public class UploadArticle extends HttpServlet {
 						// saves the file on disk
 						item.write(storeFile);
 					} else {
-//						
+						//
 						if (item.getFieldName().equals("firstname"))
 							this.firstname = item.getString();
 						else if (item.getFieldName().equals("lastname"))
-							//this.lastname = setInputValue(item);
+							// this.lastname = setInputValue(item);
 							this.lastname = item.getString();
 						else if (item.getFieldName().equals("email"))
-								this.email = item.getString();
+							this.email = item.getString();
 						else if (item.getFieldName().equals("title"))
 							this.title = item.getString();
 						else if (item.getFieldName().equals("abstract"))
@@ -274,7 +263,6 @@ public class UploadArticle extends HttpServlet {
 							list.add(item.getString());
 						}
 					}
-				
 
 				}
 			}
@@ -284,30 +272,21 @@ public class UploadArticle extends HttpServlet {
 		}
 
 	}
+
 	private ArrayList<User> getUsers(ArrayList<String> list) {
 		ArrayList<User> users = new ArrayList<User>();
-		int n = 0 ;
-		for(int i = 0 ; i < Integer.valueOf(numberOfAuthors) ; i++) {
+		int n = 0;
+		for (int i = 0; i < Integer.valueOf(numberOfAuthors); i++) {
 			User user = new User();
 			user.setFirstname(list.get(n));
-			n+=1;
+			n += 1;
 			user.setLastname(list.get(n));
-			n+=1;
+			n += 1;
 			user.setEmail(list.get(n));
 			users.add(user);
-			n+=1;
+			n += 1;
 		}
 		return users;
 	}
-
-//	private String setInputValue(FileItem item) throws IOException {
-//
-//		InputStream is = item.getInputStream();
-//		byte[] b = new byte[is.available()];
-//		is.read(b);
-//		String value = new String(b);
-//		return value;
-//
-//	}
 
 }

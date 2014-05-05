@@ -41,26 +41,37 @@
 		%>
 		<%
 			Article article = articles.get(id);
-		%>
-	<%--  <%
-	 if(request.getParameter("formmessage") != null){
-		%>
-		 <div class="alert alert-error">
-			<a href="#" class="close" data-dismiss="alert">&times;</a> <strong>Info!</strong>
-			${param.errormessage}
 
-		</div> --%>  
-		<%  if(article.getForms().size() != 0){ %>
-		
-			<div class="alert alert-error">
-			<a href="#" class="close" data-dismiss="alert">&times;</a> <strong>Info!</strong>
-			Please reply to all the reviewers form before uploading your article
-			
+					String message = (String) request.getAttribute("message");
+
+					if (message != null) {
+		%>
+		<div class="alert alert-error">
+			<a href="#" class="close" data-dismiss="alert">&times;</a> <strong>Error!</strong>
+			<%=message%>
+		</div>
+
+		<%
+			} else if(request.getParameter("formmessage") != null) {
+		%>
+		<div class="alert alert-error">
+			<a href="#" class="close" data-dismiss="alert">&times;</a> <strong>Error!</strong>
+			${param.formmessage}
 
 		</div>
-			
 		<%
-			}else {
+			} else if (article.getForms().size() != 0) {
+		%>
+
+		<div class="alert alert-info">
+			<a href="#" class="close" data-dismiss="alert">&times;</a> <strong>Info!</strong>
+			Please reply to all the reviewers form before uploading your article
+
+
+		</div>
+
+		<%
+			} else {
 		%>
 		<div class="alert alert-info">
 			<a href="#" class="close" data-dismiss="alert">&times;</a> <strong>Info!</strong>
@@ -95,7 +106,7 @@
 				<hr>
 				<h3>Reviews</h3>
 				<table class="table table-striped table-hover table-borderd">
-					<tr class ="row">
+					<tr class="row">
 						<th>Editor Accepted</th>
 						<th>Judgment</th>
 						<th>Expertise</th>
@@ -105,33 +116,48 @@
 					<%
 						for (ReviewForm form : article.getForms()) {
 					%>
-					<% String progressClass;
-						String progressStatus;
-					if(form.getFormApproved().equals("0")) {
-						progressClass = "bar-warning";
-						progressStatus = "Pending";
-					}else{
-						progressClass = "bar-success";
-						progressStatus = "Approved";
-					}
-					%> 
-					
+					<%
+						String progressClass;
+									String progressStatus;
+									if (form.getFormApproved().equals("0")) {
+										progressClass = "bar-warning";
+										progressStatus = "Pending";
+									} else {
+										progressClass = "bar-success";
+										progressStatus = "Approved";
+									}
+					%>
+
 					<tr class="row">
 						<td class="span3">
 							<div class="progress">
-							  <div class="progress-bar <%= progressClass %>" role="progressbar" aria-valuenow="<%=form.getFormApproved()%>" aria-valuemin="0" aria-valuemax="1" style="width: 100%">
-							    <div class="sr-only text-center"><%=progressStatus %></div>
-							  </div>
+								<div class="progress-bar <%=progressClass%>" role="progressbar"
+									style="width: 100%">
+									<div class="sr-only text-center"><%=progressStatus%></div>
+								</div>
 							</div>
 						</td>
 						<td><%=form.getOverall()%></td>
 						<td><%=form.getLevel()%></td>
 
-						<td><a
+						<td>
+							<%
+								if (progressClass.equals("bar-success")) {
+							%><a
 							href="${pageContext.request.contextPath}/views/author-form.jsp?formId=<%= article.getForms().indexOf(form)
   
  %>&articleId=<%= articles.indexOf(article) %>"
-							class="btn btn-primary btn-success">view</a></td>
+							class="btn btn-primary btn-success .disabled">view</a> <%
+ 	} else {
+ %>
+							<button type="button" class="btn btn-default btn-lg"
+								onclick="alert('You do not have permission to view this form')">
+								<i class="icon-lock"></i>
+							</button> <%
+ 	}
+ %>
+						</td>
+
 
 
 					</tr>
@@ -145,14 +171,30 @@
 
 
 				</table>
-				<form class="form" action="" method="post"
+				<form class="form" action="${pageContext.request.contextPath}/AuthorController" method="post"
 					enctype="multipart/form-data">
 
 					<div style="width: 250px; display: inline-block">
 						<input size="30" type="file" name="file" />
-					</div><br/>
-					<input type="submit" class="btn btn-primary btn-large">
-				</form>
+					</div>
+					<br />
+					 <%
+						if (article.getReview_count() > 2) {
+					%> 
+					<input type="hidden" name="articleId" value="<%=id%>">
+					 <button
+						type="submit" class="btn btn-primary btn-large">Upload</button>
+					 <%
+						} else {
+					%>
+					</form>
+					<button class="btn btn-primary btn-large"
+						onclick="alert('You should reply to three reviewers form before uploading your the revised version of your article')">Upload</button>
+
+					<%
+						}
+					%> 
+				
 
 
 
@@ -162,6 +204,15 @@
 
 	</c:when>
 	<c:otherwise>
+		<% String success = (String) request.getAttribute("success"); %>
+		<% if(success != null){ %>
+		<div class="alert alert-success">
+			<a href="#" class="close" data-dismiss="alert">&times;</a> <strong>Success!</strong>
+			Your article is uploaded successfully
+
+		</div>
+		
+		<% } %>
 
 		<h1>Articles</h1>
 
