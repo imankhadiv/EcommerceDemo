@@ -4,22 +4,28 @@
 <%@ page import="beans.*"%>
 
 <c:import url="header.jsp">
-	<c:param name="title" value="HomePage"></c:param>
+	<c:param name="title" value="Reader Page"></c:param>
 </c:import>
-<% String message = (String) request.getAttribute("message"); %>
+<%
+	String message = (String) request.getAttribute("message");
+%>
 
 <%-- <c:if test="${message != ''}">
 
-	<h5 id="flash-message">${message}</h5>
+ <h5 id="flash-message">${message}</h5>
 
 </c:if> --%>
-<% if(message != null){ %>
+<%
+	if (message != null) {
+%>
 <div class="alert alert-error">
-			<a href="#" class="close" data-dismiss="error">&times;</a> <strong>Error!</strong>
-			<%= message %>
-			<br/>
-		</div>
-<%} %>
+	<a href="#" class="close" data-dismiss="error">&times;</a> <strong>Error!</strong>
+	<%=message%>
+	<br />
+</div>
+<%
+	}
+%>
 
 <div class="hero-unit " id="container">
 
@@ -29,14 +35,25 @@
 
 	<div class="searcpanel">
 		<ul id="tabs" class="nav nav-tabs">
+			<input type="hidden" value="${pageContext.request.contextPath}" id="hidden"/>
 			<li class="active" id="author"><a id="first">by author</a></li>
 			<li id="title"><a id="second">by Title</a></li>
 			<li id="keyword"><a id="third">by Keyword</a></li>
 			<li id="date"><a id="forth">by Date</a></li>
+			<li id="all"><a id="fifth" href="${pageContext.request.contextPath}/ReaderController?action=all">View All</a></li>
 		</ul>
-		<div class="input-prepend">
+		<div class="input-prepend" id="main" style="display: '';">
 			<span class="add-on"><i class="icon-search"></i></span> <input
 				type="text" name="search" placeholder="Search" id="input">
+		</div>
+		<div class="row" id="date-search" style="display: none;">
+			<div class="span3">
+			<table class="table">
+				<td>From:</td><td><input type="text" id="datepicker1" name="fromDate"></td>
+				<tr><td>To:</td><td><input type="text" id="datepicker2" name="toDate"></td>
+			</table>
+			</div>
+			
 		</div>
 		<br /> <a id="search" href="" class="btn btn-primary btn-large">Search</a>
 	</div>

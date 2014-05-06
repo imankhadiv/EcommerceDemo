@@ -93,13 +93,18 @@ public class KeywordTable {
 	public ArrayList<Integer> getArticleIdsByKeywrod(String word) throws SQLException {
 		ArrayList<Integer> articleIds = new ArrayList<Integer>();
 		Statement stst = conn.createStatement();
-		int id = getKeywordId(word);
+		String[] words = word.split(",");
+		for(String w:words){
+		int id = getKeywordId(w);
 		ResultSet rs = stst
 				.executeQuery("select * from article_keywords where keyword_id = "+ id);
 		while(rs.next()){
-			articleIds.add(rs.getInt("article_id"));
+			int articleId = rs.getInt("article_id");
+			if(!articleIds.contains(articleId))
+			articleIds.add(articleId);
 		}
 		rs.close();
+		}
 		return articleIds;
 						
 	}

@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import beans.User;
 /**
@@ -135,6 +136,20 @@ public class Account {
 			return true;
 		}
 	}
-
+	public ArrayList<User> getEditors() throws SQLException {
+		ArrayList<User> users = new ArrayList<User>();
+		Statement stst= conn.createStatement();
+		ResultSet rs = stst.executeQuery("select * from users where role = 'editor'");
+		while(rs.next()){
+			User user= new User();
+			user.setId(rs.getInt("id"));
+			user.setFirstname(rs.getString("first_name"));
+			user.setLastname(rs.getString("last_name"));
+			user.setEmail(rs.getString("email"));
+			users.add(user);
+		}
+		return users;
+		
+	}
 
 }

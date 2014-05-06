@@ -88,14 +88,19 @@
 				<p><%=article.getAbst()%></p><br/>
 				<a
 					href="${pageContext.request.contextPath}/ReaderController?id=<%= articles.indexOf(article) %>"
-					class="btn btn-primary btn-lg active">view</a></td>
+					class="btn btn-success btn-large active">view</a><br/>
 			</div>
+			
+			
 			<div class="span3">
-				<ul style="border: 2px solid">
+			
+				<ul style="border-width:5px;	
+border-style:groove">
+					<dt>Keywords</dt>
 					<%
 						for (Keyword keyword : article.getKeywords()) {
 					%>
-					<li><%=keyword.getWord()%></li>
+					<dd><%=keyword.getWord()%></dd>
 
 
 					<%
@@ -106,7 +111,9 @@
 
 			</div>
 		</div>
+		<hr/>
 		
+		<h3>Main User</h3>
 		<table class="table table-hover table-borderd">
 			<tr>
 				<th>Firstname</th>
@@ -126,7 +133,8 @@
 
 		<div class="row">
 			<div class="span4">
-			
+				<% if(article.getUsers() != null && article.getUsers().size() > 0) {%>
+				<h4>Other users</h4>
 				<table class="table table-hover table-borderd">
 				
 				<% for(User user:article.getUsers()) {%>
@@ -143,6 +151,7 @@
 				<td><%= user.getAffiliation()%></td>
 
 			</tr>
+			<%} %>
 			
 <%} %>
 		</table>
@@ -150,10 +159,45 @@
 			</div>
 		</div>
 	</div>
+		<hr/>
+		<% String message = (String)request.getAttribute("message"); %>
+		<% if(message != null) { %>
+		<div class="alert alert-success">
+	<a href="#" class="close" data-dismiss="error">&times;</a> <strong>Success!</strong>
+	<%=message%>
+	<br />
+</div>
+
+		<%} %>
+	
+
+	<form class="form" name="reader" method="post"
+				action="${pageContext.request.contextPath}/ReaderController" onsubmit="return validateComment()">
+ 				<h3>Send a comment to the editor</h3>
+ 				
+				<input type="hidden" value="<%=articles.indexOf(article)%>" name="articleId">
+						
+				
+							 <div id="emaildiv">
+							      <input  type="text" placeholder="your email" id="email" name="email">
+							 </div>
+							 <div id="titlediv">
+							      <input  type="text" placeholder="your comment title" id="title" name="title">
+							 </div>
+							 <div id="commentdiv">
+							 				<textarea rows="10" cols="10" id="comment" name="comment" placeholder="your comment"></textarea>
+							 
+							 </div>
+      
+			    <input class="btn btn-primary" type="submit"
+							value="Post comment" id="readerComment">
+      
+				</form>
 
 	<%
 		}
 	%>
+
 
 </div>
 
