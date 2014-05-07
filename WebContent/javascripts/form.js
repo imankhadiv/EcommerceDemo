@@ -144,11 +144,7 @@ function createForm() {
 	//TODO send request to servlet; save to database; redirect to a new page
 }
 
-function download(id)
-{
-	
 
-}
 
 function connect(method, url)
 {
@@ -183,3 +179,10 @@ var http_request;
 		}
 	};	
 }
+
+function download(id,href)
+{
+	connect("POST","JDBServlet?atction=download&article_id="+id);
+	var win = window.open(href, '_blank');
+    win.focus();
+};
