@@ -5,9 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+
 import beans.Article;
 import beans.User;
 /**
@@ -439,7 +443,27 @@ public class ArticleTable {
 					
 		
 	}
-
+	public ArrayList<Article> getArticlesByDate(String startDate, String endDate)
+	 		throws ParseException, SQLException {
+	 		SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+	 
+	
+	 		Date sDate = df.parse(startDate);
+	 		Date eDate = df.parse(endDate);
+	 		df.applyPattern("yyyy-MM-dd HH:mm:ss");
+	 		String stDate = df.format(sDate);
+	 	String edDate = df.format(eDate);
+	 		System.out.println(stDate);
+	 		System.out.println(edDate);
+	 		Statement stst = conn.createStatement();
+	 		ResultSet rsg = stst
+	 				.executeQuery("select * from articles where created_at between '"
+	 						+ stDate
+	 						+ "' and '"
+	 						+ edDate
+	 						+ "' and status = 'published' ");
+	 		return getArticlesFromResultSet(rsg);
+	}
 
 //	public static void main(String[] args) throws java.text.ParseException {
 //		try {

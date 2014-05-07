@@ -121,8 +121,8 @@ public class ReaderController extends HttpServlet {
 					 articles = articleTable
 							.getArticlesByKeywords(text);
 				} else if (fromDate != null) {
-//					 articles = articleTable
-//							.getArticlesByDate(fromDate, toDate);
+					 articles = articleTable
+							.getArticlesByDate(fromDate, toDate);
 
 				} else if (searchBy.equals("title")) {
 					 articles = articleTable

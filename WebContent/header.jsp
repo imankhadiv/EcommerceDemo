@@ -3,7 +3,7 @@
 	<%@ page import="java.sql.ResultSet"%>
 <%@ page import="java.util.*"%>
 <%@ page import="beans.*"%>
-<!DOCTYPE html">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 
@@ -27,6 +27,9 @@
 	href="${pageContext.request.contextPath}/bootstrap/css/bootstrap-responsive.css"
 	rel="stylesheet" />
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
 <title>${param.title}</title>
 </head>
