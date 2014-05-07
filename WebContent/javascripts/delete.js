@@ -10,7 +10,7 @@ function deleteBtn( id, type){
 	case "await":
 		method="POST";
 		urlString="JDBServlet?action=delete_select_await&article_id="+id;
-		alert(id);
+//		alert(id);
 		break;
 	default:
 		break;
@@ -57,7 +57,7 @@ var http_request;
 	http_request.send();
 	http_request.onreadystatechange = function() {
 		if (http_request.readyState == 4) {
-			alert("success");
+//			alert("success");
 			location.reload();
 		}
 	};	

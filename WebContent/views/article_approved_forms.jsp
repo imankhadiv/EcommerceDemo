@@ -33,7 +33,7 @@
   <td><%=articles.getString("abstract")%></td>
   <td><%=articles.getString("first_name")+" "+articles.getString("last_name") %></td>
   <td><%=articles.getString("created_at")%></td>
-  <td><a href='<%=articles.getString("pdf_path")%>' target="_blank"><%=articles.getString("pdf_path")%></a></td>
+  <td><p onclick="download('<%=articles.getString("id")%>','<%=articles.getString("pdf_path")%>')"><a><%=articles.getString("pdf_path")%></a></p></td>
   <td><%=articles.getString("status")%></td> 
   <td><a href="${pageContext.request.contextPath}/JDBServlet?article_id=<%=articles.getString("id")%>&action=get_form">review</a></td>
   <td>
