@@ -124,7 +124,8 @@ public class JDBServlet extends HttpServlet {
 					System.out.println(article_id);
 					ResultSet result = form.getReviewFormsByArticle_Reviewer(
 							article_id, user.getId());
-					System.out.println(result.getString("id"));
+					result.next();
+//					System.out.println(result.getString("id"));
 					request.setAttribute("form", result);
 					// get authors of article
 					request.getRequestDispatcher(
