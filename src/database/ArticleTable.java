@@ -158,9 +158,11 @@ public class ArticleTable {
 	//to get the article list which the application of review has already been approved
 	public ResultSet getApprovedArticles(int reviewer_id) throws SQLException {
 		Statement stst = conn.createStatement();
+		String sqlString = "SELECT distinct a.id,a.title,a.abstract,b.first_name,b.last_name,a.created_at,a.review_count,a.pdf_path, c.form_status FROM articles as a, users as b,forms as c where a.user_id=b.id and a.id=c.article_id and a.status='unpublished' and a.id in (select article_id from forms where reviewer_id ='"
+				+ reviewer_id + "' and article_approve=true  )";
+		System.out.println(sqlString);
 		ResultSet resultSet = stst
-				.executeQuery("SELECT distinct a.id,a.title,a.abstract,b.first_name,b.last_name,a.created_at,a.review_count,a.pdf_path, c.status FROM articles as a, users as b,forms as c where a.user_id=b.id and a.id=c.article_id and a.status='unpublished' and a.id in (select article_id from forms where reviewer_id ='"
-						+ reviewer_id + "' and article_approve=true  )");
+				.executeQuery(sqlString);
 		return resultSet;
 	}
 

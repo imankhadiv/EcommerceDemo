@@ -103,7 +103,7 @@ public class Form {
 	
 	public void downloadArticle(int article_id, int reviewer_id) throws SQLException
 	{
-		String sqlString ="update forms set status='download' where article_id='"+article_id+"' and reviewer_id='"+reviewer_id+"'";
+		String sqlString ="update forms set form_status='download' where article_id='"+article_id+"' and reviewer_id='"+reviewer_id+"'";
 		Statement st = conn.createStatement();
 		st.execute(sqlString);
 	}
@@ -209,6 +209,33 @@ public class Form {
 		st.close();
 	}
 	
+	public void updateStatus(String status, int article_id, int reviewer_id)throws SQLException {
+		Statement st = conn.createStatement();
+		String sqlString ="select count(*) as count from forms where article_id='"+article_id+"' and reviewer_id='"+reviewer_id+"'";
+		ResultSet rs = st.executeQuery(sqlString);
+		rs.next();
+		int reject_count = rs.getInt("count");
+		
+		
+		if(status.equals("reject") && reject_count<3)
+		{
+			//TODO add reject count if the status is reject and count<2
+			st.execute("update forms set reject_count=reject_count+1 where article_id='"
+					+article_id+"' and reviewer_id='"+reviewer_id+"'");
+		}
+		else if(status.equals("reject") && reject_count==2)
+		{
+			//TODO set status to final reject when the reject count is 1
+			status = "final reject";
+		}
+		System.out.println("update forms set form_status = '"+status+"' where article_id = '"
+				+ article_id +"' and reviewer_id='" + reviewer_id + "'");
+		st.executeUpdate("update forms set form_status = '"+status+"' where article_id = '"
+				+ article_id +"' and reviewer_id='" + reviewer_id + "'");
+		
+				
+		st.close();
+	}
 	
 
 	public void approveTheForm(int formId) throws SQLException {

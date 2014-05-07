@@ -135,6 +135,7 @@ public class ReviewFormServlet extends HttpServlet {
 									.getJSONObject(0));
 						}
 						// update form
+						String typeString = jsonObject.getString("type").toString();
 						int article_id = jsonObject.getInt("article_id");
 						String level = jsonObject.getString("level").toString();
 						String summary = jsonObject.getString("summary")
@@ -149,7 +150,7 @@ public class ReviewFormServlet extends HttpServlet {
 //						System.out.println("secrete message is "+secret_message);
 						Email mail = new Email();
 						// send email to editors if the secret message is selected
-						if(secret_message){
+						if(secret_message&&(!typeString.equals("update"))){
 							Account account = new Account(conn);
 							List<User> userList = new ArrayList<User>();
 								userList = account.getEditorList();
@@ -160,6 +161,8 @@ public class ReviewFormServlet extends HttpServlet {
 								}
 //								System.out.println(secret_message);
 						}
+						
+						form.updateStatus(typeString, article_id, user.getId());						
 						mail.sendEmailForUpdateForm(user.getEmail(), user.getFirstname());
 					} catch (JSONException e1) {
 						// TODO Auto-generated catch block

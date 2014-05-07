@@ -77,7 +77,7 @@ public class ArticleToSelectServlet extends HttpServlet {
 						// form.setApproveToForms(article_id, user.getId());
 					}
 					// jump to await page
-					response.sendRedirect("/EcommerceDemo/JDBServlet?action=await_selection");
+					response.sendRedirect("JDBServlet?action=await_selection");
 
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
