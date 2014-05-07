@@ -11,10 +11,8 @@
  	String summary = "";
  	String secret_message = "";
 
- 	while (form.next()) {
  		overallstr = form.getString("overall");
  		levelstr = form.getString("level");
- 	}
  %>
 <c:set var="overallstr" scope="session" value="${2000*2}"/>
 	<div class="row">
