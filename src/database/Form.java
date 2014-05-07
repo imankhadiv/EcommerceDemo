@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import beans.Article;
 import beans.ReviewForm;
 import beans.User;
 
@@ -126,11 +125,11 @@ public class Form {
 		try {
 			stst = conn.createStatement();
 			try {
-				stst.executeQuery("update forms set article_approve=true where article_id = '"
+				stst.executeUpdate("update forms set form_approve = '1' where article_id = "
 						+ article_id
-						+ "' and reviewer_id = '"
+						+ " and reviewer_id = "
 						+ article_id
-						+ "' ");
+						+ "");
 				return true;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -202,6 +201,7 @@ public class Form {
 		return authors;
 	}
 	
+
 	public void cancelSelect(int article_id, int reviewer_id) throws SQLException {
 		String sql = "delete from forms where article_id='"+article_id+"' and reviewer_id='"+reviewer_id+"'";
 		Statement st = conn.createStatement();
@@ -210,5 +210,29 @@ public class Form {
 	}
 	
 	
+
+	public void approveTheForm(int formId) throws SQLException {
+		
+		Statement st = conn.createStatement();
+		st.executeUpdate("update forms set form_approve = true where id = "
+				+ formId );
+				
+		st.close();
+		
+	}
+	
+	 public static void main(String[] args) throws ClassNotFoundException, SQLException {
+	
+	
+	 Class.forName("com.mysql.jdbc.Driver");
+	 String DB =
+	 "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+	 Connection conn = DriverManager.getConnection(DB);
+	 Form form = new Form(conn);
+	 form.approveTheForm(3);
+	 
+	
+	 }
+
 
 }

@@ -308,7 +308,7 @@ public class ArticleTable {
 
 	/**
 	 * 
-	 * @param title
+	 * @param title 
 	 * @return
 	 * @throws SQLException
 	 */
@@ -426,6 +426,20 @@ public class ArticleTable {
 		rs.close();
 		return articles;
 	}
+	/**
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
+	public ArrayList<Article> getAllArticles() throws SQLException {
+		Statement stst = conn.createStatement();
+		ResultSet rs = stst
+				.executeQuery("select * from articles");
+		return getArticlesFromResultSet(rs);
+					
+		
+	}
+
 
 //	public static void main(String[] args) throws java.text.ParseException {
 //		try {
@@ -468,5 +482,6 @@ public class ArticleTable {
 //			e.printStackTrace();
 //		}
 //	}
+
 
 }

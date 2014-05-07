@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 
 import javax.mail.MessagingException;
@@ -26,7 +25,9 @@ import database.ArticleTable;
 import database.Email;
 
 /**
- * Servlet implementation class ReaderController
+ * 
+ * @author Iman
+ *
  */
 public class ReaderController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -111,8 +112,8 @@ public class ReaderController extends HttpServlet {
 				HttpSession session = request.getSession();
 				ArrayList<Article> articles = new ArrayList<Article>();
 				if (searchBy.equals("all")) {
-					 articles = articleTable
-							.getPublishedArticles();
+					 articles = articleTable.getArticlesFromResultSet(articleTable.getPublishedArticles());
+
 				} else if (searchBy.equals("author")) {
 					articles = articleTable
 							.getArticlesByAuthorName(text);
@@ -120,15 +121,15 @@ public class ReaderController extends HttpServlet {
 					 articles = articleTable
 							.getArticlesByKeywords(text);
 				} else if (fromDate != null) {
-					 articles = articleTable
-							.getArticlesByDate(fromDate, toDate);
+//					 articles = articleTable
+//							.getArticlesByDate(fromDate, toDate);
 
 				} else if (searchBy.equals("title")) {
 					 articles = articleTable
 							.getArticlesByTitle(text);
 
 				}  else {
-					articles = articleTable.getPublishedArticles();
+					articles = articleTable.getArticlesFromResultSet(articleTable.getPublishedArticles());
 					
 				}
 				if(articles !=null && articles.size() != 0) {
@@ -145,9 +146,6 @@ public class ReaderController extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (Exception e) {

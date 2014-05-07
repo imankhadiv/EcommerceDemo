@@ -29,8 +29,6 @@ public class Article {
 		this.title = title;
 		this.abst = abst;
 		this.userId = userId;
-		this.keywords = keywords;
-		this.keywords = keywords;
 		this.pdfPath = pdfPath;
 	}
 	public Article() {

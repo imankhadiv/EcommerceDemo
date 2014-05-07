@@ -1,4 +1,5 @@
 package database;
+
 /**
  * 
  */
@@ -9,12 +10,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
 import beans.User;
 /**
  * 
  * @author Iman Rastkhadiv
- *
+ * 
  */
 public class Account {
 	private Connection conn;
@@ -64,36 +64,38 @@ public class Account {
 		return resultSet;
 
 	}
+
 	/**
 	 * This method is implemented to return the user's role.
+	 * 
 	 * @param email
 	 * @return
 	 * @throws SQLException
 	 */
-	
+
 	public String getUserRole(String email) throws SQLException {
 		String sql = "select * from users where email=?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, email);
 		ResultSet rs = stmt.executeQuery();
-		String role="";
+		String role = "";
 		if (rs.next()) {
-			role= (rs.getString("role"));
+			role = (rs.getString("role"));
 			return role;
 		}
 		return role;
 	}
-	
-	public User getUserByEmail(String email)throws SQLException {
+
+	public User getUserByEmail(String email) throws SQLException {
 		User user = new User();
 		String sql = "select * from users where email=?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, email);
 		ResultSet rs = stmt.executeQuery();
-		String role="";
+		String role = "";
 		if (rs.next()) {
-			role= (rs.getString("role"));
-			if(role.length()>0){
+			role = (rs.getString("role"));
+			if (role.length() > 0) {
 				user.setEmail(email);
 				user.setFirstname(rs.getString("first_name"));
 				user.setLastname(rs.getString("last_name"));
@@ -103,10 +105,9 @@ public class Account {
 		}
 		return user;
 	}
-	
-	
+
 	public int getUserId(String email) throws SQLException {
-		
+
 		String sql = "select * from users where email=?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, email);
@@ -118,32 +119,36 @@ public class Account {
 		return 0;
 
 	}
-	public void changeRole(String role,int id) throws SQLException {
-		String sql = "update users SET role = '"+ role +"' where id = "+ id;
+
+	public void changeRole(String role, int id) throws SQLException {
+		String sql = "update users SET role = '" + role + "' where id = " + id;
 		Statement stst = conn.createStatement();
 		stst.executeUpdate(sql);
-		
 
-		//stst.addBatch("update bankAccount SET checkingBalance = checkingBalance - "+big+" where id = "+id);
+		// stst.addBatch("update bankAccount SET checkingBalance = checkingBalance - "+big+" where id = "+id);
 	}
+
 	public User getUserById(int userId) throws SQLException {
 		User user = new User();
-		Statement stst= conn.createStatement();
-		ResultSet rs = stst.executeQuery("select * from users where id = "+userId);
-		while(rs.next()){
+		Statement stst = conn.createStatement();
+		ResultSet rs = stst.executeQuery("select * from users where id = "
+				+ userId);
+		while (rs.next()) {
 			user.setId(rs.getInt("id"));
 			user.setFirstname(rs.getString("first_name"));
 			user.setLastname(rs.getString("last_name"));
 			user.setEmail(rs.getString("email"));
 		}
+		rs.close();
 		return user;
 	}
-	
+
 	public List<User> getEditorList() throws SQLException {
 		List<User> userList = new ArrayList<User>();
-		Statement stst= conn.createStatement();
-		ResultSet rs = stst.executeQuery("select * from users where role = 'editor'");
-		while(rs.next()){
+		Statement stst = conn.createStatement();
+		ResultSet rs = stst
+				.executeQuery("select * from users where role = 'editor'");
+		while (rs.next()) {
 			User user = new User();
 			user.setId(rs.getInt("id"));
 			user.setFirstname(rs.getString("first_name"));
@@ -173,20 +178,30 @@ public class Account {
 			return true;
 		}
 	}
+
 	public ArrayList<User> getEditors() throws SQLException {
+		Statement stst = conn.createStatement();
+		ResultSet rs = stst
+				.executeQuery("select * from users where role = 'editor'");
+
+		return getUsersFromResultSet(rs);
+	}
+
+	public ArrayList<User> getUsersFromResultSet(ResultSet rs)
+			throws SQLException {
 		ArrayList<User> users = new ArrayList<User>();
-		Statement stst= conn.createStatement();
-		ResultSet rs = stst.executeQuery("select * from users where role = 'editor'");
-		while(rs.next()){
-			User user= new User();
+		while (rs.next()) {
+			User user = new User();
 			user.setId(rs.getInt("id"));
 			user.setFirstname(rs.getString("first_name"));
 			user.setLastname(rs.getString("last_name"));
 			user.setEmail(rs.getString("email"));
+			user.setRole(rs.getString("role"));
 			users.add(user);
+
 		}
+		rs.close();
 		return users;
-		
 	}
 
 }

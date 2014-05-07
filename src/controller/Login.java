@@ -59,10 +59,10 @@ public class Login extends HttpServlet {
 			request.getRequestDispatcher("/home.jsp")
 					.forward(request, response);
 		}
-		if (request.getParameter("action").equals("users")) {
-			doPost(request, response);
-			// request.getRequestDispatcher("/home.jsp");
-		}
+//		if (request.getParameter("action").equals("users")) {
+//			doPost(request, response);
+//			// request.getRequestDispatcher("/home.jsp");
+//		}
 
 	}
 
@@ -93,17 +93,17 @@ public class Login extends HttpServlet {
 		}
 
 		Account account = new Account(conn);
-		if (action.equals("users")) {
-			try {
-				ResultSet result = account.getRecords();
-				request.setAttribute("users", result);
-				request.getRequestDispatcher("/views/registeredusers.jsp")
-						.forward(request, response);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+//		if (action.equals("users")) {
+//			try {
+//				ResultSet result = account.getRecords();
+//				request.setAttribute("users", result);
+//				request.getRequestDispatcher("/views/registeredusers.jsp")
+//						.forward(request, response);
+//			} catch (SQLException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 		if (action.equals("login")) {
 			String email = request.getParameter("email");
 			String password = request.getParameter("password");

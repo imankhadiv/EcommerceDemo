@@ -132,21 +132,6 @@ public class KeywordTable {
 		
 	}
 
-	public static void main(String[] args) {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
-			Connection conn = DriverManager.getConnection(DB);
-			KeywordTable words = new KeywordTable(conn);
-			System.out.println(words.getKeywordsByArticleId(69).size());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	private String getIds(List<Integer> ids) {
 		int size = ids.size();
 		String s = "(";

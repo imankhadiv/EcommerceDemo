@@ -110,4 +110,14 @@
     <servlet-name>ArticleToSelectServlet</servlet-name>
     <url-pattern>/ArticleToSelectServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>EditorController</display-name>
+    <servlet-name>EditorController</servlet-name>
+    <servlet-class>controller.EditorController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EditorController</servlet-name>
+    <url-pattern>/EditorController</url-pattern>
+  </servlet-mapping>
 </web-app>
