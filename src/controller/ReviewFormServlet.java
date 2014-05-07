@@ -21,11 +21,13 @@ import org.json.JSONObject;
 
 import beans.Comment;
 import beans.Error;
+import beans.Mistake;
 import beans.ReviewForm;
 import beans.User;
 import database.Account;
 import database.Email;
 import database.Form;
+import database.MistakeDB;
 
 /**
  * Servlet implementation class ReviewFormServlet
@@ -87,10 +89,11 @@ public class ReviewFormServlet extends HttpServlet {
 				String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
 				conn = DriverManager.getConnection(DB);
 				Form form = new Form(conn);
-				
+				MistakeDB mistakeDB = new MistakeDB(conn);
 				if (jsonString != null) {
 					try {
 						JSONObject jsonObject = new JSONObject(jsonString);
+						int article_id = jsonObject.getInt("article_id");
 						// get the error json array
 						String json_errors = jsonObject.get("error").toString();
 						System.out.println(json_errors);
@@ -104,6 +107,7 @@ public class ReviewFormServlet extends HttpServlet {
 								String errorString = errorJsonArray
 										.getJSONObject(i).getString("error");
 								Error error = new Error(errorString);
+								mistakeDB.insertIntoError(article_id, user.getId(), errorString);
 								errorList.add(error);
 							}
 							System.out.println(errorJsonArray.getJSONObject(0));
@@ -136,7 +140,7 @@ public class ReviewFormServlet extends HttpServlet {
 						}
 						// update form
 						String typeString = jsonObject.getString("type").toString();
-						int article_id = jsonObject.getInt("article_id");
+						
 						String level = jsonObject.getString("level").toString();
 						String summary = jsonObject.getString("summary")
 								.toString();
