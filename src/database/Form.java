@@ -102,6 +102,13 @@ public class Form {
 //		st.close();
 	}
 	
+	public void downloadArticle(int article_id, int reviewer_id) throws SQLException
+	{
+		String sqlString ="update forms set status='download' where article_id='"+article_id+"' and reviewer_id='"+reviewer_id+"'";
+		Statement st = conn.createStatement();
+		st.execute(sqlString);
+	}
+	
 	public void updateForm(int article_id, int reviewer_id, String level,
 			String summary, String secret, String overall) throws SQLException {
 		String sql = "update forms set level='" + level + "', summary='"
@@ -194,5 +201,14 @@ public class Form {
 		}
 		return authors;
 	}
+	
+	public void cancelSelect(int article_id, int reviewer_id) throws SQLException {
+		String sql = "delete from forms where article_id='"+article_id+"' and reviewer_id='"+reviewer_id+"'";
+		Statement st = conn.createStatement();
+		st.execute(sql);
+		st.close();
+	}
+	
+	
 
 }

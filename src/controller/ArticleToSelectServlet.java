@@ -74,9 +74,10 @@ public class ArticleToSelectServlet extends HttpServlet {
 						int author_id = resultSet.getInt("user_id");
 						System.out.println(author_id);
 						form.createForm(article_id, author_id, user.getId());
-
 						// form.setApproveToForms(article_id, user.getId());
 					}
+					// jump to await page
+					response.sendRedirect("/EcommerceDemo/JDBServlet?action=await_selection");
 
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block

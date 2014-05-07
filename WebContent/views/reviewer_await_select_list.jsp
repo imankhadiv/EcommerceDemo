@@ -5,6 +5,8 @@
  <c:param name="title" value="Users"></c:param>
 </c:import>
 <div class="hero-unit " id="container">
+
+
 <table class="table table-striped table-hover table-borderd">
 	<thead>
  <tr>
@@ -12,9 +14,9 @@
 	  <th>abstract</th>
 	  <th>main auther</th>
 	  <th>created at</th>
-	  <th>download</th>
-	  <th>review</th>
-	  
+	  <th>delete</th>
+	 <!--  <th>status</th>
+	  <th>unselect</th> -->
  </tr>
 	  </thead>
  <%
@@ -28,14 +30,20 @@
   <td><%=articles.getString("title")%></td>
   <td><%=articles.getString("abstract")%></td>
   <td><%=articles.getString("first_name")+" "+articles.getString("last_name") %></td>
+  <%-- <td><a href='<%=articles.getString("pdf_path")%>'><%=articles.getString("pdf_path")%></a></td> --%>
   <td><%=articles.getString("created_at")%></td>
-  <td><a href='<%=articles.getString("pdf_path")%>' target="_blank"><%=articles.getString("pdf_path")%></a></td> 
-  <td><a href="${pageContext.request.contextPath}/JDBServlet?article_id=<%=articles.getString("id")%>&action=get_form">review</a></td>
+  <td><button id="delete" class="btn btn-primary" onclick="deleteBtn(<%=articles.getInt("id")%>,'await')">delete</button></td>
+ <%--  <td><%=articles.getString("status")%></td>
+  <td>
+  <input type="button" class="btn" name="article_id" value=<%=articles.getString("id")%>>
+  </td> --%>
  </tr>
   </tbody>
  <%
  }
 %>
 </table>
+
+
 </div>
 <c:import url="/footer.jsp"></c:import>

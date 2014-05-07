@@ -133,7 +133,7 @@ public class UploadArticle extends HttpServlet {
 			if (account.exists(email)) {
 				
 				User user = account.getUserById(account.getUserId(email));
-				mail.setBody("Dear "+user.getFirstname()+",<br/>Thank you for uploading your article.<br>You can use your previous password to login to the system<br/>("+user.getPassword()+").");
+				mail.setBody("Dear "+user.getFirstname()+",<br/>Thank you for uploading your article.");
 				mail.setSubject("Successfully Uploaded");
 				mail.sendEmail();
 

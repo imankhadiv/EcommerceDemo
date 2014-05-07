@@ -37,7 +37,7 @@
  }
 %>
 </table>
-<input class="btn" type="submit" value="select"/>
+<input class="btn btn-primary" type="submit" value="select"/>
 </form>
 </div>
 <c:import url="/footer.jsp"></c:import>

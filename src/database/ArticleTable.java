@@ -138,14 +138,24 @@ public class ArticleTable {
 		Statement stst = conn.createStatement();
 		ResultSet resultSet = stst.executeQuery("SELECT distinct a.id,a.title,a.abstract,b.first_name,b.last_name,a.created_at FROM articles as a, users as b where a.id "+
 				"not in (select article_id from forms where reviewer_id='"+reviewer_id
-				+"' and article_approve=true) and status='unpublished' and a.user_id = b.id order by created_at;");
+				+"' ) and status='unpublished' and a.user_id = b.id order by created_at;");
+		return resultSet;
+	}
+	
+	public ResultSet getAwaitingArticles(int reviewer_id) throws SQLException {
+		Statement stst = conn.createStatement();
+		ResultSet resultSet = stst.executeQuery("SELECT distinct a.id,a.title,a.abstract,b.first_name,b.last_name,a.created_at FROM articles as a, users as b where a.id "+
+				"in (select article_id from forms where reviewer_id='"+reviewer_id
+				+"' and status='select' ) and status='unpublished' and a.user_id = b.id order by created_at;");
 		return resultSet;
 	}
 	
 	//to get the article list which the application of review has already been approved
 	public ResultSet getApprovedArticles(int reviewer_id) throws SQLException {
 		Statement stst = conn.createStatement();
-		ResultSet resultSet = stst.executeQuery("SELECT distinct a.id,a.title,a.abstract,b.first_name,b.last_name,a.created_at,a.review_count,a.pdf_path FROM articles as a, users as b where status='unpublished' and a.id in (select article_id from forms where reviewer_id ='"+reviewer_id+"' and article_approve=true )");
+		ResultSet resultSet = stst
+				.executeQuery("SELECT distinct a.id,a.title,a.abstract,b.first_name,b.last_name,a.created_at,a.review_count,a.pdf_path FROM articles as a, users as b where a.user_id=b.id and status='unpublished' and a.id in (select article_id from forms where reviewer_id ='"
+						+ reviewer_id + "' and article_approve=true and status in ('select', 'download') )");
 		return resultSet;
 	}
 	

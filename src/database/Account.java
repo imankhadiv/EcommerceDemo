@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import beans.User;
 /**
@@ -81,6 +83,28 @@ public class Account {
 		}
 		return role;
 	}
+	
+	public User getUserByEmail(String email)throws SQLException {
+		User user = new User();
+		String sql = "select * from users where email=?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, email);
+		ResultSet rs = stmt.executeQuery();
+		String role="";
+		if (rs.next()) {
+			role= (rs.getString("role"));
+			if(role.length()>0){
+				user.setEmail(email);
+				user.setFirstname(rs.getString("first_name"));
+				user.setLastname(rs.getString("last_name"));
+				user.setRole(rs.getString("role"));
+				user.setId(rs.getInt("id"));
+			}
+		}
+		return user;
+	}
+	
+	
 	public int getUserId(String email) throws SQLException {
 		
 		String sql = "select * from users where email=?";
@@ -114,7 +138,21 @@ public class Account {
 		}
 		return user;
 	}
-
+	
+	public List<User> getEditorList() throws SQLException {
+		List<User> userList = new ArrayList<User>();
+		Statement stst= conn.createStatement();
+		ResultSet rs = stst.executeQuery("select * from users where role = 'editor'");
+		while(rs.next()){
+			User user = new User();
+			user.setId(rs.getInt("id"));
+			user.setFirstname(rs.getString("first_name"));
+			user.setLastname(rs.getString("last_name"));
+			user.setEmail(rs.getString("email"));
+			userList.add(user);
+		}
+		return userList;
+	}
 
 	public boolean exists(String email) throws SQLException {
 		String sql = "select count(*) as count from users where email=? ";

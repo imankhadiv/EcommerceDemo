@@ -5,11 +5,17 @@
 </c:import>
  <%  
  ResultSet form = (ResultSet) request.getAttribute("form"); %>
- <%  form.next();  %>
- <%  String overallstr = form.getString("overall");
- String levelstr = form.getString("level");
- 
- System.out.println(overallstr);%>
+ <%
+ 	String overallstr = "";
+ 	String levelstr = "";
+ 	String summary = "";
+ 	String secret_message = "";
+
+ 	while (form.next()) {
+ 		overallstr = form.getString("overall");
+ 		levelstr = form.getString("level");
+ 	}
+ %>
 <c:set var="overallstr" scope="session" value="${2000*2}"/>
 	<div class="row">
 
@@ -61,8 +67,8 @@
 			</div>
 		</div>
 	</div>
-	<button class="btn" type="button" onclick="createForm()">update</button>
-	<button class="btn" type="button" onclick="createForm()">submit</button>
+	<button class="btn btn-primary" type="button" onclick="createForm()">update</button>
+	<button class="btn btn-primary" type="button" onclick="createForm()">submit</button>
 	<!-- <input type="button" class="btn" value="Submit"/> -->
 <br/>
 <br/>

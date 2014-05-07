@@ -121,9 +121,10 @@ public class JDBServlet extends HttpServlet {
 					conn = (Connection) DriverManager.getConnection(DB);
 					// get form details
 					Form form = new Form(conn);
-
+					System.out.println(article_id);
 					ResultSet result = form.getReviewFormsByArticle_Reviewer(
 							article_id, user.getId());
+					System.out.println(result.getString("id"));
 					request.setAttribute("form", result);
 					// get authors of article
 					request.getRequestDispatcher(
@@ -140,6 +141,30 @@ public class JDBServlet extends HttpServlet {
 					out.println("Sorry the sql connection is failing");
 				}
 			}
+			else if (action == null || action.equals("await_selection")) {
+				try {
+					Class.forName("com.mysql.jdbc.Driver");
+					String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+					conn = (Connection) DriverManager.getConnection(DB);
+					ArticleTable articleTable = new ArticleTable(conn);
+					ResultSet resultSet = articleTable.getAwaitingArticles(user.getId());
+					request.setAttribute("article", resultSet);
+					// get authors of article
+					request.getRequestDispatcher(
+							"/views/reviewer_await_select_list.jsp").forward(
+							request, response);
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+			else {
+				System.out.println(action);
+			}
 
 		}
 
@@ -152,6 +177,70 @@ public class JDBServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-	}
 
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+
+		if (session.getAttribute("user") == null) {
+			request.setAttribute("message",
+					"You need to login the system");
+			request.getRequestDispatcher("/home.jsp")
+					.forward(request, response);
+		} else if (user.getRole().equals("reader")) {
+			request.setAttribute("message",
+					"You logged is as a reader. You do not have permission to open the page");
+			request.getRequestDispatcher("/home.jsp")
+					.forward(request, response);
+		} else {
+			String action = null;
+			action = request.getParameter("action");
+			Connection conn;
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+				conn = (Connection) DriverManager.getConnection(DB);
+				
+				if (action == null || action.equals("download")) {
+
+					// to get article_id
+					int article_id = Integer.parseInt(request
+							.getParameter("article_id"));
+						// get form details
+						Form form = new Form(conn);
+						// change status to download
+						form.downloadArticle(article_id, user.getId());
+						
+						
+//						ResultSet result = form.getReviewFormsByArticle_Reviewer(
+//								article_id, user.getId());
+//						System.out.println(result.getString("id"));
+//						request.setAttribute("form", result);
+//						// get authors of article
+//						request.getRequestDispatcher(
+//								"/views/form.jsp?article_id=" + article_id)
+//								.forward(request, response);
+				}
+				else if (action == null || action.equals("delete_select_await")) {
+					Form form = new Form(conn);
+					int article_id = Integer.parseInt(request
+							.getParameter("article_id"));
+					form.cancelSelect(article_id, user.getId());
+					ArticleTable articleTable = new ArticleTable(conn);
+					ResultSet resultSet = articleTable.getAwaitingArticles(user.getId());
+					request.setAttribute("article", resultSet);
+					// get authors of article
+					request.getRequestDispatcher(
+							"/views/reviewer_await_select_list.jsp").forward(
+							request, response);
+				}
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+			
+	}
 }

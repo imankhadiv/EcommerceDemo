@@ -123,6 +123,7 @@ public class Email {
 		sendEmail();
 	}
 	
+	
 	public void sendEmailForUpdateForm(String recipient, String name)
 		    throws AddressException, MessagingException {
 				this.recipient = recipient;
@@ -138,7 +139,7 @@ public class Email {
 				this.recipient = recipient;
 				this.subject = "Secret Message";
 				this.body = "Dear editor"
-		        + ",\n\n "+message+"\n\n\n\n"+ name;
+		        + "\r\n Here is a secret message from "+name+" and the content is \r\n"+message;
 				sendEmail();
 			}
 }

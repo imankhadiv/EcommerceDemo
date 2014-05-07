@@ -23,6 +23,7 @@ import beans.Comment;
 import beans.Error;
 import beans.ReviewForm;
 import beans.User;
+import database.Account;
 import database.Email;
 import database.Form;
 
@@ -80,14 +81,14 @@ public class ReviewFormServlet extends HttpServlet {
 		// this is the user id
 
 		else {
-
+			String secret_message ="";
 			try {
 				// start connection with database
 				Class.forName("com.mysql.jdbc.Driver");
 				String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
 				conn = DriverManager.getConnection(DB);
 				Form form = new Form(conn);
-
+				
 				if (jsonString != null) {
 					try {
 						JSONObject jsonObject = new JSONObject(jsonString);
@@ -145,6 +146,23 @@ public class ReviewFormServlet extends HttpServlet {
 								.toString();
 						form.updateForm(article_id, user.getId(), level,
 								summary, secret, overall);
+						secret_message = jsonObject.getString("send_message");
+						
+						System.out.println("secrete message is "+secret_message);
+						
+						// send email to editors if the secret message is selected
+						if(secret_message.length()>0 && secret_message.equals("on")){
+							Account account = new Account(conn);
+							List<User> userList = new ArrayList<User>();
+								userList = account.getEditorList();
+								System.out.println(userList.size());
+								for(int i = 0; i< userList.size();i++){
+									Email mail = new Email();
+									mail.sendSecretToEditor(userList.get(i).getEmail(),
+											user.getFirstname()+" "+ user.getLastname(), secret);
+								}
+								
+						}
 					} catch (JSONException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -163,8 +181,12 @@ public class ReviewFormServlet extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
-				Email mail = new Email();
+				
+				
+				// email notification of form update
 				try {
+					Email mail = new Email();
+					System.out.println(user.getFirstname());
 					mail.sendEmailForUpdateForm(user.getEmail(), user.getFirstname());
 				} catch (AddressException e1) {
 					// TODO Auto-generated catch block

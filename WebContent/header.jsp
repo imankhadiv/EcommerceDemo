@@ -15,6 +15,7 @@
 
 <script src="${pageContext.request.contextPath}/javascripts/myscript.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/form.js"></script>
+<script src="${pageContext.request.contextPath}/javascripts/delete.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/upload.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/reader.js"></script>
 <link rel="stylesheet" type="text/css"
@@ -53,8 +54,9 @@
 				
 					<ul class="dropdown-menu">
 					<li><a href="${pageContext.request.contextPath}/">My Reviews</a></li>
-					<li><a href="${pageContext.request.contextPath}/">Review Articles</a></li>
-					<li><a href="${pageContext.request.contextPath}/JDBServlet?action=select_article">Select Articles to review</a></li>
+					<%-- <li><a href="${pageContext.request.contextPath}/">Review Articles</a></li> --%>
+					<li><a href="${pageContext.request.contextPath}/JDBServlet?action=select_article">Select Articles </a></li>
+					<li><a href="${pageContext.request.contextPath}/JDBServlet?action=await_selection">Await selection </a></li>
 					<li><a href="${pageContext.request.contextPath}/JDBServlet?action=approved_article">Approved Articles to review</a></li>
 					</ul>
 				</li>
