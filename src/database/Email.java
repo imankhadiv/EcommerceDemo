@@ -123,4 +123,22 @@ public class Email {
 		sendEmail();
 	}
 	
+	public void sendEmailForUpdateForm(String recipient, String name)
+		    throws AddressException, MessagingException {
+				this.recipient = recipient;
+				this.subject = "Review Successfully Updated";
+				this.body = "Dear "
+		        + name
+		        + ",\n\nThank you for updating your review ";
+				sendEmail();
+			}
+	
+	public void sendSecretToEditor(String recipient, String name, String message)
+		    throws AddressException, MessagingException {
+				this.recipient = recipient;
+				this.subject = "Secret Message";
+				this.body = "Dear editor"
+		        + ",\n\n "+message+"\n\n\n\n"+ name;
+				sendEmail();
+			}
 }

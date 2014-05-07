@@ -4,8 +4,9 @@
 <c:import url="/header.jsp">
  <c:param name="title" value="Users"></c:param>
 </c:import>
-
+<div class="hero-unit " id="container">
 <form action="ArticleToSelectServlet" method="get">
+
 <table class="table table-striped table-hover table-borderd">
 	<thead>
  <tr>
@@ -27,7 +28,7 @@
   <td><input type="checkbox" name="article_id" value=<%=articles.getString("id")%> /></td>
   <td><%=articles.getString("title")%></td>
   <td><%=articles.getString("abstract")%></td>
-  <td></td>
+  <td><%=articles.getString("first_name")+" "+articles.getString("last_name") %></td>
   <%-- <td><a href='<%=articles.getString("pdf_path")%>'><%=articles.getString("pdf_path")%></a></td> --%>
   <td><%=articles.getString("created_at")%></td>
  </tr>
@@ -36,6 +37,7 @@
  }
 %>
 </table>
-<input type="submit" value="select"/>
+<input class="btn" type="submit" value="select"/>
 </form>
+</div>
 <c:import url="/footer.jsp"></c:import>

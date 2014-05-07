@@ -4,7 +4,7 @@
 <c:import url="/header.jsp">
  <c:param name="title" value="Users"></c:param>
 </c:import>
-
+<div class="hero-unit " id="container">
 <table class="table table-striped table-hover table-borderd">
 	<thead>
  <tr>
@@ -27,7 +27,7 @@
  <tr>
   <td><%=articles.getString("title")%></td>
   <td><%=articles.getString("abstract")%></td>
-  <td></td>
+  <td><%=articles.getString("first_name")+" "+articles.getString("last_name") %></td>
   <td><%=articles.getString("created_at")%></td>
   <td><a href='<%=articles.getString("pdf_path")%>'><%=articles.getString("pdf_path")%></a></td> 
   <td><a href="${pageContext.request.contextPath}/JDBServlet?article_id=<%=articles.getString("id")%>&action=get_form">review</a></td>
@@ -37,4 +37,5 @@
  }
 %>
 </table>
+</div>
 <c:import url="/footer.jsp"></c:import>

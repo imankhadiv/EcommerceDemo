@@ -24,14 +24,14 @@ import database.Form;
  */
 public class JDBServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public JDBServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public JDBServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -46,7 +46,7 @@ public class JDBServlet extends HttpServlet {
 
 		if (session.getAttribute("user") == null) {
 			request.setAttribute("message",
-					"You need to login to view your articles");
+					"You need to login the system");
 			request.getRequestDispatcher("/home.jsp")
 					.forward(request, response);
 		} else if (user.getRole().equals("reader")) {
@@ -54,98 +54,103 @@ public class JDBServlet extends HttpServlet {
 					"You logged is as a reader. You do not have permission to open the page");
 			request.getRequestDispatcher("/home.jsp")
 					.forward(request, response);
-		}
-		String action = null;
-		action = request.getParameter("action");
-		Connection conn;
+		} else {
 
-		if (action == null || action.equals("select_article")) {
-			try {
-				Class.forName("com.mysql.jdbc.Driver");
-				String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
-				conn = (Connection) DriverManager.getConnection(DB);
-				// get article details
-				ArticleTable articleTable = new ArticleTable(conn);
-				ResultSet result = articleTable.getArticlesToSelect(user.getId());
-				request.setAttribute("article", result);
-				// get authors of article
-				
-				
-				request.getRequestDispatcher("/views/article_list.jsp")
-						.forward(request, response);
+			String action = null;
+			action = request.getParameter("action");
+			Connection conn;
 
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				PrintWriter out = response.getWriter();
-				out.println("Sorry the sql connection is failing");
+			if (action == null || action.equals("select_article")) {
+				try {
+					Class.forName("com.mysql.jdbc.Driver");
+					String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+					conn = (Connection) DriverManager.getConnection(DB);
+					// get article details
+					ArticleTable articleTable = new ArticleTable(conn);
+					ResultSet result = articleTable.getArticlesToSelect(user
+							.getId());
+					request.setAttribute("article", result);
+					// get authors of article
+
+					request.getRequestDispatcher("/views/article_list.jsp")
+							.forward(request, response);
+
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					PrintWriter out = response.getWriter();
+					out.println("Sorry the sql connection is failing");
+				}
+
+			} else if (action == null || action.equals("approved_article")) {
+				try {
+					Class.forName("com.mysql.jdbc.Driver");
+					String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+					conn = (Connection) DriverManager.getConnection(DB);
+					// get article details
+					ArticleTable articleTable = new ArticleTable(conn);
+					ResultSet result = articleTable.getApprovedArticles(user
+							.getId());
+					request.setAttribute("article", result);
+					// get authors of article
+					request.getRequestDispatcher(
+							"/views/article_approved_forms.jsp").forward(
+							request, response);
+
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					PrintWriter out = response.getWriter();
+					out.println("Sorry the sql connection is failing");
+				}
+			} else if (action == null || action.equals("get_form")) {
+
+				// to get article_id
+				int article_id = Integer.parseInt(request
+						.getParameter("article_id"));
+
+				try {
+					Class.forName("com.mysql.jdbc.Driver");
+					String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+					conn = (Connection) DriverManager.getConnection(DB);
+					// get form details
+					Form form = new Form(conn);
+
+					ResultSet result = form.getReviewFormsByArticle_Reviewer(
+							article_id, user.getId());
+					request.setAttribute("form", result);
+					// get authors of article
+					request.getRequestDispatcher(
+							"/views/form.jsp?article_id=" + article_id)
+							.forward(request, response);
+
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					PrintWriter out = response.getWriter();
+					out.println("Sorry the sql connection is failing");
+				}
 			}
 
 		}
-		else if (action == null || action.equals("approved_article"))
-		{
-			try {
-				Class.forName("com.mysql.jdbc.Driver");
-				String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
-				conn = (Connection) DriverManager.getConnection(DB);
-				// get article details
-				ArticleTable articleTable = new ArticleTable(conn);
-				ResultSet result = articleTable.getApprovedArticles(user.getId());
-				request.setAttribute("article", result);
-				// get authors of article
-				request.getRequestDispatcher("/views/article_approved_forms.jsp")
-						.forward(request, response);
-
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				PrintWriter out = response.getWriter();
-				out.println("Sorry the sql connection is failing");
-			}
-		}
-		else if (action == null || action.equals("get_form"))
-		{
-
-			// to get article_id
-			int article_id = Integer.parseInt(request.getParameter("article_id"));
-			
-			try {
-				Class.forName("com.mysql.jdbc.Driver");
-				String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
-				conn = (Connection) DriverManager.getConnection(DB);
-				// get form details
-				Form form = new Form(conn);
-				
-				ResultSet result = form.getReviewFormsByArticle_Reviewer(article_id, user.getId());
-				request.setAttribute("form", result);
-				// get authors of article
-				request.getRequestDispatcher("/views/form.jsp?article_id="+article_id)
-						.forward(request, response);
-
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				PrintWriter out = response.getWriter();
-				out.println("Sorry the sql connection is failing");
-			}
-		}
-
 
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	}
 
