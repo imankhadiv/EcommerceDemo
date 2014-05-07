@@ -78,7 +78,9 @@ function createForm() {
 	var level = $("#level").val();
 	var secret = $("#secret").val();
 	var summary = $("#summary").val();
-	var send_message = $("#secret_message").val();
+	
+	var send_message =$("#secret_message").prop('checked');
+	
 	var article_id = getUrlParam('article_id');
 	
 //	var auther_id = 1;
@@ -138,7 +140,7 @@ function createForm() {
 	http_request.send();
 	http_request.onreadystatechange = function() {
 		if (http_request.readyState == 4) {
-			alert("success");
+			window.location.replace("/EcommerceDemo/JDBServlet?action=approved_article");
 		}
 	};
 	//TODO send request to servlet; save to database; redirect to a new page
@@ -174,7 +176,7 @@ var http_request;
 	http_request.send();
 	http_request.onreadystatechange = function() {
 		if (http_request.readyState == 4) {
-			alert("success");
+//			alert("success");
 			location.reload();
 		}
 	};	

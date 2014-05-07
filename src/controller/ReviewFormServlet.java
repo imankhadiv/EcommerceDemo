@@ -81,7 +81,6 @@ public class ReviewFormServlet extends HttpServlet {
 		// this is the user id
 
 		else {
-			String secret_message ="";
 			try {
 				// start connection with database
 				Class.forName("com.mysql.jdbc.Driver");
@@ -146,31 +145,30 @@ public class ReviewFormServlet extends HttpServlet {
 								.toString();
 						form.updateForm(article_id, user.getId(), level,
 								summary, secret, overall);
-						secret_message = jsonObject.getString("send_message");
-						
-						System.out.println("secrete message is "+secret_message);
-						
+						boolean secret_message = jsonObject.getBoolean("send_message");
+//						System.out.println("secrete message is "+secret_message);
+						Email mail = new Email();
 						// send email to editors if the secret message is selected
-						if(secret_message.length()>0 && secret_message.equals("on")){
+						if(secret_message){
 							Account account = new Account(conn);
 							List<User> userList = new ArrayList<User>();
 								userList = account.getEditorList();
 								System.out.println(userList.size());
 								for(int i = 0; i< userList.size();i++){
-									Email mail = new Email();
 									mail.sendSecretToEditor(userList.get(i).getEmail(),
 											user.getFirstname()+" "+ user.getLastname(), secret);
 								}
-								
+//								System.out.println(secret_message);
 						}
+						mail.sendEmailForUpdateForm(user.getEmail(), user.getFirstname());
 					} catch (JSONException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
 
-				// form.insertIntoForm(article_id, author_id, reviewer_id);
-
+				//TODO insert mistake (check if exists) and middle table
+				//TODO insert into reason list and comment
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -180,29 +178,7 @@ public class ReviewFormServlet extends HttpServlet {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} finally {
-				
-				
-				// email notification of form update
-				try {
-					Email mail = new Email();
-					System.out.println(user.getFirstname());
-					mail.sendEmailForUpdateForm(user.getEmail(), user.getFirstname());
-				} catch (AddressException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (MessagingException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				if (conn != null) {
-					try {
-						conn.close();
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				}
-			}
+			} 
 		}
 	}
 }

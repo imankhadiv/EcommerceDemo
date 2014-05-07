@@ -160,7 +160,7 @@ public class ArticleTable {
 		Statement stst = conn.createStatement();
 		ResultSet resultSet = stst
 				.executeQuery("SELECT distinct a.id,a.title,a.abstract,b.first_name,b.last_name,a.created_at,a.review_count,a.pdf_path, c.status FROM articles as a, users as b,forms as c where a.user_id=b.id and a.id=c.article_id and a.status='unpublished' and a.id in (select article_id from forms where reviewer_id ='"
-						+ reviewer_id + "' and article_approve=true and status in ('select', 'download') )");
+						+ reviewer_id + "' and article_approve=true  )");
 		return resultSet;
 	}
 

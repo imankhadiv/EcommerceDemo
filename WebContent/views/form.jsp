@@ -38,7 +38,7 @@
 
 			<h4>Secret Message</h4>
 			<textarea name="secret" id="secret" rows="5" cols="10"><%=form.getString("secret_message")%></textarea>
-			<div><input type="checkbox" id="secret_message"/>send email to editor<br/></div>
+			<div><input type="checkbox" name="secret_message" id="secret_message"/>send email to editor<br/></div>
 
 		</div>
 		<div class="span4">
