@@ -13,7 +13,9 @@
 	  <th>main auther</th>
 	  <th>created at</th>
 	  <th>download</th>
+	  <th>status</th>
 	  <th>review</th>
+	  <th>delete</th>
 	  
  </tr>
 	  </thead>
@@ -22,6 +24,8 @@
  %>
  <%
   while (articles.next()) {
+	  String status = articles.getString("status");
+	  String html = "";
  %>
  <tbody>
  <tr>
@@ -29,8 +33,15 @@
   <td><%=articles.getString("abstract")%></td>
   <td><%=articles.getString("first_name")+" "+articles.getString("last_name") %></td>
   <td><%=articles.getString("created_at")%></td>
-  <td><a href='<%=articles.getString("pdf_path")%>' target="_blank"><%=articles.getString("pdf_path")%></a></td> 
+  <td><a href='<%=articles.getString("pdf_path")%>' target="_blank"><%=articles.getString("pdf_path")%></a></td>
+  <td><%=articles.getString("status")%></td> 
   <td><a href="${pageContext.request.contextPath}/JDBServlet?article_id=<%=articles.getString("id")%>&action=get_form">review</a></td>
+  <td>
+ <% if(status.equals("select")){
+	out.println("<button id='delete' class='btn btn-primary' onclick=deleteBtn("+articles.getInt("id")+",'await')>delete</button>");
+ }%>
+       
+</td>
  </tr>
   </tbody>
  <%
