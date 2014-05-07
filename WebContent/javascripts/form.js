@@ -5,7 +5,6 @@ var form_id ;
 
 // TODO values to areas when the window is loaded
 window.onload = function() {
-//	form_id = getUrlParam('form_id');
 };
 
 function getUrlParam(name) {
@@ -79,6 +78,7 @@ function createForm() {
 	var level = $("#level").val();
 	var secret = $("#secret").val();
 	var summary = $("#summary").val();
+	var send_message = $("#secret_message").val();
 	var article_id = getUrlParam('article_id');
 	
 //	var auther_id = 1;
@@ -95,6 +95,7 @@ function createForm() {
 		level : level,
 		summary : summary,
 		secret : secret,
+		send_message : send_message,
 		criticism : jsonArr_criticism,
 		error : jsonArr_error
 	};
@@ -112,6 +113,7 @@ function createForm() {
 	// data: jsonString
 	// });
 	var http_request;
+	
 	try {
 		http_request = new ActiveXObject('Msxml2.XMLHTTP');
 	}
@@ -128,12 +130,56 @@ function createForm() {
 			}
 		}
 	}
+	
+	http_request = new XMLHttpRequest();
+	
 	http_request.open("POST", "ReviewFormServlet?json=" + jsonString ,
 			true);
 	http_request.send();
 	http_request.onreadystatechange = function() {
 		if (http_request.readyState == 4) {
+			alert("success");
 		}
 	};
 	//TODO send request to servlet; save to database; redirect to a new page
+}
+
+function download(id)
+{
+	
+
+}
+
+function connect(method, url)
+{
+var http_request;
+	
+	try {
+		http_request = new ActiveXObject('Msxml2.XMLHTTP');
+	}
+	catch (e) {
+		try {
+			http_request = new ActiveXObject('Microsoft.XMLHTTP');
+		}
+		catch (e2) {
+			try {
+				http_request = new XMLHttpRequest();
+			}
+			catch (e3) {
+				http_request = false;
+			}
+		}
+	}
+	
+	http_request = new XMLHttpRequest();
+	
+	http_request.open(method, url ,
+			true);
+	http_request.send();
+	http_request.onreadystatechange = function() {
+		if (http_request.readyState == 4) {
+			alert("success");
+			location.reload();
+		}
+	};	
 }

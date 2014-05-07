@@ -115,9 +115,12 @@ public class Login extends HttpServlet {
 			try {
 				if (account.login(email, password)) {
 					HttpSession session = request.getSession();
-					user.setRole(account.getUserRole(email));
-					user.setId(account.getUserId(email));
-					session.setAttribute("user", user);
+					// njy session
+					session.setAttribute("user", account.getUserByEmail(email));
+					//iman
+//					user.setRole(account.getUserRole(email));
+//					user.setId(account.getUserId(email));
+//					session.setAttribute("user", user);
 					request.getRequestDispatcher("/home.jsp").forward(request,
 							response);
 				} else {
@@ -163,7 +166,10 @@ public class Login extends HttpServlet {
 					if (account.login(email, password))
 						request.setAttribute("message",
 								"An email has been sent to you");
-					session.setAttribute("user", new User(email, password));
+					// njy change session
+					session.setAttribute("user", account.getUserByEmail(email));
+					
+//					session.setAttribute("user", new User(email, password));
 					request.getRequestDispatcher("/home.jsp").forward(request,
 							response);
 					Email mail = new Email(email, "Registeration",

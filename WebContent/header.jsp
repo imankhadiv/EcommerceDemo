@@ -15,6 +15,7 @@
 
 <script src="${pageContext.request.contextPath}/javascripts/myscript.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/form.js"></script>
+<script src="${pageContext.request.contextPath}/javascripts/delete.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/upload.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/reader.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/date.js"></script>
@@ -38,6 +39,7 @@
  <div id="header">
   <nav class="navbar navbar-default navbar-top">
 
+<<<<<<< HEAD
   <div class="navbar-inner navbar-content-center">
    <a class="brand" href="${pageContext.request.contextPath}/home.jsp">E-Journal</a>
    <ul class="nav">
@@ -62,6 +64,33 @@
      <li><a href="${pageContext.request.contextPath}/JDBServlet?action=approved_article">Approved Articles to review</a></li>
      </ul>
     </li>
+=======
+		<div class="navbar-inner navbar-content-center">
+			<a class="brand" href="${pageContext.request.contextPath}/home.jsp">E-Journal</a>
+			<ul class="nav">
+				<li><a href="${pageContext.request.contextPath}/views/userguide.jsp"><i class="icon-book"></i>User Guide</a></li>
+				<li><a href="${pageContext.request.contextPath}/views/upload-instructions.jsp"><i class="icon-upload"></i>Upload</a></li>
+				<li><a href="${pageContext.request.contextPath}/Login?action=users"><i class="icon-user"></i>Users</a></li>
+				<li class="dropdown">
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Author<b class="caret"></b></a>
+				
+					<ul class="dropdown-menu">
+					<li><a href="${pageContext.request.contextPath}/AuthorController">My Articles</a></li>
+					
+					</ul>
+				</li>
+				<li class="dropdown">
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Reviewer<b class="caret"></b></a>
+				
+					<ul class="dropdown-menu">
+					<li><a href="${pageContext.request.contextPath}/">My Reviews</a></li>
+					<%-- <li><a href="${pageContext.request.contextPath}/">Review Articles</a></li> --%>
+					<li><a href="${pageContext.request.contextPath}/JDBServlet?action=select_article">Select Articles </a></li>
+					<li><a href="${pageContext.request.contextPath}/JDBServlet?action=await_selection">Await selection </a></li>
+					<li><a href="${pageContext.request.contextPath}/JDBServlet?action=approved_article">Approved Articles to review</a></li>
+					</ul>
+				</li>
+>>>>>>> 987721d0d881cd904056e381439e3b4c35ee92ff
 
    </ul>
 

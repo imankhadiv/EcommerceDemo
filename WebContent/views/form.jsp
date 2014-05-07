@@ -5,35 +5,42 @@
 </c:import>
  <%  
  ResultSet form = (ResultSet) request.getAttribute("form"); %>
- <%  form.next();  %>
- <%  String overallstr = form.getString("overall");
- System.out.println(overallstr);%>
+ <%
+ 	String overallstr = "";
+ 	String levelstr = "";
+ 	String summary = "";
+ 	String secret_message = "";
 
+ 	while (form.next()) {
+ 		overallstr = form.getString("overall");
+ 		levelstr = form.getString("level");
+ 	}
+ %>
+<c:set var="overallstr" scope="session" value="${2000*2}"/>
 	<div class="row">
+
 		<div class="span4">
 			<p>Overall Judgment</p>
 			<select id="overall">
-				<option value="champion" >champion</option>
-				<option value="favourable" <c:if test="${overallstr==favourable}">select='selected'</c:if>>favourable</option>
-				<option value="indifferent" >indifferent</option>
-				<option value="detractor">detractor</option>
+				<option value="champion"  <%=(overallstr.equals("detractor")? "selected" :"" )%>>champion</option>
+				<option value="favourable"  <%=(overallstr.equals("detractor")? "selected" :"" )%> >favourable</option>
+				<option value="indifferent"  <%=(overallstr.equals("indifferent")? "selected" :"" )%>>indifferent</option>
+				<option value="detractor"  <%=(overallstr.equals("detractor")? "selected" :"" )%>>detractor</option>
 			</select>
-
-
-
 
 			<p>Level</p>
 			<select id="level">
-				<option value="expert">expert</option>
-				<option value="knowledgeable">knowledgeable</option>
-				<option value="outsider">outsider</option>
+				<option value="expert" <%=(levelstr.equals("levelstr")? "selected" :"" )%>>expert</option>
+				<option value="knowledgeable" <%=(levelstr.equals("knowledgeable")? "selected" :"" )%>>knowledgeable</option>
+				<option value="outsider" <%=(levelstr.equals("outsider")? "selected" :"" )%>>outsider</option>
 			</select>
 
 			<h4>Summary</h4>
-			<textarea name="summary" id="summary" rows="5" cols="10" default="summary"></textarea>
+			<textarea name="summary" id="summary" rows="5" cols="10" ><%=form.getString("summary")%></textarea>
 
 			<h4>Secret Message</h4>
-			<textarea name="secret" id="secret" rows="5" cols="10">enter your secret messsage to edittor</textarea>
+			<textarea name="secret" id="secret" rows="5" cols="10"><%=form.getString("secret_message")%></textarea>
+			<div><input type="checkbox" id="secret_message"/>send email to editor<br/></div>
 
 		</div>
 		<div class="span4">
@@ -60,7 +67,8 @@
 			</div>
 		</div>
 	</div>
-	<button type="button" onclick="createForm()">create</button>
+	<button class="btn btn-primary" type="button" onclick="createForm()">update</button>
+	<button class="btn btn-primary" type="button" onclick="createForm()">submit</button>
 	<!-- <input type="button" class="btn" value="Submit"/> -->
 <br/>
 <br/>
