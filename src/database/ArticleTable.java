@@ -1,5 +1,5 @@
-
 package database;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +14,7 @@ import java.util.List;
 
 import beans.Article;
 import beans.User;
+
 /**
  * 
  * @author Iman Rastkhadiv
@@ -49,7 +50,6 @@ public class ArticleTable {
 		return 0;
 
 	}
-
 
 	public void insertIntoArticles() throws SQLException {
 
@@ -131,43 +131,50 @@ public class ArticleTable {
 
 	public ResultSet getPublishedArticles() throws SQLException {
 		Statement stst = conn.createStatement();
-		ResultSet resultSet = stst.executeQuery("select * from articles where status = 'published'");
+		ResultSet resultSet = stst
+				.executeQuery("select * from articles where status = 'published'");
 		return resultSet;
 
 	}
-	
 
 	// return result of unpublished article list
 	// filter result with the approved forms with the same reviewer_id
 	public ResultSet getArticlesToSelect(int reviewer_id) throws SQLException {
 		Statement stst = conn.createStatement();
-		ResultSet resultSet = stst.executeQuery("SELECT distinct a.id,a.title,a.abstract,b.first_name,b.last_name,a.created_at FROM articles as a, users as b where a.id "+
-				"not in (select article_id from forms where reviewer_id='"+reviewer_id
-				+"' ) and status='unpublished' and a.user_id = b.id order by created_at;");
+		ResultSet resultSet = stst
+				.executeQuery("SELECT distinct a.id,a.title,a.abstract,b.first_name,b.last_name,a.created_at FROM articles as a, users as b where a.id "
+						+ "not in (select article_id from forms where reviewer_id='"
+						+ reviewer_id
+						+ "' ) and status='unpublished' and a.user_id = b.id order by created_at;");
 		return resultSet;
 	}
 
 	public ResultSet getAwaitingArticles(int reviewer_id) throws SQLException {
 		Statement stst = conn.createStatement();
-		ResultSet resultSet = stst.executeQuery("SELECT distinct a.id,a.title,a.abstract,b.first_name,b.last_name,a.created_at FROM articles as a, users as b where a.id "+
-				"in (select article_id from forms where reviewer_id='"+reviewer_id
-				+"' and status='select' ) and status='unpublished' and a.user_id = b.id order by created_at;");
+		ResultSet resultSet = stst
+				.executeQuery("SELECT distinct a.id,a.title,a.abstract,b.first_name,b.last_name,a.created_at FROM articles as a, users as b where a.id "
+						+ "in (select article_id from forms where reviewer_id='"
+						+ reviewer_id
+						+ "' and status='select' ) and status='unpublished' and a.user_id = b.id order by created_at;");
 		return resultSet;
 	}
 
-	//to get the article list which the application of review has already been approved
+	// to get the article list which the application of review has already been
+	// approved
 	public ResultSet getApprovedArticles(int reviewer_id) throws SQLException {
 		Statement stst = conn.createStatement();
 		ResultSet resultSet = stst
 				.executeQuery("SELECT distinct a.id,a.title,a.abstract,b.first_name,b.last_name,a.created_at,a.review_count,a.pdf_path, c.status FROM articles as a, users as b,forms as c where a.user_id=b.id and a.id=c.article_id and a.status='unpublished' and a.id in (select article_id from forms where reviewer_id ='"
-						+ reviewer_id + "' and article_approve=true and status in ('select', 'download') )");
+						+ reviewer_id
+						+ "' and article_approve=true and status in ('select', 'download') )");
 		return resultSet;
 	}
 
 	public ResultSet getArticleByID(int article_id) throws SQLException {
 		Statement stst = conn.createStatement();
 		ResultSet resultSet;
-		resultSet = stst.executeQuery("select * from articles where id='"+ article_id +"'");
+		resultSet = stst.executeQuery("select * from articles where id='"
+				+ article_id + "'");
 		return resultSet;
 	}
 
@@ -312,7 +319,7 @@ public class ArticleTable {
 
 	/**
 	 * 
-	 * @param title 
+	 * @param title
 	 * @return
 	 * @throws SQLException
 	 */
@@ -326,18 +333,19 @@ public class ArticleTable {
 		return getArticlesFromResultSet(rs);
 
 	}
-//	public ArrayList<User> getAuthors(int articleId) throws SQLException {
-//		ArrayList<User> users = new ArrayList<User>();
-//		Statement stst = conn.createStatement();
-//		ResultSet rs = stst
-//				.executeQuery("select * from article_authors where user_id = "+articleId);
-//		while(rs.next()){
-//			User user = new User();
-//			user.sete
-//		}
-//		return users;
-//		
-//	}
+
+	// public ArrayList<User> getAuthors(int articleId) throws SQLException {
+	// ArrayList<User> users = new ArrayList<User>();
+	// Statement stst = conn.createStatement();
+	// ResultSet rs = stst
+	// .executeQuery("select * from article_authors where user_id = "+articleId);
+	// while(rs.next()){
+	// User user = new User();
+	// user.sete
+	// }
+	// return users;
+	//
+	// }
 
 	/**
 	 * This method implemented to enable readers to search an article by author
@@ -408,11 +416,13 @@ public class ArticleTable {
 			Article article = new Article();
 			article.setId(rs.getInt("id"));
 			article.setUserId(rs.getString("user_id"));
-			article.setMainUser(new Account(conn).getUserById(rs.getInt("user_id")));
+			article.setMainUser(new Account(conn).getUserById(rs
+					.getInt("user_id")));
 			article.setTitle(rs.getString("title"));
 			article.setAbst(rs.getString("abstract"));
-			article.setKeywords(new KeywordTable(conn).getKeywordsByArticleId(rs.getInt("id")));
-			System.out.println("///"+article.getKeywords());
+			article.setKeywords(new KeywordTable(conn)
+					.getKeywordsByArticleId(rs.getInt("id")));
+			System.out.println("///" + article.getKeywords());
 			article.setCreatedAt(rs.getDate("created_at"));
 			article.setStatus(rs.getString("status"));
 			article.setReview_count(rs.getInt("review_count"));
@@ -430,6 +440,7 @@ public class ArticleTable {
 		rs.close();
 		return articles;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -437,75 +448,88 @@ public class ArticleTable {
 	 */
 	public ArrayList<Article> getAllArticles() throws SQLException {
 		Statement stst = conn.createStatement();
-		ResultSet rs = stst
-				.executeQuery("select * from articles");
+		ResultSet rs = stst.executeQuery("select * from articles");
 		return getArticlesFromResultSet(rs);
-					
-		
+
 	}
+
 	public ArrayList<Article> getArticlesByDate(String startDate, String endDate)
-	 		throws ParseException, SQLException {
-	 		SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-	 
-	
-	 		Date sDate = df.parse(startDate);
-	 		Date eDate = df.parse(endDate);
-	 		df.applyPattern("yyyy-MM-dd HH:mm:ss");
-	 		String stDate = df.format(sDate);
-	 	String edDate = df.format(eDate);
-	 		System.out.println(stDate);
-	 		System.out.println(edDate);
-	 		Statement stst = conn.createStatement();
-	 		ResultSet rsg = stst
-	 				.executeQuery("select * from articles where created_at between '"
-	 						+ stDate
-	 						+ "' and '"
-	 						+ edDate
-	 						+ "' and status = 'published' ");
-	 		return getArticlesFromResultSet(rsg);
+			throws ParseException, SQLException {
+		SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+
+		Date sDate = df.parse(startDate);
+		Date eDate = df.parse(endDate);
+		df.applyPattern("yyyy-MM-dd HH:mm:ss");
+		String stDate = df.format(sDate);
+		String edDate = df.format(eDate);
+		System.out.println(stDate);
+		System.out.println(edDate);
+		Statement stst = conn.createStatement();
+		ResultSet rsg = stst
+				.executeQuery("select * from articles where created_at between '"
+						+ stDate
+						+ "' and '"
+						+ edDate
+						+ "' and status = 'published' ");
+		return getArticlesFromResultSet(rsg);
 	}
+	/**
+	 * updating the article status to published 
+	 * @param articleId
+	 * @throws SQLException
+	 */
 
-//	public static void main(String[] args) throws java.text.ParseException {
-//		try {
-//			Class.forName("com.mysql.jdbc.Driver");
-//			String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
-//			Connection conn = DriverManager.getConnection(DB);
-//			ArticleTable articleTable = new ArticleTable(conn);
-//			ArrayList<Article> articles = articleTable.getArticlesByTitle("sample");
-//			// System.out.println(articles.get(0).getTitle());
-//			for (Article article : articles) {
-//				System.out.println(article.getId());
-//				System.out.println(article.getTitle());
-//				System.out.println(article.getAbst());
-//			}
-//			long DAY_IN_MS = 1000 * 60 * 60 * 24;
-//			Date date = new Date(System.currentTimeMillis() - (7 * DAY_IN_MS));
-//			System.out.println(date);
-//			for (Article article : articles) {
-//				//System.out.println(article.get);
-//				String startDateString = article.getCreatedAt();
-//				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-//				Date startDate;
-//				try {
-//					startDate = df.parse(startDateString);
-//					String newDateString = df.format(startDate);
-//					if (date.before(startDate)) {
-//						System.out.println("hello");
-//					}
-//					System.out.println(newDateString);
-//				} catch (ParseException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			// System.out.println(articles.size());
-//		} catch (ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
+	public void publishArticle(int articleId) throws SQLException {
 
+		Statement st = conn.createStatement();
+		st.executeUpdate("update articles set status = 'published' where id = "
+				+ articleId);
 
+		st.close();
+
+	}
 }
+
+// public static void main(String[] args) throws java.text.ParseException {
+// try {
+// Class.forName("com.mysql.jdbc.Driver");
+// String DB =
+// "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+// Connection conn = DriverManager.getConnection(DB);
+// ArticleTable articleTable = new ArticleTable(conn);
+// ArrayList<Article> articles = articleTable.getArticlesByTitle("sample");
+// // System.out.println(articles.get(0).getTitle());
+// for (Article article : articles) {
+// System.out.println(article.getId());
+// System.out.println(article.getTitle());
+// System.out.println(article.getAbst());
+// }
+// long DAY_IN_MS = 1000 * 60 * 60 * 24;
+// Date date = new Date(System.currentTimeMillis() - (7 * DAY_IN_MS));
+// System.out.println(date);
+// for (Article article : articles) {
+// //System.out.println(article.get);
+// String startDateString = article.getCreatedAt();
+// DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+// Date startDate;
+// try {
+// startDate = df.parse(startDateString);
+// String newDateString = df.format(startDate);
+// if (date.before(startDate)) {
+// System.out.println("hello");
+// }
+// System.out.println(newDateString);
+// } catch (ParseException e) {
+// e.printStackTrace();
+// }
+// }
+// // System.out.println(articles.size());
+// } catch (ClassNotFoundException e) {
+// // TODO Auto-generated catch block
+// e.printStackTrace();
+// } catch (SQLException e) {
+// // TODO Auto-generated catch block
+// e.printStackTrace();
+// }
+// }
+

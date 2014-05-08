@@ -4,7 +4,7 @@
 <%@ page import="beans.*"%>
 
 <c:import url="/header.jsp">
-	<c:param name="title" value="Users"></c:param>
+	<c:param name="title" value="EditorPage"></c:param>
 </c:import>
 <%
 	ArrayList<Article> articles = (ArrayList<Article>) session
@@ -18,17 +18,17 @@
  
  </c:if>  --%>
 
+<%
+	if (articles == null) {
+%>
+<jsp:forward page="/home.jsp"></jsp:forward>
+<%
+	}
+%>
 <c:choose>
-	<%-- 
-	<c:when test="${articles == null}">
-		<c:redirect url="../home.jsp"></c:redirect>
-	</c:when> --%>
 
 
 	<c:when test="${param.id != null}">
-
-
-
 
 
 		<%
@@ -37,7 +37,7 @@
 		<%
 			if (id >= articles.size()) {
 		%>
-		<c:redirect url="../home.jsp"></c:redirect>
+		<c:redirect url="${pageContext.request.contextPath}/home.jsp"></c:redirect>
 
 
 		<%
@@ -47,17 +47,44 @@
 			Article article = articles.get(id);
 
 					String message = (String) request.getAttribute("message");
+					String info = (String) request.getAttribute("info");
 		%>
 		<div class="hero-unit " id="container">
+			<%
+				if (info != null) {
+			%>
+			<div class="alert alert-info">
+				<a href="#" class="close" data-dismiss="error">&times;</a> <strong>Info!</strong>
+				<%=info%>
+
+			</div>
+			<%
+				}
+			%>
 			<div class="row">
-					<div class="span8">
-						<h1><%=article.getTitle()%></h1>
-					</div>
-					<div class="span2"><br /> <a
-								href="${pageContext.request.contextPath}/ReaderController?id=<%= articles.indexOf(article) %>"
-								class="btn btn-success btn-large active">view</a>
-					</div>
-			
+				<div class="span8">
+					<h2><%=article.getTitle()%></h2>
+				</div>
+				<div class="span1" style="margin-right:0px">
+					
+					
+						<a
+							href="${pageContext.request.contextPath}/ReaderController?id=<%= articles.indexOf(article) %>"
+							class="btn btn-success btn-large active">view</a>
+				 </div>
+				<div class="span1 offset0">
+
+						<form action="${pageContext.request.contextPath}/EditorController"
+							method="post">
+
+							<input type="hidden" value="<%=articles.indexOf(article)%>"
+								name="articleId">
+
+							<button type="submit" class="btn btn-danger  btn-lg ">Publish
+								Article</button>
+
+						</form>
+				</div>
 			</div>
 			<hr>
 			<div class="row">
@@ -65,7 +92,7 @@
 
 					<h2>Abstract</h2>
 					<p><%=article.getAbst()%></p>
-					
+
 				</div>
 
 
@@ -142,7 +169,18 @@
 					</table>
 				</div>
 
-				<h3>Reviews</h3>
+				<h3>Review Forms</h3>
+				<%
+					if (article.getForms() != null
+									&& article.getForms().size() == 0) {
+				%>
+				<div class="alert alert-info">
+					<a href="#" class="close" data-dismiss="error">&times;</a> <strong>Info!</strong>
+					Non form has been submitted for this article. <br />
+				</div>
+				<%
+					}
+				%>
 				<table class="table table-striped table-hover table-borderd">
 					<tr class="row">
 						<th>Editor Accepted</th>
@@ -153,17 +191,18 @@
 					</tr>
 					<%
 						for (ReviewForm form : article.getForms()) {
+									if (form.getArticleApproved().equals("1")) {
 					%>
 					<%
 						String progressClass;
-									String progressStatus;
-									if (form.getFormApproved().equals("0")) {
-										progressClass = "bar-warning";
-										progressStatus = "Pending";
-									} else {
-										progressClass = "bar-success";
-										progressStatus = "Approved";
-									}
+										String progressStatus;
+										if (form.getFormApproved().equals("0")) {
+											progressClass = "bar-warning";
+											progressStatus = "Pending";
+										} else {
+											progressClass = "bar-success";
+											progressStatus = "Approved";
+										}
 					%>
 
 					<tr class="row">
@@ -202,34 +241,90 @@
 
 						<%
 							}
+										}
+									}
 						%>
 
-						<%
-							}
-						%>
+
 					</tr>
 
 
 				</table>
 
-				<form action="${pageContext.request.contextPath}/EditorController"
-					method="post">
-
-					<input type="hidden" value="<%=article.getId()%>"
-						name="articleId">
-
-					<button type="button" class="btn btn-danger  btn-lg ">Publish Article</button>
-
-
-				</form>
-
-
-
-
 			</div>
+			<hr />
+
+			<h3>Reviewers awaiting for approval to peer-review this article</h3>
+			<%
+				if (article.getForms() != null
+								&& article.getForms().size() == 0) {
+			%>
+			<div class="alert alert-info">
+				<a href="#" class="close" data-dismiss="error">&times;</a> <strong>Info!</strong>
+				There is no peer-review request for this article <br />
+			</div>
+			<%
+				}
+			%>
+			<table class="table table-striped table-hover table-borderd">
+				<tr class="row">
+					<th>firstname</th>
+					<th>lastname</th>
+					<th>email</th>
+					<th>Approve</th>
+					<th>Reject</th>
+
+				</tr>
+				<%
+					for (ReviewForm form : article.getForms()) {
+								if (form.getArticleApproved().equals("0")) {
+				%>
+
+
+				<tr class="row">
+					<td><%=form.getReviewer().getFirstname()%></td>
+					<td><%=form.getReviewer().getLastname()%></td>
+					<td><%=form.getReviewer().getEmail()%></td>
+					<td><a
+						href="${pageContext.request.contextPath}/EditorController?action=confirm&formId=<%= article.getForms().indexOf(form)
+  
+ %>&articleId=<%= articles.indexOf(article) %>"
+						class="btn btn-primary btn-success">Confirm</a></td>
+					<td><a
+						href="${pageContext.request.contextPath}/EditorController?action=reject&formId=<%= article.getForms().indexOf(form)
+  
+ %>&articleId=<%= articles.indexOf(article) %>"
+						class="btn btn-primary btn-danger">Reject</a></td>
+					<%
+						}
+
+								}
+					%>
+				</tr>
+
+
+			</table>
+
+
+
+
+
+
+		</div>
 	</c:when>
 	<c:otherwise>
 		<div class="hero-unit " id="container">
+		<%		String info = (String) request.getAttribute("info");
+				if (info != null) {
+			%>
+			<div class="alert alert-info">
+				<a href="#" class="close" data-dismiss="error">&times;</a> <strong>Info!</strong>
+				<%=info%>
+
+			</div>
+			<%
+				}
+			%>
 			<h1>Articles</h1>
 
 			<table class="table table-striped table-hover table-borderd">
@@ -278,6 +373,6 @@
 
 
 
-
+</div>
 
 <c:import url="/footer.jsp"></c:import>

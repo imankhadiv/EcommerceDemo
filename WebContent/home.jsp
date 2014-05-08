@@ -19,7 +19,7 @@
 	if (message != null) {
 %>
 <div class="alert alert-error">
-	<a href="#" class="close" data-dismiss="error">&times;</a> <strong>Error!</strong>
+	<a href="#" class="close" data-dismiss="error">&times;</a> <strong>Info!</strong>
 	<%=message%>
 	<br />
 </div>

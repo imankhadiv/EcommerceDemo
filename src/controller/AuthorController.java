@@ -216,10 +216,7 @@ public class AuthorController extends HttpServlet {
 					} else {
 						if (item.getFieldName().equals("articleId")){
 							this.articleId = Integer.valueOf(item.getString());
-							System.out.println(item.getString()+".........");
-							System.out.println(item.getFieldName());
 						}
-						System.out.println(item.getFieldName()+"outside else");
 					}
 				}
 			}

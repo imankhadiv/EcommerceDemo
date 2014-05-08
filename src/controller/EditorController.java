@@ -23,7 +23,9 @@ import database.Email;
 import database.Form;
 
 /**
- * Servlet implementation class EditorController
+ * 
+ * @author Iman Rastkhadiv
+ * 
  */
 public class EditorController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -75,6 +77,7 @@ public class EditorController extends HttpServlet {
 					request.setAttribute("users", users);
 					request.getRequestDispatcher("/views/registeredusers.jsp")
 							.forward(request, response);
+
 				} else if (formId != null && articleId != null) {
 					@SuppressWarnings("unchecked")
 					ArrayList<Article> articles = (ArrayList<Article>) session
@@ -82,27 +85,35 @@ public class EditorController extends HttpServlet {
 
 					if (articles == null) {
 						request.setAttribute("message",
-								"your session is expired.\nPleas login and try again");
-						request.getRequestDispatcher("/home.jsp")
-								.forward(request, response);
-					}else {
-						Article article = articles.get(Integer.valueOf(articleId));
-						ReviewForm form = article.getForms().get(Integer.valueOf(formId));
+								"your session is expired.\nPlease login and try again");
+						request.getRequestDispatcher("/home.jsp").forward(
+								request, response);
+					} else {
+						Article article = articles.get(Integer
+								.valueOf(articleId));
+						ReviewForm form = article.getForms().get(
+								Integer.valueOf(formId));
 						System.out.println(article.getTitle());
 						System.out.println(form.getId());
 						Form f = new Form(conn);
-						f.approveTheForm(form.getId());
-						articles = (ArrayList<Article>) (new ArticleTable(
-								conn).getAllArticles());
-						session.setAttribute("editorArticles", articles);
-						request.getRequestDispatcher("/views/editor-articles.jsp")
-						.forward(request, response);
+						if (action != null && action.equals("confirm")) {
+							f.approveTheArticleForm(form.getId());
 
-						
-						
-						
+						} else if (action != null && action.equals("reject")) {
+							f.rejectTheArticleForm(form.getId());
+
+						} else {
+							f.approveTheForm(form.getId());
+						}
+						articles = (ArrayList<Article>) (new ArticleTable(conn)
+								.getAllArticles());
+						session.setAttribute("editorArticles", articles);
+						request.setAttribute("info", "Form updated successfull");
+						request.getRequestDispatcher(
+								"/views/editor-articles.jsp?id=" + articleId)
+								.forward(request, response);
+
 					}
-					
 
 				} else if (action != null && action.equals("articles")) {
 					@SuppressWarnings("unchecked")
@@ -112,13 +123,16 @@ public class EditorController extends HttpServlet {
 					request.getRequestDispatcher("/views/editor-articles.jsp")
 							.forward(request, response);
 
-				}else if((action != null && action.equals("invite"))&&(userId != null)){
+				} else if ((action != null && action.equals("invite"))
+						&& (userId != null)) {
 					Account account = new Account(conn);
 					User u = account.getUserById(Integer.valueOf(userId));
-					
-					account.changeRole("editor",u.getId());
+
+					account.changeRole("editor", u.getId());
 					Email email = new Email();
-					email.setBody("Dear "+user.getFirstname()+",<br>You are invited to be an editor in our system<br/>You can login with your previous password and access the editor page<br><br>Thank you");
+					email.setBody("Dear "
+							+ user.getFirstname()
+							+ ",<br>You are invited to be an editor in our system<br/>You can login with your previous password and access the editor page<br><br>Thank you");
 					email.setRecipient(u.getEmail());
 					email.setSubject("Invitation");
 					email.sendEmail();
@@ -127,9 +141,10 @@ public class EditorController extends HttpServlet {
 					request.setAttribute("users", users);
 					request.getRequestDispatcher("/views/registeredusers.jsp")
 							.forward(request, response);
-					request.setAttribute("message", "Your invitation is sent successfully");
+					request.setAttribute("message",
+							"Your invitation is sent successfully");
 				}
-				
+
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -142,8 +157,15 @@ public class EditorController extends HttpServlet {
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} finally {
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
 			}
-
 		}
 	}
 
@@ -153,7 +175,73 @@ public class EditorController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		String action = request.getParameter("action");
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		@SuppressWarnings("unchecked")
+		ArrayList<Article> articles = (ArrayList<Article>) session
+				.getAttribute("editorArticles");
+		String formId = request.getParameter("formId");
+		String articleId = request.getParameter("articleId");
+		String userId = request.getParameter("userId");
+		System.out.println(articleId);
+		if (user == null) {
+			request.setAttribute("message",
+					"You need to login to view the users");
+			request.getRequestDispatcher("/home.jsp")
+					.forward(request, response);
+
+		} else if (!user.getRole().equals("editor")) {
+			request.setAttribute("message",
+					"You are not an editor. You do not have permission to open this page");
+			request.getRequestDispatcher("/home.jsp")
+					.forward(request, response);
+
+		} else {
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+				conn = DriverManager.getConnection(DB);
+				if (articleId != null) {
+
+					Article article = articles.get(Integer.valueOf(articleId));
+					ArticleTable at = new ArticleTable(conn);
+					at.publishArticle(article.getId());
+					articles = (ArrayList<Article>) (new ArticleTable(
+							conn).getAllArticles());
+					session.setAttribute("editorArticles", articles);
+					Email mail = new Email();
+					mail.setBody("Dear "+article.getMainUser().getFirstname()+",<br>Your article has been published successfull.");
+					mail.setSubject("Published Successfully");
+					mail.setRecipient(article.getMainUser().getEmail());
+					mail.sendEmail();
+					request.setAttribute("info", "Article published successfully");
+					
+					request.getRequestDispatcher("/views/editor-articles.jsp")
+							.forward(request, response);
+					
+				}
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				request.setAttribute("message", "Record not found");
+				request.getRequestDispatcher("/home.jsp").forward(request,
+						response);
+			} finally {
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+
 	}
 
 }

@@ -138,6 +138,7 @@ public class Account {
 			user.setFirstname(rs.getString("first_name"));
 			user.setLastname(rs.getString("last_name"));
 			user.setEmail(rs.getString("email"));
+			user.setRole(rs.getString("role"));
 		}
 		rs.close();
 		return user;

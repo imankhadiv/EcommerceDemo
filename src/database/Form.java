@@ -172,6 +172,7 @@ public class Form {
 			form.setSecrete(rs.getString("secret_message"));
 			form.setFormApproved(rs.getString("form_approve"));
 			form.setArticleApproved(rs.getString("article_approve"));
+			form.setReviewer(new Account(conn).getUserById(rs.getInt("reviewer_id")));
 			form.setReasons(new ReasonTable(conn).getFormReasons(rs.getInt("id")));
 			forms.add(form);
 			
@@ -209,7 +210,11 @@ public class Form {
 		st.close();
 	}
 	
-	
+	/**
+	 * 
+	 * @param formId
+	 * @throws SQLException
+	 */
 
 	public void approveTheForm(int formId) throws SQLException {
 		
@@ -218,6 +223,34 @@ public class Form {
 				+ formId );
 				
 		st.close();
+		
+	}
+	/**
+	 * Rejecting the aricle-review in form
+	 * @param formId
+	 * @throws SQLException
+	 */
+	public void approveTheArticleForm(int formId) throws SQLException {
+		
+		Statement st = conn.createStatement();
+		st.executeUpdate("update forms set article_approve = true where id = "
+				+ formId );
+		
+		st.close();
+		
+	}
+	public void rejectTheArticleForm(int formId) throws SQLException {
+		
+		String sql = "delete from forms where id = "+formId;
+		Statement st = conn.createStatement();
+		st.execute(sql);
+		st.close();
+		
+	}
+	public User getReviewer(int userId) throws SQLException {
+		Account account = new Account(conn);
+		User reviewer = account.getUserById(userId);
+		return reviewer;
 		
 	}
 	

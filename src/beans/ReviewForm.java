@@ -16,6 +16,7 @@ public class ReviewForm {
 	private String articleApproved;
 	private List<Comment> commentList;
 	private List<Error> errors;
+	private User reviewer;//this is useful to get the reviewer details in editor page
 
 	private ArrayList<Reason> reasons;
 
@@ -117,4 +118,11 @@ public class ReviewForm {
 	public void setReasons(ArrayList<Reason> reasons) {
 		this.reasons = reasons;
 	}
+	public User getReviewer() {
+		return reviewer;
+	}
+	public void setReviewer(User reviewer) {
+		this.reviewer = reviewer;
+	}
+	
 }
