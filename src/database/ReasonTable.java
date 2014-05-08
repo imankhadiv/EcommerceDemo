@@ -45,6 +45,8 @@ public class ReasonTable {
 			reasons.add(reason);
 		
 		}
+		if(rs!=null)rs.close();
+		if(stst!=null)stst.close();
 		return reasons;
 		
 	}

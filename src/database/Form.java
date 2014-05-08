@@ -174,6 +174,7 @@ public class Form {
 			form.setArticleApproved(rs.getString("article_approve"));
 			form.setReviewer(new Account(conn).getUserById(rs.getInt("reviewer_id")));
 			form.setReasons(new ReasonTable(conn).getFormReasons(rs.getInt("id")));
+			form.setErrors(new MistakeDB(conn).getListOfErrors(articleId,rs.getInt("reviewer_id")));
 			forms.add(form);
 			
 //			form.setCommentList(commentList);

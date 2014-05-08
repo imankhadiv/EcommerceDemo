@@ -23,7 +23,6 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import beans.Article;
-import beans.Keyword;
 import beans.User;
 import database.Account;
 import database.ArticleTable;

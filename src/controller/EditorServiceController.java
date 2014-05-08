@@ -53,12 +53,6 @@ public class EditorServiceController extends HttpServlet {
 						.forward(request, response);
 			} else {
 				try {
-					System.out.println("inside try");
-//					@SuppressWarnings("unchecked")
-//					ArrayList<Article> articles = (ArrayList<Article>) session
-//							.getAttribute("editorArticles");
-//					String fileName = articles.get(Integer.valueOf(articleId))
-//							.getPdfPath();
 
 					String relativePath = getServletContext().getRealPath("")
 							+ File.separator + "resources" + File.separator

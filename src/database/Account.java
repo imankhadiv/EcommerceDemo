@@ -33,6 +33,7 @@ public class Account {
 		int count = 0;
 		if (rs.next()) {
 			count = rs.getInt("count");
+			count+=1;
 		}
 		rs.close();
 		if (count == 0) {
