@@ -8,6 +8,7 @@
 </c:import>
 <%
 	String message = (String) request.getAttribute("message");
+	String info = (String) request.getAttribute("info");
 %>
 
 <%-- <c:if test="${message != ''}">
@@ -19,8 +20,19 @@
 	if (message != null) {
 %>
 <div class="alert alert-error">
-	<a href="#" class="close" data-dismiss="error">&times;</a> <strong>Info!</strong>
+	<a href="#" class="close" data-dismiss="error">&times;</a> <strong>Error!</strong>
 	<%=message%>
+	<br />
+</div>
+<%
+	}
+%>
+<%
+	if (info != null) {
+%>
+<div class="alert alert-success">
+	<a href="#" class="close" data-dismiss="error">&times;</a> <strong>success!</strong>
+	<%=info%>
 	<br />
 </div>
 <%

@@ -120,4 +120,14 @@
     <servlet-name>EditorController</servlet-name>
     <url-pattern>/EditorController</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>EditorServiceController</display-name>
+    <servlet-name>EditorServiceController</servlet-name>
+    <servlet-class>controller.EditorServiceController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EditorServiceController</servlet-name>
+    <url-pattern>/EditorServiceController</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -93,17 +93,7 @@ public class Login extends HttpServlet {
 		}
 
 		Account account = new Account(conn);
-//		if (action.equals("users")) {
-//			try {
-//				ResultSet result = account.getRecords();
-//				request.setAttribute("users", result);
-//				request.getRequestDispatcher("/views/registeredusers.jsp")
-//						.forward(request, response);
-//			} catch (SQLException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
+
 		if (action.equals("login")) {
 			String email = request.getParameter("email");
 			String password = request.getParameter("password");
@@ -117,10 +107,6 @@ public class Login extends HttpServlet {
 					HttpSession session = request.getSession();
 					// njy session
 					session.setAttribute("user", account.getUserByEmail(email));
-					//iman
-//					user.setRole(account.getUserRole(email));
-//					user.setId(account.getUserId(email));
-//					session.setAttribute("user", user);
 					request.getRequestDispatcher("/home.jsp").forward(request,
 							response);
 				} else {
@@ -155,6 +141,9 @@ public class Login extends HttpServlet {
 
 			try {
 				if (account.exists(email)) {
+					HttpSession session = request.getSession();
+					if(session.getAttribute("user") != null)
+					session.removeAttribute("user");
 					request.setAttribute("message",
 							"An account already exists with this email!");
 					request.getRequestDispatcher("/views/register.jsp")
@@ -164,16 +153,17 @@ public class Login extends HttpServlet {
 					account.create(email, confirmpassword, firstname, lastname);
 					HttpSession session = request.getSession();
 					if (account.login(email, password))
-						request.setAttribute("message",
-								"An email has been sent to you");
+						request.setAttribute("info",
+								"Thank you for registering<br/>An email has been sent to you");
 					// njy change session
 					session.setAttribute("user", account.getUserByEmail(email));
 					
 //					session.setAttribute("user", new User(email, password));
 					request.getRequestDispatcher("/home.jsp").forward(request,
 							response);
+					User user = account.getUserByEmail(email);
 					Email mail = new Email(email, "Registeration",
-							"Thank you for registering");
+							"Dear "+user.getFirstname()+"<br/>Thank you for registering");
 					mail.sendEmail();
 				}
 

@@ -119,7 +119,7 @@ public class Email {
 		this.subject = "Registration Successfull";
 		this.body = "Dear "
         + name
-        + ",\n\nThank you for uploading your article ";
+        + ",<br/><br/>Thank you for uploading your article ";
 		sendEmail();
 	}
 	
