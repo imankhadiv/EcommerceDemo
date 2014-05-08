@@ -20,6 +20,7 @@
  </tr>
 	  </thead>
  <%
+  System.out.println("success");
   ResultSet articles = (ResultSet) request.getAttribute("article");
  %>
  <%

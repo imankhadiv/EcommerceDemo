@@ -155,7 +155,7 @@ public class ArticleTable {
 				.executeQuery("SELECT distinct a.id,a.title,a.abstract,b.first_name,b.last_name,a.created_at FROM articles as a, users as b where a.id "
 						+ "in (select article_id from forms where reviewer_id='"
 						+ reviewer_id
-						+ "' and status='select' ) and status='unpublished' and a.user_id = b.id order by created_at;");
+						+ "' and form_status='select' ) and status='unpublished' and a.user_id = b.id order by created_at;");
 		return resultSet;
 	}
 
@@ -168,9 +168,7 @@ public class ArticleTable {
 		System.out.println(sqlString);
 		ResultSet resultSet = stst
 
-				.executeQuery("SELECT distinct a.id,a.title,a.abstract,b.first_name,b.last_name,a.created_at,a.review_count,a.pdf_path, c.status FROM articles as a, users as b,forms as c where a.user_id=b.id and a.id=c.article_id and a.status='unpublished' and a.id in (select article_id from forms where reviewer_id ='"
-						+ reviewer_id
-						+ "' and article_approve=true and status in ('select', 'download') )");
+				.executeQuery(sqlString);
 
 		return resultSet;
 	}
