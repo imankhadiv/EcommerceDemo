@@ -62,7 +62,7 @@ public class CommentDB {
 		int form_id =  rs.getInt("id");
 		// insert into reason list if not exist
 		String sql = "insert into reviewer_reason_list (form_id,reviewer_id,title) "
-				+ "select "
+				+ "select distinct "
 				+ "'"
 				+ form_id
 				+ "','"
@@ -75,7 +75,7 @@ public class CommentDB {
 				+ "' and reviewer_id='"
 				+ reviewer_id
 				+ "' and title = '" + title + "')";
-		System.out.println(sql);
+		System.out.println("reviewer_reason_list sql :"+sql);
 		st.execute(sql);
 		// get reason id
 		sql = "select id from reviewer_reason_list where form_id = '"+form_id+"' and reviewer_id = '"+reviewer_id+"' and title ='"+title+"'";

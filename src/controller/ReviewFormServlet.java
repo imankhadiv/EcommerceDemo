@@ -173,6 +173,13 @@ public class ReviewFormServlet extends HttpServlet {
 						
 						form.updateStatus(typeString, article_id, user.getId());						
 						mail.sendEmailForUpdateForm(user.getEmail(), user.getFirstname());
+						if (conn != null) {
+							try {
+								conn.close();
+							} catch (SQLException e) {
+								e.printStackTrace();
+							}
+						}
 					} catch (JSONException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
