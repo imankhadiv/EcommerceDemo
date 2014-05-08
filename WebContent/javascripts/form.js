@@ -73,23 +73,16 @@ function createForm() {
 		});
 	}
 	;
-
+	var type = $("#status").val();
 	var overall = $("#overall").val();
 	var level = $("#level").val();
 	var secret = $("#secret").val();
 	var summary = $("#summary").val();
-	var send_message = $("#secret_message").val();
+	var send_message =$("#secret_message").prop('checked');
 	var article_id = getUrlParam('article_id');
-	
-//	var auther_id = 1;
-//	// auther_id = getUrlParam('auther_id');
-//	var reviewer_id = 38;
-//	// reviewer_id = getUrlParam('reviewer_id');
-//	var article_id = 1;
-//	// article_id = getUrlParam('article_id');
-	
 	// form the json
 	var json = {
+		type : type,
 		article_id : article_id,
 		overall : overall,
 		level : level,
@@ -101,17 +94,7 @@ function createForm() {
 	};
 
 	var jsonString = JSON.stringify(json);
-	alert(jsonString);
-
-	// $.ajax({
-	// url: '/FormServlet',
-	// type: 'post',
-	// dataType: 'json',
-	// success: function () {
-	// alert(success);
-	// },
-	// data: jsonString
-	// });
+//	alert(jsonString);
 	var http_request;
 	
 	try {
@@ -138,11 +121,12 @@ function createForm() {
 	http_request.send();
 	http_request.onreadystatechange = function() {
 		if (http_request.readyState == 4) {
-			alert("success");
+			window.location.replace("/EcommerceDemo/JDBServlet?action=approved_article");
 		}
 	};
 	//TODO send request to servlet; save to database; redirect to a new page
 }
+
 
 
 
@@ -174,7 +158,7 @@ var http_request;
 	http_request.send();
 	http_request.onreadystatechange = function() {
 		if (http_request.readyState == 4) {
-			alert("success");
+//			alert("success");
 			location.reload();
 		}
 	};	

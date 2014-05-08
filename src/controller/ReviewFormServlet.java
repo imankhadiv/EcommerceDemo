@@ -21,11 +21,13 @@ import org.json.JSONObject;
 
 import beans.Comment;
 import beans.Error;
+import beans.Mistake;
 import beans.ReviewForm;
 import beans.User;
 import database.Account;
 import database.Email;
 import database.Form;
+import database.MistakeDB;
 
 /**
  * Servlet implementation class ReviewFormServlet
@@ -81,17 +83,17 @@ public class ReviewFormServlet extends HttpServlet {
 		// this is the user id
 
 		else {
-			String secret_message ="";
 			try {
 				// start connection with database
 				Class.forName("com.mysql.jdbc.Driver");
 				String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
 				conn = DriverManager.getConnection(DB);
 				Form form = new Form(conn);
-				
+				MistakeDB mistakeDB = new MistakeDB(conn);
 				if (jsonString != null) {
 					try {
 						JSONObject jsonObject = new JSONObject(jsonString);
+						int article_id = jsonObject.getInt("article_id");
 						// get the error json array
 						String json_errors = jsonObject.get("error").toString();
 						System.out.println(json_errors);
@@ -105,6 +107,7 @@ public class ReviewFormServlet extends HttpServlet {
 								String errorString = errorJsonArray
 										.getJSONObject(i).getString("error");
 								Error error = new Error(errorString);
+								mistakeDB.insertIntoError(article_id, user.getId(), errorString);
 								errorList.add(error);
 							}
 							System.out.println(errorJsonArray.getJSONObject(0));
@@ -136,7 +139,8 @@ public class ReviewFormServlet extends HttpServlet {
 									.getJSONObject(0));
 						}
 						// update form
-						int article_id = jsonObject.getInt("article_id");
+						String typeString = jsonObject.getString("type").toString();
+						
 						String level = jsonObject.getString("level").toString();
 						String summary = jsonObject.getString("summary")
 								.toString();
@@ -146,31 +150,32 @@ public class ReviewFormServlet extends HttpServlet {
 								.toString();
 						form.updateForm(article_id, user.getId(), level,
 								summary, secret, overall);
-						secret_message = jsonObject.getString("send_message");
-						
-						System.out.println("secrete message is "+secret_message);
-						
+						boolean secret_message = jsonObject.getBoolean("send_message");
+//						System.out.println("secrete message is "+secret_message);
+						Email mail = new Email();
 						// send email to editors if the secret message is selected
-						if(secret_message.length()>0 && secret_message.equals("on")){
+						if(secret_message&&(!typeString.equals("update"))){
 							Account account = new Account(conn);
 							List<User> userList = new ArrayList<User>();
 								userList = account.getEditorList();
 								System.out.println(userList.size());
 								for(int i = 0; i< userList.size();i++){
-									Email mail = new Email();
 									mail.sendSecretToEditor(userList.get(i).getEmail(),
 											user.getFirstname()+" "+ user.getLastname(), secret);
 								}
-								
+//								System.out.println(secret_message);
 						}
+						
+						form.updateStatus(typeString, article_id, user.getId());						
+						mail.sendEmailForUpdateForm(user.getEmail(), user.getFirstname());
 					} catch (JSONException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
 
-				// form.insertIntoForm(article_id, author_id, reviewer_id);
-
+				//TODO insert mistake (check if exists) and middle table
+				//TODO insert into reason list and comment
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -180,29 +185,7 @@ public class ReviewFormServlet extends HttpServlet {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} finally {
-				
-				
-				// email notification of form update
-				try {
-					Email mail = new Email();
-					System.out.println(user.getFirstname());
-					mail.sendEmailForUpdateForm(user.getEmail(), user.getFirstname());
-				} catch (AddressException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (MessagingException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				if (conn != null) {
-					try {
-						conn.close();
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				}
-			}
+			} 
 		}
 	}
 }

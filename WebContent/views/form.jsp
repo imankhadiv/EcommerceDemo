@@ -7,12 +7,13 @@
  ResultSet form = (ResultSet) request.getAttribute("form"); %>
  <%
  	String overallstr = "";
- 	String levelstr = "";
+  	String levelstr = "";
  	String summary = "";
  	String secret_message = "";
-
- 		overallstr = form.getString("overall");
- 		levelstr = form.getString("level");
+ 	overallstr = form.getString("overall");
+ 	levelstr = form.getString("level");
+ 	String statusString ="";
+ 	statusString = form.getString("form_status");
  %>
 <c:set var="overallstr" scope="session" value="${2000*2}"/>
 	<div class="row">
@@ -38,7 +39,15 @@
 
 			<h4>Secret Message</h4>
 			<textarea name="secret" id="secret" rows="5" cols="10"><%=form.getString("secret_message")%></textarea>
-			<div><input type="checkbox" id="secret_message"/>send email to editor<br/></div>
+			<div><p><input type="checkbox" name="secret_message" id="secret_message"/>send email to editor<br/></p></div>
+			<select id="status">
+				<option value="download" <%=(statusString.equals("download")? "selected" :"" )%>>download</option>
+				<option value="update" <%=(statusString.equals("update")? "selected" :"" )%>>update</option>
+				<option value="submit" <%=(statusString.equals("submit")? "selected" :"" )%> >submit</option>
+				<option value="accept" <%=(statusString.equals("accept")? "selected" :"" )%>>accept</option>
+				<option value="reject" <%=(statusString.equals("reject")? "selected" :"" )%>>reject</option>
+				<option value="final reject" <%=(statusString.equals("final reject")? "selected" :"" )%>>final reject</option>
+			</select>
 
 		</div>
 		<div class="span4">
@@ -65,8 +74,8 @@
 			</div>
 		</div>
 	</div>
-	<button class="btn btn-primary" type="button" onclick="createForm()">update</button>
-	<button class="btn btn-primary" type="button" onclick="createForm()">submit</button>
+	<button class="btn btn-primary" type="button" onclick="createForm()">Submit</button>
+	
 	<!-- <input type="button" class="btn" value="Submit"/> -->
 <br/>
 <br/>
