@@ -54,21 +54,28 @@ public class ReaderController extends HttpServlet {
 		String text = request.getParameter("value");
 		String fromDate = request.getParameter("from");
 		String toDate = request.getParameter("to");
+		String view = request.getParameter("view");
 		
+		if(articleId != null || view !=null){
+			String relativePath="";
+			try {
 		if (articleId != null) {
 			response.setContentType("application/pdf");
 			// ServletContext ctx = getServletContext();
 			HttpSession session = request.getSession(false);
-			try {
+			
 				@SuppressWarnings("unchecked")
 				ArrayList<Article> articles = (ArrayList<Article>) session
 						.getAttribute("readerArticles");
 				String fileName = articles.get(Integer.valueOf(articleId))
 						.getPdfPath();
 
-				String relativePath = getServletContext().getRealPath("")
+				 relativePath = getServletContext().getRealPath("")
 						+ File.separator + "resources" + File.separator
 						+ fileName;
+			}else if(view != null && view.equals("userguide")){
+					  relativePath = getServletContext().getRealPath("")+File.separator+"userguide"+File.separator+"userguide.pdf";
+				}
 				System.out.println(relativePath);
 				File nfsPDF = new File(relativePath);
 				FileInputStream fis;
@@ -87,7 +94,7 @@ public class ReaderController extends HttpServlet {
 				}
 				sos.flush();
 				bis.close();
-			} catch (Exception e) {
+		} catch (Exception e) {
 				request.setAttribute("message", "pdf not found");
 				try {
 					request.getRequestDispatcher("/home.jsp").forward(request,
@@ -100,9 +107,9 @@ public class ReaderController extends HttpServlet {
 
 				}
 				e.printStackTrace();
-			}
+		}}
 
-		} else {
+	else {
 
 			try {
 				Class.forName("com.mysql.jdbc.Driver");

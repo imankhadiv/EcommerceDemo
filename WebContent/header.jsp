@@ -41,7 +41,7 @@
 		<div class="navbar-inner navbar-content-center">
 			<a class="brand" href="${pageContext.request.contextPath}/home.jsp">E-Journal</a>
 			<ul class="nav">
-				<li><a href="${pageContext.request.contextPath}/views/userguide.jsp"><i class="icon-book"></i>User Guide</a></li>
+				<li><a href="${pageContext.request.contextPath}/ReaderController?view=userguide"><i class="icon-book"></i>User Guide</a></li>
 				<li><a href="${pageContext.request.contextPath}/views/upload-instructions.jsp"><i class="icon-upload"></i>Upload</a></li>
 				<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Author<b class="caret"></b></a>
