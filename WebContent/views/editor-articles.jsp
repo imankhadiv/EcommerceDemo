@@ -69,7 +69,7 @@
 					
 					
 						<a
-							href="${pageContext.request.contextPath}/ReaderController?id=<%= articles.indexOf(article) %>"
+							href="${pageContext.request.contextPath}/EditorServiceController?source=<%= article.getPdfPath() %>"
 							class="btn btn-success btn-large active">view</a>
 				 </div>
 				<div class="span1 offset0">

@@ -15,9 +15,10 @@ import javax.servlet.http.HttpSession;
 
 import beans.Article;
 import beans.User;
-
 /**
- * Servlet implementation class EditorServiceController
+ * 
+ * @author Iman
+ *
  */
 public class EditorServiceController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -38,8 +39,9 @@ public class EditorServiceController extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String articleId = request.getParameter("id");
+		String source = request.getParameter("source");
 
-		if (articleId != null) {
+		if (source != null) {
 			response.setContentType("application/pdf");
 			// ServletContext ctx = getServletContext();
 			HttpSession session = request.getSession();
@@ -52,15 +54,15 @@ public class EditorServiceController extends HttpServlet {
 			} else {
 				try {
 					System.out.println("inside try");
-					@SuppressWarnings("unchecked")
-					ArrayList<Article> articles = (ArrayList<Article>) session
-							.getAttribute("editorArticles");
-					String fileName = articles.get(Integer.valueOf(articleId))
-							.getPdfPath();
+//					@SuppressWarnings("unchecked")
+//					ArrayList<Article> articles = (ArrayList<Article>) session
+//							.getAttribute("editorArticles");
+//					String fileName = articles.get(Integer.valueOf(articleId))
+//							.getPdfPath();
 
 					String relativePath = getServletContext().getRealPath("")
 							+ File.separator + "resources" + File.separator
-							+ fileName;
+							+ source;
 					System.out.println(relativePath);
 					File nfsPDF = new File(relativePath);
 					FileInputStream fis;
@@ -94,6 +96,8 @@ public class EditorServiceController extends HttpServlet {
 					e.printStackTrace();
 				}
 			}
+		}else {
+			request.getRequestDispatcher("/errorpage.jsp").forward(request, response);
 		}
 	}
 
