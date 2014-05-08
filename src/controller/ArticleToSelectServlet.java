@@ -43,8 +43,7 @@ public class ArticleToSelectServlet extends HttpServlet {
 		User user = (User) session.getAttribute("user");
 
 		if (session.getAttribute("user") == null) {
-			request.setAttribute("message",
-					"You need to login the system");
+			request.setAttribute("message", "You need to login the system");
 			request.getRequestDispatcher("/home.jsp")
 					.forward(request, response);
 		} else if (user.getRole().equals("reader")) {
@@ -55,7 +54,7 @@ public class ArticleToSelectServlet extends HttpServlet {
 		} else {
 
 			String[] article_id_list = request.getParameterValues("article_id");
-			Connection conn;
+			Connection conn = null;
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 				String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
@@ -76,14 +75,7 @@ public class ArticleToSelectServlet extends HttpServlet {
 						form.createForm(article_id, author_id, user.getId());
 						// form.setApproveToForms(article_id, user.getId());
 					}
-					
-					if (conn != null) {
-						try {
-							conn.close();
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
-					}
+
 					// jump to await page
 					response.sendRedirect("JDBServlet?action=await_selection");
 
@@ -94,6 +86,14 @@ public class ArticleToSelectServlet extends HttpServlet {
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} finally {
+				if (conn != null)
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 			}
 
 		}
