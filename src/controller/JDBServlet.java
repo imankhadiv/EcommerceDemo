@@ -45,8 +45,7 @@ public class JDBServlet extends HttpServlet {
 		User user = (User) session.getAttribute("user");
 
 		if (session.getAttribute("user") == null) {
-			request.setAttribute("message",
-					"You need to login the system");
+			request.setAttribute("message", "You need to login the system");
 			request.getRequestDispatcher("/home.jsp")
 					.forward(request, response);
 		} else if (user.getRole().equals("reader")) {
@@ -74,6 +73,13 @@ public class JDBServlet extends HttpServlet {
 
 					request.getRequestDispatcher("/views/article_list.jsp")
 							.forward(request, response);
+					if (conn != null) {
+						try {
+							conn.close();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+					}
 
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -99,6 +105,13 @@ public class JDBServlet extends HttpServlet {
 					request.getRequestDispatcher(
 							"/views/article_approved_forms.jsp").forward(
 							request, response);
+					if (conn != null) {
+						try {
+							conn.close();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+					}
 
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -125,13 +138,19 @@ public class JDBServlet extends HttpServlet {
 					ResultSet result = form.getReviewFormsByArticle_Reviewer(
 							article_id, user.getId());
 					result.next();
-//					System.out.println(result.getString("id"));
+					// System.out.println(result.getString("id"));
 					request.setAttribute("form", result);
 					// get authors of article
 					request.getRequestDispatcher(
 							"/views/form.jsp?article_id=" + article_id)
 							.forward(request, response);
-
+					if (conn != null) {
+						try {
+							conn.close();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+					}
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -141,19 +160,26 @@ public class JDBServlet extends HttpServlet {
 					PrintWriter out = response.getWriter();
 					out.println("Sorry the sql connection is failing");
 				}
-			}
-			else if (action == null || action.equals("await_selection")) {
+			} else if (action == null || action.equals("await_selection")) {
 				try {
 					Class.forName("com.mysql.jdbc.Driver");
 					String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
 					conn = (Connection) DriverManager.getConnection(DB);
 					ArticleTable articleTable = new ArticleTable(conn);
-					ResultSet resultSet = articleTable.getAwaitingArticles(user.getId());
+					ResultSet resultSet = articleTable.getAwaitingArticles(user
+							.getId());
 					request.setAttribute("article", resultSet);
 					// get authors of article
 					request.getRequestDispatcher(
 							"/views/reviewer_await_select_list.jsp").forward(
 							request, response);
+					if (conn != null) {
+						try {
+							conn.close();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+					}
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -161,12 +187,12 @@ public class JDBServlet extends HttpServlet {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-			}
-			else {
-				System.out.println(action);
-			}
 
+			} else {
+				System.out.println(action);
+
+			}
+			
 		}
 
 	}
@@ -183,8 +209,7 @@ public class JDBServlet extends HttpServlet {
 		User user = (User) session.getAttribute("user");
 
 		if (session.getAttribute("user") == null) {
-			request.setAttribute("message",
-					"You need to login the system");
+			request.setAttribute("message", "You need to login the system");
 			request.getRequestDispatcher("/home.jsp")
 					.forward(request, response);
 		} else if (user.getRole().equals("reader")) {
@@ -200,40 +225,49 @@ public class JDBServlet extends HttpServlet {
 				Class.forName("com.mysql.jdbc.Driver");
 				String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
 				conn = (Connection) DriverManager.getConnection(DB);
-				
+
 				if (action == null || action.equals("download")) {
 
 					// to get article_id
 					int article_id = Integer.parseInt(request
 							.getParameter("article_id"));
-						// get form details
-						Form form = new Form(conn);
-						// change status to download
-						form.downloadArticle(article_id, user.getId());
-						
-						
-//						ResultSet result = form.getReviewFormsByArticle_Reviewer(
-//								article_id, user.getId());
-//						System.out.println(result.getString("id"));
-//						request.setAttribute("form", result);
-//						// get authors of article
-//						request.getRequestDispatcher(
-//								"/views/form.jsp?article_id=" + article_id)
-//								.forward(request, response);
-				}
-				else if (action == null || action.equals("delete_select_await")) {
+					// get form details
+					Form form = new Form(conn);
+					// change status to download
+					form.downloadArticle(article_id, user.getId());
+
+					// ResultSet result = form.getReviewFormsByArticle_Reviewer(
+					// article_id, user.getId());
+					// System.out.println(result.getString("id"));
+					// request.setAttribute("form", result);
+					// // get authors of article
+					// request.getRequestDispatcher(
+					// "/views/form.jsp?article_id=" + article_id)
+					// .forward(request, response);
+				} else if (action == null
+						|| action.equals("delete_select_await")) {
 					Form form = new Form(conn);
 					int article_id = Integer.parseInt(request
 							.getParameter("article_id"));
 					form.cancelSelect(article_id, user.getId());
 					ArticleTable articleTable = new ArticleTable(conn);
-					ResultSet resultSet = articleTable.getAwaitingArticles(user.getId());
+					ResultSet resultSet = articleTable.getAwaitingArticles(user
+							.getId());
 					request.setAttribute("article", resultSet);
 					// get authors of article
 					request.getRequestDispatcher(
 							"/views/reviewer_await_select_list.jsp").forward(
 							request, response);
 				}
+
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -241,7 +275,8 @@ public class JDBServlet extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+
 		}
-			
+
 	}
 }

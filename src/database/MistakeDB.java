@@ -28,8 +28,11 @@ public class MistakeDB {
 		rs.next();
 		if(rs.getInt("count")>0)
 		{
+			sql = "select * from mistake where mistake='"+mistake+"'";
+			ResultSet resultSet = stmt.executeQuery(sql);
+			resultSet.next();
 			//TODO exist mistake
-			int mistake_id = rs.getInt("id");
+			int mistake_id = resultSet.getInt("id");
 			sqlTemp = "select count(*) as count from mistake_list where mistake_id='"
 					+ mistake_id
 					+ "' and reviewer_id='"

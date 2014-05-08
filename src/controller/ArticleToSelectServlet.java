@@ -76,6 +76,14 @@ public class ArticleToSelectServlet extends HttpServlet {
 						form.createForm(article_id, author_id, user.getId());
 						// form.setApproveToForms(article_id, user.getId());
 					}
+					
+					if (conn != null) {
+						try {
+							conn.close();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+					}
 					// jump to await page
 					response.sendRedirect("JDBServlet?action=await_selection");
 

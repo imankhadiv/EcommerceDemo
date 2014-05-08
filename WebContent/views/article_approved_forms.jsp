@@ -26,7 +26,7 @@
  <%
   while (articles.next()) {
 	  String status = articles.getString("form_status");
-	  System.out.println("form_status is "+status);
+	  System.out.println("form_status is "+status); 
  %>
  <tbody>
  <tr>
