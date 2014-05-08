@@ -25,6 +25,7 @@ import beans.Mistake;
 import beans.ReviewForm;
 import beans.User;
 import database.Account;
+import database.CommentDB;
 import database.Email;
 import database.Form;
 import database.MistakeDB;
@@ -89,6 +90,7 @@ public class ReviewFormServlet extends HttpServlet {
 				String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
 				conn = DriverManager.getConnection(DB);
 				Form form = new Form(conn);
+				CommentDB commentDB = new CommentDB(conn);
 				MistakeDB mistakeDB = new MistakeDB(conn);
 				if (jsonString != null) {
 					try {
@@ -134,6 +136,9 @@ public class ReviewFormServlet extends HttpServlet {
 								System.out.println("title : " + titleString);
 								System.out
 										.println("content : " + contentString);
+								commentDB.insertReason(user.getId(), article_id, titleString, contentString);
+								
+								
 							}
 							System.out.println(criticismJsonArray
 									.getJSONObject(0));

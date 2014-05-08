@@ -53,5 +53,40 @@ public class CommentDB {
 		//stmt.addBatch();
 		stmt.close();
 	}
+	
+	public void insertReason(int reviewer_id, int article_id,String title, String content) throws SQLException{
+		Statement st = conn.createStatement();
+		String sql1 = "select * from forms where reviewer_id='"+reviewer_id+"' and article_id='"+article_id+"'";
+		ResultSet rs = st.executeQuery(sql1);
+		rs.next();
+		int form_id =  rs.getInt("id");
+		// insert into reason list if not exist
+		String sql = "insert into reviewer_reason_list (form_id,reviewer_id,title) "
+				+ "select "
+				+ "'"
+				+ form_id
+				+ "','"
+				+ reviewer_id
+				+ "','"
+				+ title
+				+ "' from reviewer_reason_list"
+				+ " where not exists (select * from reviewer_reason_list where form_id='"
+				+ form_id
+				+ "' and reviewer_id='"
+				+ reviewer_id
+				+ "' and title = '" + title + "')";
+		System.out.println(sql);
+		st.execute(sql);
+		// get reason id
+		sql = "select id from reviewer_reason_list where form_id = '"+form_id+"' and reviewer_id = '"+reviewer_id+"' and title ='"+title+"'";
+		ResultSet rSet = st.executeQuery(sql);
+		rSet.next();
+		int reason_id = rSet.getInt("id");
+		
+		// insert into comment
+		sql = "insert into comments (reason_id,content,parent_id) values ('"+reason_id+"','"+content+"','-1')";
+		st.execute(sql);
+		st.close();
+	}
 
 }
