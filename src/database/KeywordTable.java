@@ -145,7 +145,17 @@ public class KeywordTable {
 		s += (ids.get(size - 1) + ")");
 		return s;
 	}
+	public ArrayList<Keyword> getKeywords(String text) {
+		String[] keywords = text.split(",");
+		ArrayList<Keyword> keys = new ArrayList<Keyword>();
+		for(String key:keywords){
+			Keyword w = new Keyword();
+			w.setWord(key);
+			keys.add(w);
+			
+		}
+		return keys;
 
-
+	}
 
 }

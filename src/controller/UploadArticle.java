@@ -23,10 +23,12 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import beans.Article;
+import beans.Keyword;
 import beans.User;
 import database.Account;
 import database.ArticleTable;
 import database.Email;
+import database.KeywordTable;
 
 //import beans.Keyword;
 /**
@@ -121,6 +123,10 @@ public class UploadArticle extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		if(request.getParameterNames() == null) {
+			request.setAttribute("message", "Error");
+			request.getRequestDispatcher("/home.jsp").forward(request, response);
+		}
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -129,12 +135,22 @@ public class UploadArticle extends HttpServlet {
 			Account account = new Account(conn);
 
 			uploadFile(request, response);
+			System.out.println(email+"email");
+			System.out.println(firstname+"firstnaem");
+			System.out.println(lastname+"lastname");
+			System.out.println(title+"title");
+			System.out.println(abst+"abst");
+			System.out.println(keywords+"keywords");
+			System.out.println(file+"file");
+			
+			
 			Email mail = new Email();
 			if (account.exists(email)) {
 				
 				User user = account.getUserById(account.getUserId(email));
-				mail.setBody("Dear "+user.getFirstname()+",<br/>Thank you for uploading your article.");
+				mail.setBody("Dear "+user.getFirstname()+",<br/>Thank you for uploading another article.<br/>You can use your previous password to login to the system.");
 				mail.setSubject("Successfully Uploaded");
+				mail.setRecipient(email);
 				mail.sendEmail();
 
 			} else {
@@ -143,13 +159,15 @@ public class UploadArticle extends HttpServlet {
 				mail.sendEmailForUploadArticle(email, firstname, password);
 
 			}
-
+//
 			int userId = account.getUserId(email);
 			account.changeRole("Author", userId);
 			Article article = new Article(title, abst, String.valueOf(userId),
 					file);
-		
+			article.setKeywords(new KeywordTable().getKeywords(keywords));
+//		
 			article.setUsers(this.getUsers(list));
+			
 			ArticleTable articleTable = new ArticleTable(conn, article);
 			articleTable.insertIntoArticles();
 			System.out.println("this is list" + list);
@@ -159,7 +177,7 @@ public class UploadArticle extends HttpServlet {
 						+ item.getLastname() + "/" + item.getEmail());
 			}
 
-			request.setAttribute("message",
+			request.setAttribute("info",
 					"Your artilce was uploaded sucessfully. You will receive an email shortly");
 			request.getRequestDispatcher("/home.jsp")
 					.forward(request, response);
@@ -288,5 +306,8 @@ public class UploadArticle extends HttpServlet {
 		}
 		return users;
 	}
+	
+		
+	
 
 }
