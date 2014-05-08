@@ -17,7 +17,9 @@ import beans.User;
 import com.mysql.jdbc.Connection;
 
 import database.ArticleTable;
+import database.CommentDB;
 import database.Form;
+import database.MistakeDB;
 
 /**
  * Servlet implementation class JDBServlet
@@ -134,13 +136,24 @@ public class JDBServlet extends HttpServlet {
 					conn = (Connection) DriverManager.getConnection(DB);
 					// get form details
 					Form form = new Form(conn);
-					System.out.println(article_id);
+					
+					// get form details
 					ResultSet result = form.getReviewFormsByArticle_Reviewer(
 							article_id, user.getId());
 					result.next();
-					// System.out.println(result.getString("id"));
 					request.setAttribute("form", result);
-					// get authors of article
+					// get comment reason table
+					CommentDB commentDB = new CommentDB(conn);
+					int form_id = result.getInt("id");
+					ResultSet rs = commentDB.getReasonCommentByFormID(form_id);
+					request.setAttribute("reason", rs);
+					// System.out.println(result.getString("id"));
+					// get mistake table
+					MistakeDB mistakeDB =new MistakeDB(conn);
+					ResultSet rSet = mistakeDB.getMistakesByForm(user.getId(), article_id);
+					request.setAttribute("mistake", rSet);
+					
+					
 					request.getRequestDispatcher(
 							"/views/form.jsp?article_id=" + article_id)
 							.forward(request, response);
@@ -220,6 +233,7 @@ public class JDBServlet extends HttpServlet {
 		} else {
 			String action = null;
 			action = request.getParameter("action");
+			System.out.println(action);
 			Connection conn;
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
@@ -236,14 +250,6 @@ public class JDBServlet extends HttpServlet {
 					// change status to download
 					form.downloadArticle(article_id, user.getId());
 
-					// ResultSet result = form.getReviewFormsByArticle_Reviewer(
-					// article_id, user.getId());
-					// System.out.println(result.getString("id"));
-					// request.setAttribute("form", result);
-					// // get authors of article
-					// request.getRequestDispatcher(
-					// "/views/form.jsp?article_id=" + article_id)
-					// .forward(request, response);
 				} else if (action == null
 						|| action.equals("delete_select_await")) {
 					Form form = new Form(conn);
@@ -259,6 +265,27 @@ public class JDBServlet extends HttpServlet {
 							"/views/reviewer_await_select_list.jsp").forward(
 							request, response);
 				}
+				else if (action == null
+						|| action.equals("approve_comment_reason")) {
+					System.out.println("jump");
+					int reason_id = Integer.parseInt(request
+							.getParameter("reason_id"));
+					System.out.println("reason id is " +reason_id);
+					CommentDB commentDB = new CommentDB(conn);
+					commentDB.approveReason(reason_id);
+				}
+				else if (action == null
+						|| action.equals("approve_mistake")) {
+					System.out.println("jump");
+					MistakeDB mistakeDB = new MistakeDB(conn);
+					int mistake_id = Integer.parseInt(request
+							.getParameter("mistake_id"));
+					int article_id = Integer.parseInt(request
+							.getParameter("article_id"));
+					System.out.println(article_id);
+					mistakeDB.approveMistake(user.getId(), article_id, mistake_id);
+				}
+				
 
 				if (conn != null) {
 					try {

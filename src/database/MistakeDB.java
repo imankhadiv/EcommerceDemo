@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import beans.Error;
 import beans.ReviewForm;
 
+
 public class MistakeDB {
 	private Connection conn;
 
@@ -18,6 +19,26 @@ public class MistakeDB {
 
 	public MistakeDB() {
 
+	}
+	
+	public ResultSet getMistakesByForm(int reviewer_id,int article_id) throws SQLException
+	{
+		Statement stmt = conn.createStatement();
+		String sql = "select a.id,a.article_id,a.reviewer_id,a.mistake_id,b.mistake from mistake_list as a,mistake as b where a.mistake_id=b.id and reviewer_id='"+reviewer_id+"' and article_id='"+article_id+"'";
+		System.out.println("getMistakesByForm sql"+sql);
+		ResultSet rs = stmt.executeQuery(sql);
+		return rs;
+	}
+	
+	public void approveMistake(int reviewer_id,int article_id,int mistake_id) throws SQLException
+	{
+		Statement st = conn.createStatement();
+		String sqlString = "delete from mistake_list where reviewer_id = '"
+				+ reviewer_id + "' and article_id='" +article_id+ "' and mistake_id='"
+				+ mistake_id + "'";
+		System.out.println("approveMistake sql"+sqlString);
+		st.execute(sqlString);
+		st.close();
 	}
 	
 	public void insertIntoError(int article_id, int reviewer_id,String mistake) throws SQLException {

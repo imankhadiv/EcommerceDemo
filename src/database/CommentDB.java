@@ -44,6 +44,19 @@ public class CommentDB {
 		
 		
 	}
+	
+	public ResultSet getReasonCommentByFormID(int form_id) throws SQLException
+	{
+		Statement statement = conn.createStatement();
+		String sqlString = "select a.reason_id,a.content,a.created_at,"
+				+ "b.title,b.form_id,b.reviewer_id"
+				+ " from comments as a, reviewer_reason_list as b where a.reason_id = b.id "
+				+ "and a.parent_id ='-1' and b.form_id='" + form_id + "' and b.status='reject'";
+		System.out.println(sqlString);
+		ResultSet rsResultSet = statement.executeQuery(sqlString);
+		return rsResultSet;
+	}
+	
 	public void insertIntoComments(int reasonId,String comment) throws SQLException {
 		String sql = "insert into comments(reason_id,content) values(?,?) ";
 		PreparedStatement stmt = conn.prepareStatement(sql);
@@ -88,5 +101,17 @@ public class CommentDB {
 		st.execute(sql);
 		st.close();
 	}
+	
+	public void approveReason(int reason_id) throws SQLException
+	{
+		Statement st = conn.createStatement();
+//		String sqlString = "delete from comments where reason_id = '"+reason_id+"'";
+		String sqlString2 = "update reviewer_reason_list set status='approve' where id= '"+reason_id+"'";
+//		st.execute(sqlString);
+		System.out.println("approve reason "+sqlString2);
+		st.execute(sqlString2);
+		st.close();
+	}
+	
 
 }
