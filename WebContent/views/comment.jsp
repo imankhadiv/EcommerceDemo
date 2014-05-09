@@ -23,12 +23,13 @@
 </div>
 
 <div class="span4">
+<h2>Comment</h2>
+<h3>Comment</h3>
+<h4>Comment</h4>
+<textarea id="content" rows="5" cols="8"></textarea>
+<br>
+<button class="btn btn-primary" onclick="submitBtn()">submit</button>
 
-<textarea rows="10" cols="5"></textarea>
-<br/>
-<button class="btn btn-primary" onclick="">submit</button>
-<%// TODO html code for submit
-  // TODO write js code for submit
-%>
+
 </div>
 <c:import url="/footer.jsp"></c:import>

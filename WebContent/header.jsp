@@ -14,6 +14,7 @@
 </script>
 
 <script src="${pageContext.request.contextPath}/javascripts/myscript.js"></script>
+<script src="${pageContext.request.contextPath}/javascripts/comment.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/form.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/delete.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/upload.js"></script>

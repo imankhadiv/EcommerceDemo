@@ -1,11 +1,13 @@
 /**
  * 
  */
-function submitBtn( id, type){
-	
-		method="POST";
-		urlString="JDBServlet?action=delete_select_await&article_id="+id;
-		connect(method,urlString);
+function submitBtn() {
+	var content = $("#content").val();
+	var method = "POST";
+	var urlString = "CommentServlet?reason_id=" + getUrlParam('reason_id')
+			+ "&content=" + content;
+	alert(urlString);
+	connect(method, urlString);
 }
 
 function connect(method, url)
