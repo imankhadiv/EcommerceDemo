@@ -14,6 +14,7 @@
 </script>
 
 <script src="${pageContext.request.contextPath}/javascripts/myscript.js"></script>
+<script src="${pageContext.request.contextPath}/javascripts/comment.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/form.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/delete.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/upload.js"></script>
@@ -55,7 +56,7 @@
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Reviewer<b class="caret"></b></a>
 
 					<ul class="dropdown-menu">
-					<li><a href="${pageContext.request.contextPath}/">My Reviews</a></li>
+					<li><a href="${pageContext.request.contextPath}/JDBServlet?action=comment&reason_id=72">My Reviews</a></li>
 					<%-- <li><a href="${pageContext.request.contextPath}/">Review Articles</a></li> --%>
 					<li><a href="${pageContext.request.contextPath}/JDBServlet?action=select_article">Select Articles </a></li>
 					<li><a href="${pageContext.request.contextPath}/JDBServlet?action=await_selection">Await selection </a></li>

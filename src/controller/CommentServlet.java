@@ -16,28 +16,35 @@ import beans.User;
 import com.mysql.jdbc.Connection;
 
 import database.ArticleTable;
+import database.CommentDB;
 import database.Form;
 
 /**
- * Servlet implementation class ArticleToSelectServlet
+ * Servlet implementation class CommentServlet
  */
-public class ArticleToSelectServlet extends HttpServlet {
+public class CommentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public CommentServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
 	/**
-	 * @see HttpServlet#HttpServlet()
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	public ArticleToSelectServlet() {
-		super();
-		// TODO Auto-generated constructor stub
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
 	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
@@ -53,32 +60,22 @@ public class ArticleToSelectServlet extends HttpServlet {
 					.forward(request, response);
 		} else {
 
-			String[] article_id_list = request.getParameterValues("article_id");
+			String content = request.getParameter("content");
+			int reason_id =-1;
+			try {
+				reason_id = Integer.valueOf(request.getParameter("reason_id"));
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.out.println("wrong parameter reason_id");
+			}
 			Connection conn = null;
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 				String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
 				try {
 					conn = (Connection) DriverManager.getConnection(DB);
-					Form form = new Form(conn);
-					ArticleTable articleTable = new ArticleTable(conn);
-
-					for (int i = 0; i < article_id_list.length; i++) {
-						int article_id = Integer.parseInt(article_id_list[i]);
-						System.out.println(article_id);
-						// TODO create form
-						ResultSet resultSet = articleTable
-								.getArticleByID(article_id);
-						resultSet.next();
-						int author_id = resultSet.getInt("user_id");
-						System.out.println(author_id);
-						form.createForm(article_id, author_id, user.getId());
-						// form.setApproveToForms(article_id, user.getId());
-					}
-
-					// jump to await page
-					response.sendRedirect("JDBServlet?action=await_selection");
-
+					CommentDB commentDB = new CommentDB(conn);
+					commentDB.insertIntoComments(reason_id, content);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -97,15 +94,6 @@ public class ArticleToSelectServlet extends HttpServlet {
 			}
 
 		}
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 }

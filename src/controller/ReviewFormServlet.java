@@ -173,19 +173,11 @@ public class ReviewFormServlet extends HttpServlet {
 						
 						form.updateStatus(typeString, article_id, user.getId());						
 						mail.sendEmailForUpdateForm(user.getEmail(), user.getFirstname());
-						if (conn != null) {
-							try {
-								conn.close();
-							} catch (SQLException e) {
-								e.printStackTrace();
-							}
-						}
 					} catch (JSONException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
-
 				//TODO insert mistake (check if exists) and middle table
 				//TODO insert into reason list and comment
 			} catch (ClassNotFoundException e) {
@@ -197,7 +189,15 @@ public class ReviewFormServlet extends HttpServlet {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} 
+			} finally {
+				  if (conn != null)
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					}
 		}
 	}
 }

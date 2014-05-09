@@ -170,3 +170,13 @@ function download(id,href)
 	var win = window.open(href, '_blank');
     win.focus();
 };
+
+function approveComment(id)
+{
+	connect("POST","JDBServlet?action=approve_comment_reason&article_id="+getUrlParam('article_id')+"&reason_id="+id);
+};
+
+function approveError(mistake_id)
+{
+	connect("POST","JDBServlet?action=approve_mistake&article_id="+getUrlParam('article_id')+"&mistake_id="+mistake_id);
+};
