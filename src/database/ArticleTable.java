@@ -1,6 +1,7 @@
 package database;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -105,13 +106,14 @@ public class ArticleTable {
 	public void insertIntoArticleAuthors(String articleId, ArrayList<User> users)
 			throws SQLException {
 
-		String sql = "insert into article_authors(article_id,firstname,lastname,email) values(?,?,?,?) ";
+		String sql = "insert into article_authors(article_id,firstname,lastname,email,affiliations) values(?,?,?,?,?) ";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		for (User user : users) {
 			stmt.setString(1, articleId);
 			stmt.setString(2, user.getFirstname());
 			stmt.setString(3, user.getLastname());
 			stmt.setString(4, user.getEmail());
+			stmt.setString(5, user.getAffiliation());
 			stmt.executeUpdate();
 		}
 		stmt.close();
@@ -487,11 +489,22 @@ public class ArticleTable {
 		Statement st = conn.createStatement();
 		st.executeUpdate("update articles set status = 'published' where id = "
 				+ articleId);
-
-		st.close();
+		if(st != null) st.close();
 
 	}
-}
+	public boolean checkFileName(String fileName) throws SQLException {
+			Statement stst = conn.createStatement();
+			ResultSet rs = stst.executeQuery("select * from articles where pdf_path = '"+fileName+"'");
+			while(rs.next()){
+				return true;
+			}
+			if(stst != null) stst.close();
+			if(rs != null) rs.close();
+			return false;
+
+		
+	}
+
 
 // public static void main(String[] args) throws java.text.ParseException {
 // try {
@@ -536,3 +549,26 @@ public class ArticleTable {
 // }
 // }
 
+
+
+
+
+public static void main(String[] args) throws java.text.ParseException {
+try {
+Class.forName("com.mysql.jdbc.Driver");
+String DB =
+"jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+Connection conn = DriverManager.getConnection(DB);
+ArticleTable articleTable = new ArticleTable(conn);
+System.out.println(articleTable.checkFileName("temp.pdf"));
+
+} catch (ClassNotFoundException e) {
+// TODO Auto-generated catch block
+e.printStackTrace();
+} catch (SQLException e) {
+// TODO Auto-generated catch block
+e.printStackTrace();
+}
+}
+
+}

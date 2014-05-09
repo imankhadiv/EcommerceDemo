@@ -56,7 +56,7 @@
 		</ul>
 		<div class="input-prepend" id="main" style="display: '';">
 			<span class="add-on"><i class="icon-search"></i></span> <input
-				type="text" name="search" placeholder="Search" id="input">
+				type="text" name="search" placeholder="Search" id="input" width="200px">
 		</div>
 		<div class="row" id="date-search" style="display: none;">
 			<div class="span3">

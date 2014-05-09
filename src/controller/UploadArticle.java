@@ -51,6 +51,7 @@ public class UploadArticle extends HttpServlet {
 	private String keywords;
 	private String file;
 	private String numberOfAuthors;
+	private String affiliation;
 	private ArrayList<String> list;
 
 	/**
@@ -132,16 +133,13 @@ public class UploadArticle extends HttpServlet {
 			String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
 			conn = DriverManager.getConnection(DB);
 			Account account = new Account(conn);
-
 			uploadFile(request, response);
-			System.out.println(email+"email");
-			System.out.println(firstname+"firstnaem");
-			System.out.println(lastname+"lastname");
-			System.out.println(title+"title");
-			System.out.println(abst+"abst");
-			System.out.println(keywords+"keywords");
-			System.out.println(file+"file");
-			
+			if(new ArticleTable(conn).checkFileName(this.file)){
+				request.setAttribute("message", "Your file name exists. Please upload an article with a different name");
+				request.getRequestDispatcher("/views/upload-article.jsp").forward(request, response);
+				return;
+			}
+
 			
 			Email mail = new Email();
 			if (account.exists(email)) {
@@ -272,6 +270,8 @@ public class UploadArticle extends HttpServlet {
 							this.abst = item.getString();
 						else if (item.getFieldName().equals("keywords"))
 							this.keywords = item.getString();
+						else if(item.getFieldName().equals("affiliation"))
+							this.affiliation = item.getString();
 						else if (item.getFieldName().equals("numberOfAuthors"))
 							this.numberOfAuthors = item.getString();
 						else {
@@ -300,6 +300,8 @@ public class UploadArticle extends HttpServlet {
 			user.setLastname(list.get(n));
 			n += 1;
 			user.setEmail(list.get(n));
+			n += 1;
+			user.setAffiliation(list.get(n));
 			users.add(user);
 			n += 1;
 		}
