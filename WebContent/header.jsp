@@ -19,6 +19,7 @@
 <script src="${pageContext.request.contextPath}/javascripts/delete.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/upload.js"></script>
 <script src="${pageContext.request.contextPath}/javascripts/reader.js"></script>
+<script src="${pageContext.request.contextPath}/javascripts/editor.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/stylesheets/style.css" />
 <link

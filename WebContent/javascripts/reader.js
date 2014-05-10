@@ -73,25 +73,46 @@ $(document).ready(
 				$("#main").css("display", "");
 			});
 
+//			$('#email').click(function() {
+//				if ($('#emaildiv').is('.control-group, .error')) {
+//					$('#emaildiv').removeClass();
+//					$('#emaildiv').find('span').remove();
+//
+//				}
+//			});
 			$('#email').click(function() {
 				if ($('#emaildiv').is('.control-group, .error')) {
 					$('#emaildiv').removeClass();
-					$('#emaildiv').find('span').remove();
+					$('span[id^="emailspan"]').remove();
 
 				}
 			});
 			$('#title').click(function() {
 				if ($('#titlediv').is('.control-group, .error')) {
-					$('#titlediv').removeClass();
-					$('#titlediv').find('span').remove();
-
+					$('#emaildiv').removeClass();
+					$('span[id^="titlespan"]').remove();
+					
 				}
 			});
+//			$('#title').click(function() {
+//				if ($('#titlediv').is('.control-group, .error')) {
+//					$('#titlediv').removeClass();
+//					$('#titlediv').find('span').remove();
+//
+//				}
+//			});
+//			$('#comment').click(function() {
+//				if ($('#commentdiv').is('.control-group, .error')) {
+//					$('#commentdiv').removeClass();
+//					$('#commentdiv').find('span').remove();
+//
+//				}
+//			});
 			$('#comment').click(function() {
 				if ($('#commentdiv').is('.control-group, .error')) {
 					$('#commentdiv').removeClass();
-					$('#commentdiv').find('span').remove();
-
+					$('#commentdiv').find('commentspan').remove();
+					
 				}
 			});
 
@@ -105,7 +126,7 @@ function validateComment() {
 		$('#emaildiv').addClass('control-group error');
 		$('#emaildiv')
 				.append(
-						'<span class="help-inline">Please enter your email address</span>');
+						'<span id="emailspan" class="help-inline">Please enter your email address</span>');
 
 		return false;
 	}
