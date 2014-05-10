@@ -90,7 +90,7 @@
 			%>
 			<tbody>
 				<tr>
-					<td><a href="#" ><%=reason.getString("title")%></a></td>
+					<td><a href="${pageContext.request.contextPath}/JDBServlet?action=comment&reason_id=<%=reason.getInt("reason_id") %>" ><%=reason.getString("title")%></a></td>
 					<td><button class="btn btn-primary" onclick="approveComment(<%=reason.getInt("reason_id")%>)">approve</button></td>
 				</tr>
 			</tbody>

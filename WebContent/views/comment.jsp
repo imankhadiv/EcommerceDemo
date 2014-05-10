@@ -14,10 +14,10 @@
 <c:forEach items="${requestScope.commentList}" var="comment">
  <div class="col-lg-4">
  <c:if test="${comment.parent_id==-1}">
-   <h2><c:out value="${comment.title}" /></h2>
+   <h2>Reason Title : <c:out value="${comment.title}" /></h2>
 </c:if>
  
-      <blockquote><p class="text-danger" ><c:out value="${comment.content}" />
+      <blockquote><p class="text-danger" >Comment content : <c:out value="${comment.content}" />
       </p></blockquote>
    </div>
   </c:forEach>
