@@ -4,8 +4,13 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -13,8 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import beans.Article;
 import beans.User;
+import database.Account;
+import database.Email;
 /**
  * 
  * @author Iman
@@ -22,6 +28,7 @@ import beans.User;
  */
 public class EditorServiceController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private Connection conn;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -101,7 +108,58 @@ public class EditorServiceController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		System.out.println("hellowold");
+		String firstname= request.getParameter("firstname");
+		String lastname= request.getParameter("lastname");
+		String email= request.getParameter("email");
+		String message= request.getParameter("message");
+		String hiddenMessage = request.getParameter("hiddenMessage");
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+			conn = DriverManager.getConnection(DB);
+			Account account = new Account(conn);
+			if(hiddenMessage != null && hiddenMessage.equals("invitation")){
+				System.out.println(email);
+				
+				if(account.exists(email)){
+				
+					request.setAttribute("emessage", "This Email Address already exists in the system!\nPlease choose a different email address");
+				}else {
+					Email mail = new Email();
+					String password = mail.generatePassword();
+					account.create(email, password, firstname, lastname);
+					account.changeRole("editor", account.getUserId(email));
+					mail.setSubject("Editor Invitation");
+					mail.setBody("Dear "+firstname+",<br>You are invited to be an editor in our system.<br>Editor Message:<br>"+message+"<br> Your user name and password are:<br/></br>UserName:"+email+"<br>Password:"+password);
+					mail.setRecipient(email);
+					mail.sendEmail();
+					request.setAttribute("message", "Invitation sent successfull!");
+					
+				}
+				ArrayList<User> users = account
+						.getUsersFromResultSet(account.getRecords());
+				request.setAttribute("users", users);
+				request.getRequestDispatcher("/views/registeredusers.jsp").forward(request, response);
+
+				
+				
+				
+			}
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AddressException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }

@@ -139,10 +139,10 @@ public class EditorController extends HttpServlet {
 					ArrayList<User> users = account
 							.getUsersFromResultSet(account.getRecords());
 					request.setAttribute("users", users);
-					request.getRequestDispatcher("/views/registeredusers.jsp")
-							.forward(request, response);
 					request.setAttribute("message",
 							"Your invitation is sent successfully");
+					request.getRequestDispatcher("/views/registeredusers.jsp")
+							.forward(request, response);
 				}
 
 			} catch (ClassNotFoundException e) {
@@ -211,7 +211,7 @@ public class EditorController extends HttpServlet {
 							conn).getAllArticles());
 					session.setAttribute("editorArticles", articles);
 					Email mail = new Email();
-					mail.setBody("Dear "+article.getMainUser().getFirstname()+",<br>Your article has been published successfull.");
+					mail.setBody("Dear "+article.getMainUser().getFirstname()+",<br>Your article has been published successfully.");
 					mail.setSubject("Published Successfully");
 					mail.setRecipient(article.getMainUser().getEmail());
 					mail.sendEmail();

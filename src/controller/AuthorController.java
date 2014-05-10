@@ -154,7 +154,7 @@ public class AuthorController extends HttpServlet {
 						email.sendEmail();
 
 				}
-				request.setAttribute("success", "Uploaded Successfull");
+				request.setAttribute("success", "Uploaded Successfully");
 				// request.getRequestDispatcher("/views/author-articles.jsp?id="+articleId).forward(request,
 				// response);
 				request.getRequestDispatcher("/views/author-articles.jsp")

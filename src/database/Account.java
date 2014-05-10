@@ -4,6 +4,7 @@ package database;
  * 
  */
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -125,6 +126,7 @@ public class Account {
 		String sql = "update users SET role = '" + role + "' where id = " + id;
 		Statement stst = conn.createStatement();
 		stst.executeUpdate(sql);
+		if(stst != null) stst.close();
 
 		// stst.addBatch("update bankAccount SET checkingBalance = checkingBalance - "+big+" where id = "+id);
 	}
@@ -205,5 +207,6 @@ public class Account {
 		rs.close();
 		return users;
 	}
+
 
 }
