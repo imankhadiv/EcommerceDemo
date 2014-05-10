@@ -147,7 +147,7 @@ public class ArticleTable {
 				.executeQuery("SELECT distinct a.id,a.title,a.abstract,b.first_name,b.last_name,a.created_at FROM articles as a, users as b where a.id "
 						+ "not in (select article_id from forms where reviewer_id='"
 						+ reviewer_id
-						+ "' ) and status='unpublished' and a.user_id = b.id order by created_at;");
+						+ "' ) and status='unpublished' and a.user_id = b.id and a.user_id<>"+ reviewer_id + " order by created_at;");
 		return resultSet;
 	}
 
@@ -157,7 +157,7 @@ public class ArticleTable {
 				.executeQuery("SELECT distinct a.id,a.title,a.abstract,b.first_name,b.last_name,a.created_at FROM articles as a, users as b where a.id "
 						+ "in (select article_id from forms where reviewer_id='"
 						+ reviewer_id
-						+ "' and form_status='select' ) and status='unpublished' and a.user_id = b.id order by created_at;");
+						+ "' and form_status='select' and article_approve=false ) and status='unpublished' and a.user_id = b.id order by created_at;");
 		return resultSet;
 	}
 
@@ -165,13 +165,14 @@ public class ArticleTable {
 	// approved
 	public ResultSet getApprovedArticles(int reviewer_id) throws SQLException {
 		Statement stst = conn.createStatement();
-		String sqlString = "SELECT distinct a.id,a.title,a.abstract,b.first_name,b.last_name,a.created_at,a.review_count,a.pdf_path, c.form_status FROM articles as a, users as b,forms as c where a.user_id=b.id and a.id=c.article_id and a.status='unpublished' and a.id in (select article_id from forms where reviewer_id ='"
-				+ reviewer_id + "' and article_approve=true  )";//"' and article_approve=true and form_approve=true )";
+		String sqlString = "SELECT distinct a.id,a.title,a.abstract,b.first_name,b.last_name,a.created_at,a.review_count,a.pdf_path, c.form_status FROM articles as a, users as b,forms as c "
+				// "where a.user_id=b.id and a.id=c.article_id and a.status='unpublished' and a.id in (select article_id from forms where reviewer_id ='"
+				// + reviewer_id +
+				// "' and article_approve=true  )";//"' and article_approve=true and form_approve=true )";
+				+ "where a.user_id=b.id and a.id=c.article_id and a.status='unpublished' and c.reviewer_id ='"
+				+ reviewer_id + "' and c.article_approve=true";
 		System.out.println(sqlString);
-		ResultSet resultSet = stst
-
-				.executeQuery(sqlString);
-
+		ResultSet resultSet = stst.executeQuery(sqlString);
 		return resultSet;
 	}
 
@@ -223,7 +224,7 @@ public class ArticleTable {
 			throws SQLException {
 		Statement stst = conn.createStatement();
 		ResultSet resultSet = stst
-				.executeQuery("select * from reviewer_status where status = 'Selected' and reviewer_id = "
+				.executeQuery("select * from reviewer_status where form_status = 'Selected' and reviewer_id = "
 						+ reviewerId);
 		return resultSet;
 
@@ -233,7 +234,7 @@ public class ArticleTable {
 			throws SQLException {
 		Statement stst = conn.createStatement();
 		ResultSet resultSet = stst
-				.executeQuery("select * from reviewer_status where status = 'Downloaded' and reviewer_id = "
+				.executeQuery("select * from reviewer_status where form_status = 'Downloaded' and reviewer_id = "
 						+ reviewerId);
 		return resultSet;
 	}

@@ -38,6 +38,14 @@
 %>
 </table>
 <input class="btn btn-primary" type="submit" value="select"/>
+
 </form>
+<p align="right">
+<h4 align="right" >articles in waiting list : <%=request.getAttribute("select_await_count") %></h4>
+<h4 align="right">accept articles : <%=request.getAttribute("accept_count") %></h4>
+<h4 align="right">reject articles : <%=request.getAttribute("final_reject_count") %></h4>
+<h4 align="right" style="color:red">rejected forms : <%=request.getAttribute("delete_count") %></h4>
+<p>
+
 </div>
 <c:import url="/footer.jsp"></c:import>

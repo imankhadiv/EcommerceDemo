@@ -35,13 +35,14 @@ public class Form {
 		Statement stst = conn.createStatement();
 		ResultSet resultSet = stst
 				.executeQuery("select * from forms where reviewer_id ='"
-						+ currentUserId+"' and article_approve=true");
+						+ currentUserId + "' and article_approve=true");
 		return resultSet;
 
 	}
 
-	public void insertIntoForm(int article_id, int auther_id,
-			int reviewer_id, String level,String summary, String secret, String overall) throws SQLException {
+	public void insertIntoForm(int article_id, int auther_id, int reviewer_id,
+			String level, String summary, String secret, String overall)
+			throws SQLException {
 
 		String sql = "insert into forms(article_id,author_id,reviewer_id,level,summary,secret_message,overall) values(?,?,?,?,?,?,?) ";
 		PreparedStatement stmt = conn.prepareStatement(sql);
@@ -57,36 +58,32 @@ public class Form {
 		// insertIntoKeywords();
 
 	}
-	
-	public void updateForm(int article_id, int author_id,
-			int reviewer_id, String level,String summary, String secret, String overall) throws SQLException {
-		
+
+	public void updateForm(int article_id, int author_id, int reviewer_id,
+			String level, String summary, String secret, String overall)
+			throws SQLException {
+
 		Statement st = conn.createStatement();
-		String sql = "update forms set level='"+level
-				+"', summary='"+summary+"', secrete='"+secret+"', overall='"+overall+"' where article_id = '"
-				+ article_id
-				+ "' and author_id='"
-				+ author_id
-				+ "' and reviewer_id='" + reviewer_id + "'";
+		String sql = "update forms set level='" + level + "', summary='"
+				+ summary + "', secrete='" + secret + "', overall='" + overall
+				+ "' where article_id = '" + article_id + "' and author_id='"
+				+ author_id + "' and reviewer_id='" + reviewer_id + "'";
 		st.execute(sql);
 		st.close();
 	}
-	
-	public void createForm(int article_id, int author_id,
- int reviewer_id)
+
+	public void createForm(int article_id, int author_id, int reviewer_id)
 			throws SQLException {
-		
+
 		Statement st = conn.createStatement();
 		String sql_validString = "select count(*) as count from forms where article_id = '"
 				+ article_id
 				+ "' and author_id='"
 				+ author_id
 				+ "' and reviewer_id='" + reviewer_id + "'";
-		ResultSet resultSet = st
-				.executeQuery(sql_validString);
+		ResultSet resultSet = st.executeQuery(sql_validString);
 		resultSet.next();
-		if(resultSet.getInt("count")==0)
-		{
+		if (resultSet.getInt("count") == 0) {
 			String sql = "insert into forms(article_id,author_id,reviewer_id) values(?,?,?) ";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, article_id);
@@ -94,20 +91,20 @@ public class Form {
 			stmt.setInt(3, reviewer_id);
 			stmt.executeUpdate();
 			stmt.close();
-		}
-		else{
+		} else {
 			// nothing
 		}
-//		st.close();
+		// st.close();
 	}
-	
-	public void downloadArticle(int article_id, int reviewer_id) throws SQLException
-	{
-		String sqlString ="update forms set form_status='download' where article_id='"+article_id+"' and reviewer_id='"+reviewer_id+"'";
+
+	public void downloadArticle(int article_id, int reviewer_id)
+			throws SQLException {
+		String sqlString = "update forms set form_status='download' where article_id='"
+				+ article_id + "' and reviewer_id='" + reviewer_id + "'";
 		Statement st = conn.createStatement();
 		st.execute(sqlString);
 	}
-	
+
 	public void updateForm(int article_id, int reviewer_id, String level,
 			String summary, String secret, String overall) throws SQLException {
 		String sql = "update forms set level='" + level + "', summary='"
@@ -118,7 +115,7 @@ public class Form {
 		st.execute(sql);
 		st.close();
 	}
-	
+
 	// for editor to approve the form
 	public boolean setApproveToForms(int article_id, int reviewer_id) {
 		Statement stst;
@@ -126,10 +123,7 @@ public class Form {
 			stst = conn.createStatement();
 			try {
 				stst.executeUpdate("update forms set form_approve = '1' where article_id = "
-						+ article_id
-						+ " and reviewer_id = "
-						+ article_id
-						+ "");
+						+ article_id + " and reviewer_id = " + article_id + "");
 				return true;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -154,13 +148,14 @@ public class Form {
 		return rs;
 	}
 
-	public ArrayList<ReviewForm> getAuthorReviewForms(int articleId) throws SQLException {
+	public ArrayList<ReviewForm> getAuthorReviewForms(int articleId)
+			throws SQLException {
 		Statement stst = conn.createStatement();
 		ResultSet rs = stst
 				.executeQuery("select * from forms where article_id = "
 						+ articleId);
 		ArrayList<ReviewForm> forms = new ArrayList<ReviewForm>();
-		while(rs.next()){
+		while (rs.next()) {
 			ReviewForm form = new ReviewForm();
 			form.setId(rs.getInt("id"));
 			form.setArticleId(rs.getInt("article_id"));
@@ -172,125 +167,170 @@ public class Form {
 			form.setSecrete(rs.getString("secret_message"));
 			form.setFormApproved(rs.getString("form_approve"));
 			form.setArticleApproved(rs.getString("article_approve"));
-			form.setReviewer(new Account(conn).getUserById(rs.getInt("reviewer_id")));
-			form.setReasons(new ReasonTable(conn).getFormReasons(rs.getInt("id")));
-			form.setErrors(new MistakeDB(conn).getListOfErrors(articleId,rs.getInt("reviewer_id")));
+			form.setReviewer(new Account(conn).getUserById(rs
+					.getInt("reviewer_id")));
+			form.setReasons(new ReasonTable(conn).getFormReasons(rs
+					.getInt("id")));
+			form.setErrors(new MistakeDB(conn).getListOfErrors(articleId,
+					rs.getInt("reviewer_id")));
 			forms.add(form);
-			
-//			form.setCommentList(commentList);
-//			form.setErrors(errors);
-		
+
+			// form.setCommentList(commentList);
+			// form.setErrors(errors);
+
 		}
 		return forms;
 	}
+
 	/**
 	 * 
 	 * @param articleId
 	 * @return
 	 * @throws SQLException
 	 */
-	public ArrayList<User> getReviewersOfTheArticle(int articleId) throws SQLException {
+	public ArrayList<User> getReviewersOfTheArticle(int articleId)
+			throws SQLException {
 		Statement stst = conn.createStatement();
 		ResultSet rs = stst
 				.executeQuery("select * from forms where article_id = "
 						+ articleId);
 		ArrayList<User> authors = new ArrayList<User>();
-		while(rs.next()){
+		while (rs.next()) {
 			User author = new User();
 			author = new Account(conn).getUserById(rs.getInt("reviewer_id"));
 			authors.add(author);
 		}
 		return authors;
 	}
-	
 
-	public void cancelSelect(int article_id, int reviewer_id) throws SQLException {
-		String sql = "delete from forms where article_id='"+article_id+"' and reviewer_id='"+reviewer_id+"'";
+	public void cancelSelect(int article_id, int reviewer_id)
+			throws SQLException {
+		String sql = "delete from forms where article_id='" + article_id
+				+ "' and reviewer_id='" + reviewer_id + "'";
 		Statement st = conn.createStatement();
 		st.execute(sql);
 		st.close();
 	}
-	
 
-	public void updateStatus(String status, int article_id, int reviewer_id)throws SQLException {
+	public void updateStatus(String status, int article_id, int reviewer_id)
+			throws SQLException {
 		Statement st = conn.createStatement();
-		String sqlString ="select count(*) as count from forms where article_id='"+article_id+"' and reviewer_id='"+reviewer_id+"'";
+		String sqlString = "select count(*) as count from forms where article_id='"
+				+ article_id + "' and reviewer_id='" + reviewer_id + "'";
 		ResultSet rs = st.executeQuery(sqlString);
 		rs.next();
 		int reject_count = rs.getInt("count");
-		
-		
-		if(status.equals("reject") && reject_count<3)
-		{
-			//TODO add reject count if the status is reject and count<2
+
+		if (status.equals("reject") && reject_count < 2) {
+			// TODO add reject count if the status is reject and count<2
 			st.execute("update forms set reject_count=reject_count+1 where article_id='"
-					+article_id+"' and reviewer_id='"+reviewer_id+"'");
-		}
-		else if(status.equals("reject") && reject_count==2)
-		{
-			//TODO set status to final reject when the reject count is 1
+					+ article_id + "' and reviewer_id='" + reviewer_id + "'");
+		} else if (status.equals("reject") && reject_count == 2) {
+			// TODO set status to final reject when the reject count is 1
 			status = "final reject";
+		} else if (status.equals("accept")) {
+			st.execute("update articles set review_count=review_count+1 where article_id='"
+					+ article_id + "'");
 		}
-		System.out.println("update forms set form_status = '"+status+"' where article_id = '"
-				+ article_id +"' and reviewer_id='" + reviewer_id + "'");
-		st.executeUpdate("update forms set form_status = '"+status+"' where article_id = '"
-				+ article_id +"' and reviewer_id='" + reviewer_id + "'");
-		
-				
+		System.out.println("update forms set form_status = '" + status
+				+ "' where article_id = '" + article_id + "' and reviewer_id='"
+				+ reviewer_id + "'");
+		st.executeUpdate("update forms set form_status = '" + status
+				+ "' where article_id = '" + article_id + "' and reviewer_id='"
+				+ reviewer_id + "'");
+
 		st.close();
 	}
-	
 
 	public void approveTheForm(int formId) throws SQLException {
-		
+
 		Statement st = conn.createStatement();
 		st.executeUpdate("update forms set form_approve = true where id = "
-				+ formId );
-				
+				+ formId);
+
 		st.close();
-		
+
 	}
+
 	/**
 	 * Rejecting the aricle-review in form
+	 * 
 	 * @param formId
 	 * @throws SQLException
 	 */
 	public void approveTheArticleForm(int formId) throws SQLException {
-		
+
 		Statement st = conn.createStatement();
 		st.executeUpdate("update forms set article_approve = true where id = "
-				+ formId );
-		
+				+ formId);
+
 		st.close();
-		
+
 	}
+
 	public void rejectTheArticleForm(int formId) throws SQLException {
-		
-		String sql = "delete from forms where id = "+formId;
+
+		String sql = "delete from forms where id = " + formId;
 		Statement st = conn.createStatement();
 		st.execute(sql);
 		st.close();
-		
+
 	}
+
 	public User getReviewer(int userId) throws SQLException {
 		Account account = new Account(conn);
 		User reviewer = account.getUserById(userId);
 		return reviewer;
-		
+
 	}
 	
-	 public static void main(String[] args) throws ClassNotFoundException, SQLException {
-	
-	
-	 Class.forName("com.mysql.jdbc.Driver");
-	 String DB =
-	 "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
-	 Connection conn = DriverManager.getConnection(DB);
-	 Form form = new Form(conn);
-	 form.approveTheForm(3);
-	 
-	
-	 }
+	public int getReviewCount(int reviewer_id, int caseNo) throws SQLException {
+		int count = 0;
+		Statement st = conn.createStatement();
+		String sql = "";
+		switch (caseNo) {
+		case 0:
+			// 0 is count for selected article in the awaiting list
+			sql="select count(*) as count from forms where form_status='select' and article_approve=false and reviewer_id='"+reviewer_id+"'";
+			break;
+		case 1:
+			// 1 is count for approved selected articles which has not been download
+			sql="select count(*) as count from forms where form_status='select' and article_approve=true and reviewer_id='"+reviewer_id+"'";
+			break;
+		case 2: 
+			// 2 is count for approved forms (finish review)
+			sql="select count(*) as count from forms where form_status='accept' and form_approve=true and reviewer_id='"+reviewer_id+"'";
+			break;
+		case 3:
+			// 3 is count for finally reject forms (finish review)
+			sql="select count(*) as count from forms where form_status='final reject' and form_approve=true and reviewer_id='"+reviewer_id+"'";
+			break;
+		case 4:
+			// 4 is count for delete forms(rejected by editor)
+			sql="select count(*) as count from forms where form_status='delete' and reviewer_id='"+reviewer_id+"'";
+			break;
+		default:
+			count = -1;
+			break;
+		}
+		if(!sql.equals(""))
+		{
+			ResultSet rs = st.executeQuery(sql);
+			rs.next();
+			count = rs.getInt("count");
+			rs.close();
+		}
+		st.close();
+		return count;
+	}
 
+	public static void main(String[] args) throws ClassNotFoundException,
+			SQLException {
+		Class.forName("com.mysql.jdbc.Driver");
+		String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+		Connection conn = DriverManager.getConnection(DB);
+		Form form = new Form(conn);
+		form.approveTheForm(3);
+	}
 
 }

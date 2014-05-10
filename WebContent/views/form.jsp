@@ -16,7 +16,6 @@
 	String statusString = "";
 	statusString = form.getString("form_status");
 %>
-<c:set var="overallstr" scope="session" value="${2000*2}" />
 <div class="row">
 
 	<div class="span4">

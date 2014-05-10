@@ -34,7 +34,7 @@
   <td><%=articles.getString("abstract")%></td>
   <td><%=articles.getString("first_name")+" "+articles.getString("last_name") %></td>
   <td><%=articles.getString("created_at")%></td>
-  <td><p onclick="download('<%=articles.getInt("id")%>','<%=articles.getString("pdf_path")%>')"><a><%=articles.getString("pdf_path")%></a></p></td>
+  <td><p onclick="download('<%=articles.getInt("id")%>','${pageContext.request.contextPath}/resources/<%=articles.getString("pdf_path")%>')"><a><%=articles.getString("pdf_path")%></a></p></td>
   <td><%=articles.getString("form_status")%></td> 
   <td>
   <% if(articles.getString("form_status").equals("download")||articles.getString("form_status").equals("update")||articles.getString("form_status").equals("accept")){
@@ -55,5 +55,11 @@
  }
 %>
 </table>
+<p align="right">
+<h4 align="right" >articles in waiting list : <%=request.getAttribute("select_await_count") %></h4>
+<h4 align="right">accept articles : <%=request.getAttribute("accept_count") %></h4>
+<h4 align="right">reject articles : <%=request.getAttribute("final_reject_count") %></h4>
+<h4 align="right" style="color:red">rejected forms : <%=request.getAttribute("delete_count") %></h4>
+<p>
 </div>
 <c:import url="/footer.jsp"></c:import>
