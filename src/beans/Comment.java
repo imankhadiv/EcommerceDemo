@@ -6,7 +6,18 @@ public class Comment {
 	private String title;
 	private String content;
 	private String createdAt;
+	public int getParent_id() {
+		return parent_id;
+	}
+
+	public void setParent_id(int parent_id) {
+		this.parent_id = parent_id;
+	}
+
+	private int parent_id;
 	
+
+
 
 	public Comment() {
 
