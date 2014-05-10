@@ -121,7 +121,7 @@ function createForm() {
 	http_request.send();
 	http_request.onreadystatechange = function() {
 		if (http_request.readyState == 4) {
-			window.location.replace("/EcommerceDemo/JDBServlet?action=approved_article");
+//			window.location.replace("/EcommerceDemo/JDBServlet?action=approved_article");
 		}
 	};
 	//TODO send request to servlet; save to database; redirect to a new page

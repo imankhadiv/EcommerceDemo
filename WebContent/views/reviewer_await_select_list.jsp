@@ -23,9 +23,19 @@
   ResultSet articles = (ResultSet) request.getAttribute("article");
  %>
  <%
+ if(articles.getRow()==0){
+%>
+<tbody>
+<tr><td colspan="5" align="center"><h5 align="center">Sorry no result</h5></td></tr>
+</tbody>
+<% 
+ }
+ else{
+	 %>	<tbody> <%
+ }
   while (articles.next()) {
  %>
- <tbody>
+ <!-- <tbody> -->
  <tr>
   <td><%=articles.getString("title")%></td>
   <td><%=articles.getString("abstract")%></td>
@@ -44,6 +54,11 @@
 %>
 </table>
 
-
+<p align="right">
+<h4 align="right" >articles in waiting list : <%=request.getAttribute("select_await_count") %></h4>
+<h4 align="right">accept articles : <%=request.getAttribute("accept_count") %></h4>
+<h4 align="right">reject articles : <%=request.getAttribute("final_reject_count") %></h4>
+<h4 align="right" style="color:red">rejected forms : <%=request.getAttribute("delete_count") %></h4>
+<p>
 </div>
 <c:import url="/footer.jsp"></c:import>

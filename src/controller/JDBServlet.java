@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.search.FromStringTerm;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -61,35 +62,26 @@ public class JDBServlet extends HttpServlet {
 			action = request.getParameter("action");
 			Connection conn = null;
 			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+				conn = (Connection) DriverManager.getConnection(DB);
+				Form form = new Form(conn);
 				if (action == null || action.equals("select_article")) {
-					Class.forName("com.mysql.jdbc.Driver");
-					String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
-					conn = (Connection) DriverManager.getConnection(DB);
 					// get article details
 					ArticleTable articleTable = new ArticleTable(conn);
 					ResultSet result = articleTable.getArticlesToSelect(user
 							.getId());
 					request.setAttribute("article", result);
-					// get authors of article
+					getReviewer_count_for_detail(request,form,user.getId());
 					request.getRequestDispatcher("/views/article_list.jsp")
 							.forward(request, response);
-					if (conn != null) {
-						try {
-							conn.close();
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
-					}
 				} else if (action == null || action.equals("approved_article")) {
-					Class.forName("com.mysql.jdbc.Driver");
-					String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
-					conn = (Connection) DriverManager.getConnection(DB);
 					// get article details
 					ArticleTable articleTable = new ArticleTable(conn);
 					ResultSet result = articleTable.getApprovedArticles(user
 							.getId());
 					request.setAttribute("article", result);
-					// get authors of article
+					getReviewer_count_for_detail(request,form,user.getId());
 					request.getRequestDispatcher(
 							"/views/article_approved_forms.jsp").forward(
 							request, response);
@@ -97,11 +89,6 @@ public class JDBServlet extends HttpServlet {
 					// to get article_id
 					int article_id = Integer.parseInt(request
 							.getParameter("article_id"));
-					Class.forName("com.mysql.jdbc.Driver");
-					String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
-					conn = (Connection) DriverManager.getConnection(DB);
-					// get form details
-					Form form = new Form(conn);
 					// get form details
 					ResultSet result = form.getReviewFormsByArticle_Reviewer(
 							article_id, user.getId());
@@ -122,28 +109,21 @@ public class JDBServlet extends HttpServlet {
 							"/views/form.jsp?article_id=" + article_id)
 							.forward(request, response);
 				} else if (action == null || action.equals("await_selection")) {
-					Class.forName("com.mysql.jdbc.Driver");
-					String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
-					conn = (Connection) DriverManager.getConnection(DB);
 					ArticleTable articleTable = new ArticleTable(conn);
 					ResultSet resultSet = articleTable.getAwaitingArticles(user
 							.getId());
 					request.setAttribute("article", resultSet);
-					// get authors of article
+					getReviewer_count_for_detail(request,form,user.getId());
 					request.getRequestDispatcher(
 							"/views/reviewer_await_select_list.jsp").forward(
 							request, response);
 				} else if (action == null || action.equals("comment")) {
-					Class.forName("com.mysql.jdbc.Driver");
-					String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
-					conn = (Connection) DriverManager.getConnection(DB);
 					CommentDB commentDB = new CommentDB(conn);
 					int reason_id = Integer.parseInt(request
 							.getParameter("reason_id"));
 					List<Comment> commentList = new ArrayList<Comment>();
 					commentList = commentDB.getFormReasonComments(reason_id);
 					request.setAttribute("commentList", commentList);
-					// get authors of article
 					request.getRequestDispatcher("/views/comment.jsp").forward(
 							request, response);
 				} else {
@@ -168,6 +148,34 @@ public class JDBServlet extends HttpServlet {
 			}
 		}
 	}
+	
+	private void getReviewer_count_for_detail(HttpServletRequest request,Form form, int reviewer_id) throws SQLException{
+		int select_await_count = form.getReviewCount(reviewer_id, 0);
+		if(select_await_count!=-1){
+			request.setAttribute("select_await_count", select_await_count);
+		}
+//		int select_await_count = form.getReviewCount(reviewer_id, 1);
+//		if(select_await_count!=-1){
+//			request.setAttribute("commentList", select_await_count);
+//		}
+		
+		int accept_count = form.getReviewCount(reviewer_id, 2);
+		if(select_await_count!=-1){
+			request.setAttribute("accept_count", accept_count);
+		}
+		
+		int final_reject_count = form.getReviewCount(reviewer_id, 3);
+		if(select_await_count!=-1){
+			request.setAttribute("final_reject_count", final_reject_count);
+		}
+		
+		int delete_count = form.getReviewCount(reviewer_id, 4);
+		if(select_await_count!=-1){
+			request.setAttribute("delete_count", delete_count);
+		}
+		
+	}
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse

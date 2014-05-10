@@ -1,6 +1,7 @@
 </div>
 </div>
 
+
 <div id="footer" style="margin-top:150px">
 	<nav class="navbar navbar-fixed-bottom">
 		<div class="navbar-inner navbar-content-center">
