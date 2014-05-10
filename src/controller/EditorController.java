@@ -52,6 +52,7 @@ public class EditorController extends HttpServlet {
 		String formId = request.getParameter("formId");
 		String articleId = request.getParameter("articleId");
 		String userId = request.getParameter("userId");
+		String approve = request.getParameter("approve");
 		if (user == null) {
 			request.setAttribute("message",
 					"You need to login to view the users");
@@ -103,7 +104,14 @@ public class EditorController extends HttpServlet {
 							f.rejectTheArticleForm(form.getId());
 
 						} else {
+							if(approve.equals("true")){
 							f.approveTheForm(form.getId());
+							f.updateStatusOfTheForm(form.getId(), "submit");
+							}else{
+								f.updateStatusOfTheForm(form.getId(), "delete");
+								f.rejectTheForm(form.getId());
+								
+							}
 						}
 						articles = (ArrayList<Article>) (new ArticleTable(conn)
 								.getAllArticles());

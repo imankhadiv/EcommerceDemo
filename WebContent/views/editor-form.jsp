@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="java.util.*"%>
+<%@ page import="beans.Error"%>
 <%@ page import="beans.*"%>
 
 <c:import url="/header.jsp">
@@ -69,10 +70,10 @@
 
 					<div class="row">
 						<div class="span4 offset5">
-							<h4>
+							<h3>
 								Title:
 								<%=reason.getTitle()%>
-							</h4>
+							</h3>
 						</div>
 					</div>
 					<div class="row">
@@ -93,7 +94,8 @@
 								date:
 								<%=comments.get(i).getCreatedAt()%>
 							</p>
-							<textarea style="background-color: gray;" rows="8" cols="8">Reviewer said:<%=comments.get(i).getContent()%></textarea>
+							<textarea style="background-color: #BFE9FF
+;" rows="8" cols="8">Reviewer said:<%=comments.get(i).getContent()%></textarea>
 
 						</div>
 						<%
@@ -120,20 +122,48 @@
 					<%
 						}
 					%>
+					<div class="row">
+					<div class="span6">
+					<h4>Small Errors</h4>
+					<% int i= 1; %>
+					
+					<table class="table table-striped table-hover ">
+					<tr>
+						<th>No</th>
+						<th>Error</th>
+						</tr>
+					<% for(Error e:form.getErrors()){ %>
+					<tr>
+						<td><%=i %></td>
+						<td><%=e.getError() %></td>
+						</tr>
 
-					<%
+					
+					<%} %>
+					</div>
+					</table> 
+					</div>
+					</div>
+					
+
+					<%-- <%
 						if (form.getFormApproved().equals("0")) {
-					%>
+					%> --%>
 
 					<a
-							href="${pageContext.request.contextPath}/EditorController?formId=<%= article.getForms().indexOf(form)
+							href="${pageContext.request.contextPath}/EditorController?approve=true&formId=<%= article.getForms().indexOf(form)
   
  %>&articleId=<%= articles.indexOf(article)%>"
 							class="btn btn-primary btn-success .disabled">Approve Form</a> 
+					<a
+							href="${pageContext.request.contextPath}/EditorController?approve=false&formId=<%= article.getForms().indexOf(form)
+  
+ %>&articleId=<%= articles.indexOf(article)%>"
+							class="btn btn-primary btn-danger .disabled">Reject Form</a> 
 
-					<%
+					<%-- <%
 						}
-					%>
+					%> --%>
 				
 			</form>
 		</div>

@@ -119,14 +119,15 @@
 					<%
 						String progressClass;
 									String progressStatus;
-									if (form.getFormApproved().equals("0")) {
-										progressClass = "bar-warning";
-										progressStatus = "Pending";
-									} else {
+									// if(form.getFormApproved().equals("1")&&(form.getStatus().equals("submit"))) {
+									 if(form.getFormApproved().equals("1")) {
 										progressClass = "bar-success";
 										progressStatus = "Approved";
 									}
-					%>
+									else{
+										progressClass = "bar-warning";
+										progressStatus = "Pending";
+					}%>
 
 					<tr class="row">
 						<td class="span3">

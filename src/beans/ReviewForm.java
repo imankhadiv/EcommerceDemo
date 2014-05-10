@@ -14,6 +14,7 @@ public class ReviewForm {
 	private String secrete;
 	private String formApproved;
 	private String articleApproved;
+	private String status;
 	private List<Comment> commentList;
 	private List<Error> errors;
 	private User reviewer;//this is useful to get the reviewer details in editor page
@@ -124,5 +125,13 @@ public class ReviewForm {
 	public void setReviewer(User reviewer) {
 		this.reviewer = reviewer;
 	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	
 	
 }

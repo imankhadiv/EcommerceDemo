@@ -175,6 +175,7 @@ public class Form {
 			form.setReviewer(new Account(conn).getUserById(rs.getInt("reviewer_id")));
 			form.setReasons(new ReasonTable(conn).getFormReasons(rs.getInt("id")));
 			form.setErrors(new MistakeDB(conn).getListOfErrors(articleId,rs.getInt("reviewer_id")));
+			form.setStatus(rs.getString("form_status"));
 			forms.add(form);
 			
 //			form.setCommentList(commentList);
@@ -264,6 +265,11 @@ public class Form {
 		st.close();
 		
 	}
+	/**
+	 * when the editor do not allow the reviewer for peer-reviewing the article it deltes the form
+	 * @param formId
+	 * @throws SQLException
+	 */
 	public void rejectTheArticleForm(int formId) throws SQLException {
 		
 		String sql = "delete from forms where id = "+formId;
@@ -278,6 +284,30 @@ public class Form {
 		return reviewer;
 		
 	}
+	/**
+	 * 
+	 * @param formId
+	 * @param status
+	 * @throws SQLException
+	 */
+	public void updateStatusOfTheForm(int formId,String status) throws SQLException {
+		
+		Statement st = conn.createStatement();
+		st.executeUpdate("update forms set form_status = '"+status+"' where id = "
+				+ formId );
+				
+		if(st != null)st.close();
+	}
+		
+	public void rejectTheForm(int formId) throws SQLException {
+		
+		Statement st = conn.createStatement();
+		st.executeUpdate("update forms set form_approve = 0 where id = "+formId);
+		
+		if(st != null)st.close();
+	}
+	
+	
 	
 	 public static void main(String[] args) throws ClassNotFoundException, SQLException {
 	
@@ -287,8 +317,9 @@ public class Form {
 	 "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
 	 Connection conn = DriverManager.getConnection(DB);
 	 Form form = new Form(conn);
-	 form.approveTheForm(3);
-	 
+	 //form.approveTheForm(3);
+	 form.updateStatusOfTheForm(7, "updated");
+	 form.rejectTheForm(7);
 	
 	 }
 

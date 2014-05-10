@@ -18,6 +18,7 @@ import beans.Reason;
 import beans.ReviewForm;
 import beans.User;
 import database.CommentDB;
+import database.Form;
 
 /**
  * 
@@ -96,6 +97,8 @@ public class FormController extends HttpServlet {
 					// reason.getComments().add(new
 					// Comment(reason.getId(),reason.getTitle(),com));
 					com.insertIntoComments(reason.getId(), c);
+					Form f = new Form(conn);
+					f.updateStatusOfTheForm(form.getId(), "update");
 
 					System.out.println(com);
 				}

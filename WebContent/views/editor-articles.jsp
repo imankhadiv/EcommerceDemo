@@ -131,27 +131,35 @@
 					<th>Email</th>
 					<td><%=article.getMainUser().getEmail()%></td>
 				</tr>
+				<tr>
+					<th>Affiliation</th>
+					<td><%=article.getMainUser().getAffiliation()%></td>
+				</tr>
 
 			</table>
+			<hr/>		
 
 			<div class="row">
-				<div class="span4">
-					<%
-						if (article.getUsers() != null
-										&& article.getUsers().size() > 0) {
-					%>
-					<h4>Other users</h4>
+				
+				<h3>Other users</h3>
+				
 					<table class="table table-hover table-borderd">
-
-						<%
-							for (User user : article.getUsers()) {
-						%>
-						<tr>
+					<tr>
 							<th>Firstname</th>
 							<th>Lastname</th>
 							<th>Email</th>
 							<th>Affiliation</th>
 						</tr>
+					<%
+						if (article.getUsers() != null
+										&& article.getUsers().size() > 0) {
+					%>
+			
+
+						<%
+							for (User user : article.getUsers()) {
+						%>
+						
 						<tr>
 							<td><%=user.getFirstname()%></td>
 							<td><%=user.getLastname()%></td>
@@ -166,8 +174,11 @@
 						<%
 							}
 						%>
+						
 					</table>
-				</div>
+				<hr/>
+				
+				
 
 				<h3>Review Forms</h3>
 				<%
@@ -252,6 +263,8 @@
 				</table>
 
 			</div>
+			
+			
 			<hr />
 
 			<h3>Reviewers awaiting for approval to peer-review this article</h3>
@@ -277,7 +290,7 @@
 				</tr>
 				<%
 					for (ReviewForm form : article.getForms()) {
-								if (form.getArticleApproved().equals("0")) {
+								if ((form.getArticleApproved().equals("0")&&(form.getStatus().equals("select")))) {
 				%>
 
 
