@@ -57,11 +57,10 @@
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Reviewer<b class="caret"></b></a>
 
 					<ul class="dropdown-menu">
-					<li><a href="${pageContext.request.contextPath}/JDBServlet?action=comment&reason_id=72">My Reviews</a></li>
-					<%-- <li><a href="${pageContext.request.contextPath}/">Review Articles</a></li> --%>
+					<li><a href="#">Reviewer Guide</a></li>
 					<li><a href="${pageContext.request.contextPath}/JDBServlet?action=select_article">Select Articles </a></li>
 					<li><a href="${pageContext.request.contextPath}/JDBServlet?action=await_selection">Await selection </a></li>
-					<li><a href="${pageContext.request.contextPath}/JDBServlet?action=approved_article">Approved Articles to review</a></li>
+					<li><a href="${pageContext.request.contextPath}/JDBServlet?action=approved_article">My Reviews</a></li>
 					</ul>
 				</li>
 				

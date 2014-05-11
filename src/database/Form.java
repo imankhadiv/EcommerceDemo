@@ -271,7 +271,7 @@ public class Form {
 			// TODO set status to final reject when the reject count is 1
 			status = "final reject";
 		} else if (status.equals("accept")) {
-			st.execute("update articles set review_count=review_count+1 where article_id='"
+			st.execute("update articles set review_count=review_count+1 where id='"
 					+ article_id + "'");
 		} else if (status.equals("submit") && reject_count < 2) {
 			// TODO add reject count if the status is submit and count<2

@@ -145,7 +145,7 @@
 		</div>
 	</div>
 </div>
-<button class="btn btn-primary" type="button" onclick="createForm()">Submit</button>
+<button class="btn btn-primary" type="button" onclick="createForm('${pageContext.request.contextPath}')">Submit</button>
 
 <!-- <input type="button" class="btn" value="Submit"/> -->
 <br />

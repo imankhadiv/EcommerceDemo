@@ -48,7 +48,7 @@ function addErrors() {
 
 }
 
-function createForm() {
+function createForm(path) {
 	// json array for criticism
 	var jsonArr_criticism = [];
 	for (var i = 0; i < numberOfCriticism; i++) {
@@ -121,7 +121,7 @@ function createForm() {
 	http_request.send();
 	http_request.onreadystatechange = function() {
 		if (http_request.readyState == 4) {
-//			window.location.replace("/EcommerceDemo/JDBServlet?action=approved_article");
+			window.location.replace(path+"/JDBServlet?action=approved_article");
 		}
 	};
 	//TODO send request to servlet; save to database; redirect to a new page

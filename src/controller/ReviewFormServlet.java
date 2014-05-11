@@ -53,7 +53,6 @@ public class ReviewFormServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
-		System.out.println("aaa");
 	}
 
 	/**
@@ -173,9 +172,6 @@ public class ReviewFormServlet extends HttpServlet {
 						
 						form.updateStatus(typeString, article_id, user.getId());						
 						mail.sendEmailForUpdateForm(user.getEmail(), user.getFirstname());
-						System.out.println("success of update");
-						response.sendRedirect("JDBServlet?action=approved_article");
-						System.out.println("success of redirect");
 					} catch (JSONException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

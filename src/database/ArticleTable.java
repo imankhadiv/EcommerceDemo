@@ -169,7 +169,7 @@ public class ArticleTable {
 				// "where a.user_id=b.id and a.id=c.article_id and a.status='unpublished' and a.id in (select article_id from forms where reviewer_id ='"
 				// + reviewer_id +
 				// "' and article_approve=true  )";//"' and article_approve=true and form_approve=true )";
-				+ "where a.user_id=b.id and a.id=c.article_id and a.status='unpublished' and c.reviewer_id ='"
+				+ "where a.user_id=b.id and a.id=c.article_id and c.reviewer_id ='"
 				+ reviewer_id + "' and c.article_approve=true";
 		System.out.println(sqlString);
 		ResultSet resultSet = stst.executeQuery(sqlString);
