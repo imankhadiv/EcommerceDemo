@@ -129,7 +129,6 @@ function validate() {
 
 	
 	if (abs === '' || abs === null || $('#abs').val().split(' ').length > 250) {
-		alert('false');
 		$('#absdiv').addClass('control-group error');
 		$('#absdiv')
 				.append(

@@ -24,8 +24,8 @@
 		} else if ((request.getParameter("id") == null)) {
 	%>
 
-
-
+	<h2>Articles</h2>
+	<hr/>
 	<table class="table table-striped table-hover table-borderd">
 		<thead>
 			<tr>
