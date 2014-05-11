@@ -54,7 +54,6 @@ function addAuthor() {
 
 }
 function removeAuthor() {
-	alert("hello");
 	if(count==0)
 		return;
 
@@ -128,7 +127,9 @@ function validate() {
 		status = 1;
 	}
 
+	
 	if (abs === '' || abs === null || $('#abs').val().split(' ').length > 250) {
+		alert('false');
 		$('#absdiv').addClass('control-group error');
 		$('#absdiv')
 				.append(
@@ -136,7 +137,7 @@ function validate() {
 		status = 1;
 
 	}
-	if (keywords === '' || keywords === null || $('#abs').val().split(' ').length > 1) {
+	if (keywords === '' || keywords === null || $('#keywords').val().split(' ').length > 1) {
 		$('#keywordsdiv').addClass('control-group error');
 		$('#keywordsdiv')
 				.append(
@@ -145,7 +146,6 @@ function validate() {
 	}
 	
 	if (!file.match("\.+.pdf")) {
-		alert('hk');
 		$('#filediv').addClass('control-group error');
 		$('#filediv')
 				.append(
@@ -203,7 +203,6 @@ function validate() {
 	if (status == 1) {
 		return false;
 	}
-	alert('true');
 	return true;
 
 }
@@ -262,9 +261,9 @@ $(document).ready(function() {
 	});
 	$('#abs').keyup( function() {
 	    var words = $('#abs').val().split(' ');
-	    
-	    alert(words.length)
+	    if(words.lenth > 250){
 	    ('#abs').css('disable','true');
+	    }
 	});
 	$('#keywords').keyup( function() {
 		var words = $('#keywords').val().split(' ');

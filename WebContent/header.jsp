@@ -72,7 +72,10 @@
 
 					<ul class="dropdown-menu">
 					<li><a href="${pageContext.request.contextPath}/EditorController?action=articles"><i class="icon-book"></i>Articles</a></li>
-<li><a href="${pageContext.request.contextPath}/EditorController?action=users"><i class="icon-user"></i>Users</a></li></ul>
+<li><a href="${pageContext.request.contextPath}/EditorController?action=users"><i class="icon-user"></i>Invite Editor</a></li>
+<li><a href="${pageContext.request.contextPath}/views/journal.jsp">Journal</a></li>
+
+</ul>
 				</li>
 
 			</ul>

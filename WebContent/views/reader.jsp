@@ -132,18 +132,18 @@ border-style:groove">
 		</table>
 
 		<div class="row">
-			<div class="span4">
-				<% if(article.getUsers() != null && article.getUsers().size() > 0) {%>
+			<div class="span10">
 				<h4>Other users</h4>
 				<table class="table table-hover table-borderd">
 				
-				<% for(User user:article.getUsers()) {%>
 			<tr>
 				<th>Firstname</th>
 				<th>Lastname</th>
 				<th>Email</th>
 				<th>Affiliation</th>
 			</tr>
+				<% if(article.getUsers() != null && article.getUsers().size() > 0) {%>
+				<% for(User user:article.getUsers()) {%>
 			<tr>
 				<td><%= user.getFirstname()%></td>
 				<td><%= user.getLastname()%></td>

@@ -142,6 +142,7 @@ public class Account {
 			user.setLastname(rs.getString("last_name"));
 			user.setEmail(rs.getString("email"));
 			user.setRole(rs.getString("role"));
+			user.setAffiliation(rs.getString("affiliation"));
 		}
 		rs.close();
 		return user;
@@ -173,6 +174,7 @@ public class Account {
 		int count = 0;
 		if (rs.next()) {
 			count = rs.getInt("count");
+			System.out.println(count);
 		}
 		rs.close();
 		if (count == 0) {
@@ -201,11 +203,19 @@ public class Account {
 			user.setLastname(rs.getString("last_name"));
 			user.setEmail(rs.getString("email"));
 			user.setRole(rs.getString("role"));
+			user.setAffiliation(rs.getString("affiliation"));
 			users.add(user);
 
 		}
 		rs.close();
 		return users;
+	}
+	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.jdbc.Driver");
+		String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+		Connection con = DriverManager.getConnection(DB);
+		ArticleTable article = new ArticleTable(con);
+		System.out.println(new Account(con).exists("iman.khadiv@gmail.com"));
 	}
 
 

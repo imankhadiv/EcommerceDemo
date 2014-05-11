@@ -49,6 +49,27 @@ $(document).ready(
 					
 				}
 			});
+			$('#title').click(function() {
+				if ($('#titlediv').is('.control-group, .error')) {
+					$('#titlediv').removeClass();
+					$('span[id^="titlespan"]').remove();
+					
+				}
+			});
+			$('#aimdiv').click(function() {
+				if ($('#aimdiv').is('.control-group, .error')) {
+					$('#aimdiv').removeClass();
+					$('span[id^="aimspan"]').remove();
+					
+				}
+			});
+			$('#guide').click(function() {
+				if ($('#guidediv').is('.control-group, .error')) {
+					$('#guidediv').removeClass();
+					$('span[id^="guidespan"]').remove();
+					
+				}
+			});
 
 		});
 function validateInvitationForm() {
@@ -100,6 +121,38 @@ function validateInvitationForm() {
 
 		return false;
 	}
+	return true;
+
+}
+function validateJournal() {
+	var aim = $('#aim').val();
+	var guide = $('#guide').val();
+	var title = $('#title').val();
+	var status = 0;
+ if (aim === '' || aim === null) {
+	$('#aimdiv').addClass('control-group error');
+	$('#aimdiv')
+			.append(
+					'<span id="aimspan" class="help-inline">Please enter a message</span>');
+	status = 1;
+ }
+ if (guide === '' || guide === null) {
+	 $('#guidediv').addClass('control-group error');
+	 $('#guidediv')
+	 .append(
+	 '<span id="guidespan" class="help-inline">Please enter a message</span>');
+	 status = 1;
+ }
+ if (aim === '' || aim === null) {
+	 $('#titlediv').addClass('control-group error');
+	 $('#titlediv')
+	 .append(
+	 '<span id="titlespan" class="help-inline">Please enter a message</span>');
+	 status = 1;
+ }
+ 	if(status == 1){
+ 		return false;
+ 	}
 	return true;
 
 }

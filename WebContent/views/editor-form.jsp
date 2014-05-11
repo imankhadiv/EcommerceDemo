@@ -29,7 +29,9 @@
 							Integer.valueOf(formId));
 		%>
 		<% if((form.getReasons().size() == 0) || (form.getReasons().get(0).getComments().size() == 0))
+
 		{ %>
+			<% request.setAttribute("editormessage", "This form has not been completed yet"); %>
 		<jsp:forward page="/views/editor-articles.jsp">
 		
 			<jsp:param value="<%=articleId %>" name="id"/>
@@ -107,7 +109,7 @@
 
 								<%=comments.get(i).getCreatedAt()%>
 							</p>
-							<textarea style="background-color: #C0C0C0;" rows="8" cols="8">Aurhor replied:<%=comments.get(i).getContent()%></textarea>
+							<textarea style="background-color: #C0C0C0;" rows="8" cols="8">Author replied:<%=comments.get(i).getContent()%></textarea>
 
 
 						</div>
@@ -134,7 +136,7 @@
 						</tr>
 					<% for(Error e:form.getErrors()){ %>
 					<tr>
-						<td><%=i %></td>
+						<td><%=i++ %></td>
 						<td><%=e.getError() %></td>
 						</tr>
 

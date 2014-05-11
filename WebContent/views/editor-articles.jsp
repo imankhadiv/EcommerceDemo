@@ -116,7 +116,7 @@
 			</div>
 			<hr />
 
-			<h3>Main User</h3>
+			<h3>Main Author</h3>
 			<table class="table table-hover table-borderd">
 				<tr>
 					<th>Firstname</th>
@@ -141,7 +141,7 @@
 
 			<div class="row">
 				
-				<h3>Other users</h3>
+				<h3>Other Authors</h3>
 				
 					<table class="table table-hover table-borderd">
 					<tr>
@@ -177,8 +177,15 @@
 						
 					</table>
 				<hr/>
+				<% String editorMessage = (String)request.getAttribute("editormessage");
+					if(editorMessage != null){
+				%>
 				
-				
+				<div class="alert alert-info">
+	<a href="#" class="close" data-dismiss="error">&times;</a> <strong>Info!</strong>
+	                <%= editorMessage %>
+	<br />
+      </div><%} %>
 
 				<h3>Review Forms</h3>
 				<%

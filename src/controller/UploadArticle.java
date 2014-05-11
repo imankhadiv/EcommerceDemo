@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -129,10 +130,17 @@ public class UploadArticle extends HttpServlet {
 		}
 
 		try {
+			
 			Class.forName("com.mysql.jdbc.Driver");
 			String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
 			conn = DriverManager.getConnection(DB);
 			Account account = new Account(conn);
+
+			HttpSession session = request.getSession();
+			User se = (User) session.getAttribute("user");
+			if(se != null){
+				session.removeAttribute("user");
+			}
 			uploadFile(request, response);
 			if(new ArticleTable(conn).checkFileName(this.file)){
 				request.setAttribute("message", "Your file name exists. Please upload an article with a different name");
@@ -162,7 +170,8 @@ public class UploadArticle extends HttpServlet {
 			Article article = new Article(title, abst, String.valueOf(userId),
 					file);
 			article.setKeywords(new KeywordTable().getKeywords(keywords));
-//		
+//		    
+			if(list != null)
 			article.setUsers(this.getUsers(list));
 			
 			ArticleTable articleTable = new ArticleTable(conn, article);

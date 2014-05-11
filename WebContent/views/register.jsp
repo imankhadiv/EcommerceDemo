@@ -64,6 +64,26 @@
      <td class="text-error" id="confirmpassworderror"></td>
     </tr>
     <tr><td><br/></td></tr>
+    
+    <tr>
+     <td><lable>Select Subject Area:&nbsp;&nbsp;</lable></td>
+     
+     
+     
+     <td>
+			     	<select name="subject-area">
+							<option value="Subject1">Subject1</option>
+							<option value="Subject2">Subject2</option>
+							<option value="Subject3">Subject3</option>
+							<option value="Subject4">Subject4</option>
+			</select><br>
+
+      </td>
+    </tr>
+    <tr>
+    <tr><td><br/></td></tr>
+    
+    
     <tr>
      <td><input type="checkbox" value="email_notification1">Receive
       email notification on the selected subject</td>
