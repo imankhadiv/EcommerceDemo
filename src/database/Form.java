@@ -6,7 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import beans.ReviewForm;
 import beans.User;
@@ -99,7 +104,8 @@ public class Form {
 
 	public void downloadArticle(int article_id, int reviewer_id)
 			throws SQLException {
-		String sqlString = "update forms set form_status='download' where article_id='"
+		Date nowDate = new Date();
+		String sqlString = "update forms set form_status='download', download_at='"+ new Timestamp(nowDate.getTime())+"' where article_id='"
 				+ article_id + "' and reviewer_id='" + reviewer_id + "'";
 		Statement st = conn.createStatement();
 		st.execute(sqlString);
@@ -210,6 +216,43 @@ public class Form {
 		st.execute(sql);
 		st.close();
 	}
+	
+	public List<User> getUsersForReminderSchduler() throws SQLException
+	{
+		List<User> userList = new ArrayList<User>();
+		Statement st = conn.createStatement();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -7);
+		Date weekbefore = cal.getTime();
+		Timestamp weekAgo = new Timestamp(weekbefore.getTime());
+		String sql =  "select * from users where id in ( select reviewer_id from forms where form_status='select' and (download_at<='"+weekAgo+"' or download_at is null))";
+		ResultSet resultSet = st.executeQuery(sql);
+		while(resultSet.next()){
+			User user = new User();
+			user.setAffiliation(resultSet.getString("affiliation"));
+			user.setEmail(resultSet.getString("email"));
+			user.setFirstname(resultSet.getString("first_name"));
+			user.setId(resultSet.getInt("id"));
+			user.setLastname(resultSet.getString("last_name"));
+			userList.add(user);
+		}
+		resultSet.close();
+		st.close();
+		return userList;
+	}
+	
+	// set status to 'submit' if it past 7 days
+	public void updateStatusForScheduler() throws SQLException
+	{
+		Statement st = conn.createStatement();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -7);
+		Date weekbefore = cal.getTime();
+		Timestamp weekAgo = new Timestamp(weekbefore.getTime());
+		String sql =  "update forms set form_status='submit' where form_status='update' and download_at<='"+weekAgo+"'";
+		st.execute(sql);
+		st.close();
+	}
 
 	public void updateStatus(String status, int article_id, int reviewer_id)
 			throws SQLException {
@@ -230,10 +273,14 @@ public class Form {
 		} else if (status.equals("accept")) {
 			st.execute("update articles set review_count=review_count+1 where article_id='"
 					+ article_id + "'");
-		}
-		System.out.println("update forms set form_status = '" + status
-				+ "' where article_id = '" + article_id + "' and reviewer_id='"
-				+ reviewer_id + "'");
+		} else if (status.equals("submit") && reject_count < 2) {
+			// TODO add reject count if the status is submit and count<2
+			st.execute("update forms set reject_count=reject_count+1 where article_id='"
+					+ article_id + "' and reviewer_id='" + reviewer_id + "'");
+		} else if (status.equals("submit") && reject_count == 2) {
+			// TODO add reject count if the status is submit and count<2
+			status = "final reject";
+		} 
 		st.executeUpdate("update forms set form_status = '" + status
 				+ "' where article_id = '" + article_id + "' and reviewer_id='"
 				+ reviewer_id + "'");
@@ -309,23 +356,6 @@ public class Form {
 		
 		if(st != null)st.close();
 	}
-	
-	
-	
-
-//	 public static void main(String[] args) throws ClassNotFoundException, SQLException {
-//	
-//	
-//	 Class.forName("com.mysql.jdbc.Driver");
-//	 String DB =
-//	 "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
-//	 Connection conn = DriverManager.getConnection(DB);
-//	 Form form = new Form(conn);
-//	 //form.approveTheForm(3);
-//	 form.updateStatusOfTheForm(7, "updated");
-//	 form.rejectTheForm(7);
-//	
-//	 }
 
 	public int getReviewCount(int reviewer_id, int caseNo) throws SQLException {
 		int count = 0;
@@ -373,7 +403,28 @@ public class Form {
 		String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
 		Connection conn = DriverManager.getConnection(DB);
 		Form form = new Form(conn);
-		form.approveTheForm(3);
+		//
+		List<User> users = new ArrayList<User>();
+		users = form.getUsersForReminderSchduler();
+		//
+//		form.approveTheForm(3);
+		
 	}
+	
+
+
+//	 public static void main(String[] args) throws ClassNotFoundException, SQLException {
+//	
+//	
+//	 Class.forName("com.mysql.jdbc.Driver");
+//	 String DB =
+//	 "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+//	 Connection conn = DriverManager.getConnection(DB);
+//	 Form form = new Form(conn);
+//	 //form.approveTheForm(3);
+//	 form.updateStatusOfTheForm(7, "updated");
+//	 form.rejectTheForm(7);
+//	
+//	 }
 
 }

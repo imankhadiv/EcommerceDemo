@@ -61,8 +61,8 @@
 				<%=(statusString.equals("submit") ? "selected" : "")%>>submit</option>
 			<option value="accept"
 				<%=(statusString.equals("accept") ? "selected" : "")%>>accept</option>
-			<option value="reject"
-				<%=(statusString.equals("reject") ? "selected" : "")%>>reject</option>
+			<%-- <option value="reject"
+				<%=(statusString.equals("reject") ? "selected" : "")%>>reject</option> --%>
 			<option value="final reject"
 				<%=(statusString.equals("final reject") ? "selected" : "")%>>final
 				reject</option>
@@ -90,7 +90,7 @@
 			%>
 			<tbody>
 				<tr>
-					<td><a href="#" ><%=reason.getString("title")%></a></td>
+					<td><a href="${pageContext.request.contextPath}/JDBServlet?action=comment&reason_id=<%=reason.getInt("reason_id") %>" ><%=reason.getString("title")%></a></td>
 					<td><button class="btn btn-primary" onclick="approveComment(<%=reason.getInt("reason_id")%>)">approve</button></td>
 				</tr>
 			</tbody>
