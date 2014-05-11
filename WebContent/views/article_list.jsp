@@ -13,7 +13,7 @@
  	  <th>select</th>
 	  <th>title</th>
 	  <th>abstract</th>
-	  <th>main auther</th>
+	  <th>main author</th>
 	  <th>created at</th>
  </tr>
 	  </thead>

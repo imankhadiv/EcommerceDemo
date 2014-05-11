@@ -372,11 +372,11 @@ public class Form {
 			break;
 		case 2: 
 			// 2 is count for approved forms (finish review)
-			sql="select count(*) as count from forms where form_status='accept' and form_approve=true and reviewer_id='"+reviewer_id+"'";
+			sql="select count(*) as count from forms where form_status='accept' and reviewer_id='"+reviewer_id+"'";
 			break;
 		case 3:
 			// 3 is count for finally reject forms (finish review)
-			sql="select count(*) as count from forms where form_status='final reject' and form_approve=true and reviewer_id='"+reviewer_id+"'";
+			sql="select count(*) as count from forms where form_status='final reject'  and reviewer_id='"+reviewer_id+"'";
 			break;
 		case 4:
 			// 4 is count for delete forms(rejected by editor)

@@ -11,7 +11,7 @@
 	  <th>title</th>
 	  <th>abstract</th>
 	  <th>main auther</th>
-	  <th>created at</th>
+	 <!--  <th>created at</th> -->
 	  <th>download</th>
 	  <th>status</th>
 	  <th>review</th>
@@ -33,7 +33,7 @@
   <td><%=articles.getString("title")%></td>
   <td><%=articles.getString("abstract")%></td>
   <td><%=articles.getString("first_name")+" "+articles.getString("last_name") %></td>
-  <td><%=articles.getString("created_at")%></td>
+ <%--  <td><%=articles.getString("created_at")%></td> --%>
   <td><p onclick="download('<%=articles.getInt("id")%>','${pageContext.request.contextPath}/resources/<%=articles.getString("pdf_path")%>')"><a><%=articles.getString("pdf_path")%></a></p></td>
   <td><%=articles.getString("form_status")%></td> 
   <td>
