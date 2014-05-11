@@ -29,7 +29,7 @@ public class FormScheduler implements ServletContextListener {
     public void contextInitialized(ServletContextEvent arg0) {
         // TODO Auto-generated method stub
     	scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(new SubmitForm(), 0, 7, TimeUnit.DAYS);
+        scheduler.scheduleAtFixedRate(new SubmitForm(), 0, 1, TimeUnit.DAYS);
         scheduler.scheduleAtFixedRate(new ReviewReminder(), 0, 1, TimeUnit.DAYS);
     }
 

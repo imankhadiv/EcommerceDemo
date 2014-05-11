@@ -6,8 +6,11 @@ function submitBtn() {
 	var method = "POST";
 	var urlString = "CommentServlet?reason_id=" + getUrlParam('reason_id')
 			+ "&content=" + content;
-	alert(urlString);
+	if (content == null || content == "") {
+		alert("please input a content before submit !");
+	} else {
 	connect(method, urlString);
+	}
 }
 
 function connect(method, url)
