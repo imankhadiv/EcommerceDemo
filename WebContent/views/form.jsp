@@ -53,8 +53,8 @@
 			</p>
 		</div>
 		<select id="status">
-			<option value="download"
-				<%=(statusString.equals("download") ? "selected" : "")%>>download</option>
+			<%-- <option value="download"
+				<%=(statusString.equals("download") ? "selected" : "")%>>download</option> --%>
 			<option value="update"
 				<%=(statusString.equals("update") ? "selected" : "")%>>update</option>
 			<option value="submit"
