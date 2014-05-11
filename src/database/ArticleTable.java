@@ -428,7 +428,6 @@ public class ArticleTable {
 			article.setAbst(rs.getString("abstract"));
 			article.setKeywords(new KeywordTable(conn)
 					.getKeywordsByArticleId(rs.getInt("id")));
-			System.out.println("///" + article.getKeywords());
 			article.setCreatedAt(rs.getDate("created_at"));
 			article.setStatus(rs.getString("status"));
 			article.setReview_count(rs.getInt("review_count"));

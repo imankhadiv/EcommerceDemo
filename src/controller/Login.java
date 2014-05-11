@@ -98,10 +98,10 @@ public class Login extends HttpServlet {
 			String email = request.getParameter("email");
 			String password = request.getParameter("password");
 
-			User user = new User(email, password);
+			//User user = new User(email, password);
 
-			request.setAttribute(email, "email");
-			request.setAttribute(password, "");
+//			request.setAttribute(email, "email");
+//			request.setAttribute(password, "");
 			try {
 				if (account.login(email, password)) {
 					HttpSession session = request.getSession();

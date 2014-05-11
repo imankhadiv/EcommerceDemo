@@ -34,7 +34,7 @@ public class Account {
 		int count = 0;
 		if (rs.next()) {
 			count = rs.getInt("count");
-			count+=1;
+			//count+=1;
 		}
 		rs.close();
 		if (count == 0) {
@@ -210,13 +210,14 @@ public class Account {
 		rs.close();
 		return users;
 	}
-	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.jdbc.Driver");
-		String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
-		Connection con = DriverManager.getConnection(DB);
-		ArticleTable article = new ArticleTable(con);
-		System.out.println(new Account(con).exists("iman.khadiv@gmail.com"));
-	}
+//	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+//		Class.forName("com.mysql.jdbc.Driver");
+//		String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team107?user=team107&password=8b8ba518";
+//		Connection con = DriverManager.getConnection(DB);
+//		ArticleTable article = new ArticleTable(con);
+//		System.out.println(new Account(con).exists("iman.khnadiv@gmail.com"));
+//		System.out.println(new Account(con).login("iman.khadiv@gmail.com", "letmmein"));
+//	}
 
 
 }

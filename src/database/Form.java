@@ -171,6 +171,7 @@ public class Form {
 			form.setOverall(rs.getString("overall"));
 			form.setSummary(rs.getString("summary"));
 			form.setSecrete(rs.getString("secret_message"));
+			System.out.println("....................................................."+form.getSecrete());
 			form.setFormApproved(rs.getString("form_approve"));
 			form.setArticleApproved(rs.getString("article_approve"));
 			form.setReviewer(new Account(conn).getUserById(rs.getInt("reviewer_id")));

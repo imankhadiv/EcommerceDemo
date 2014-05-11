@@ -47,7 +47,8 @@
 			<div class="span4" style="background-color:#6699FF
 			">
 			<h3>Summary</h3>
-			<p><%=form.getSummary()%></p>
+			<p><%= form.getSummary()%> </p>
+			
 			</div>
 			<div class="span4 offset1" style="background-color:#6699FF
 			">
