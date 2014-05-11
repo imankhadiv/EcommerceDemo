@@ -6,6 +6,8 @@ public class Comment {
 	private String title;
 	private String content;
 	private String createdAt;
+	
+
 	public int getParent_id() {
 		return parent_id;
 	}

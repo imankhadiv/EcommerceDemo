@@ -29,7 +29,7 @@ public class CommentDB {
 	public ArrayList<Comment> getFormReasonComments(int reasonId) throws SQLException {
 		Statement stst = conn.createStatement();
 		ResultSet rs = stst
-				.executeQuery("select a.id,b.form_id,b.reviewer_id,b.title,a.reason_id,a.content,a.parent_id,a.created_at from comments as a, reviewer_reason_list as b where a.reason_id=b.id and a.reason_id= "
+				.executeQuery("select a.id,b.form_id,b.reviewer_id,b.title,a.reason_id,a.content,a.parent_id,a.created_at,b.reviewer_id from comments as a, reviewer_reason_list as b where a.reason_id=b.id and a.reason_id= "
 						+ reasonId);
 		ArrayList<Comment> comments = new ArrayList<Comment>();
 		while(rs.next()){

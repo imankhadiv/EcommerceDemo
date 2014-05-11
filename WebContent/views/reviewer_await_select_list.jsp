@@ -23,19 +23,14 @@
   ResultSet articles = (ResultSet) request.getAttribute("article");
  %>
  <%
- if(articles.getRow()==0){
-%>
-<tbody>
-<tr><td colspan="5" align="center"><h5 align="center">Sorry no result</h5></td></tr>
-</tbody>
-<% 
- }
- else{
-	 %>	<tbody> <%
- }
+
+ 
+ 
+int rowCount = 0;
   while (articles.next()) {
+	  rowCount+=1;
  %>
- <!-- <tbody> -->
+ <tbody> 
  <tr>
   <td><%=articles.getString("title")%></td>
   <td><%=articles.getString("abstract")%></td>
@@ -51,6 +46,9 @@
   </tbody>
  <%
  }
+  if(rowCount==0){
+		out.println("<tbody><tr><td colspan='5' align='center'><h5 align='center'>Sorry, there is no result</h5></td></tr></tbody>");
+	 }
 %>
 </table>
 

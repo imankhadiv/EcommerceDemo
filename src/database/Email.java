@@ -1,5 +1,6 @@
 package database;
 
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -142,4 +143,12 @@ public class Email {
 		        + "\r\n Here is a secret message from "+name+" and the content is \r\n"+message;
 				sendEmail();
 			}
+	
+	public void sendReminderToReviewer(String recipient) throws AddressException, MessagingException {
+			this.recipient = recipient;
+			this.subject = "Reviewer reminder";
+			this.body = "Dear Reviewer"
+	        + "<p/> Here is a remider from the system <p/> As a reviewer, you should start your review now. <p/> Thanks";
+			sendEmail();
+	}
 }

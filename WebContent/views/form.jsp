@@ -61,8 +61,8 @@
 				<%=(statusString.equals("submit") ? "selected" : "")%>>submit</option>
 			<option value="accept"
 				<%=(statusString.equals("accept") ? "selected" : "")%>>accept</option>
-			<option value="reject"
-				<%=(statusString.equals("reject") ? "selected" : "")%>>reject</option>
+			<%-- <option value="reject"
+				<%=(statusString.equals("reject") ? "selected" : "")%>>reject</option> --%>
 			<option value="final reject"
 				<%=(statusString.equals("final reject") ? "selected" : "")%>>final
 				reject</option>
