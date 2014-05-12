@@ -25,7 +25,7 @@
  %>
  <tbody>
  <tr>
-  <td><input type="checkbox" name="article_id" value=<%=articles.getString("id")%> /></td>
+  <td><input type="checkbox" name="article_id" onClick="return KeepCount()" value=<%=articles.getString("id")%> /></td>
   <td><%=articles.getString("title")%></td>
   <td><%=articles.getString("abstract")%></td>
   <td><%=articles.getString("first_name")+" "+articles.getString("last_name") %></td>

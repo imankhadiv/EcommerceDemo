@@ -2,9 +2,11 @@ var numberOfCriticism = 0;
 var numberOfErrors = 0;
 var numberOfTitles = 0;
 var form_id ;
+var count;
 
 // TODO values to areas when the window is loaded
 window.onload = function() {
+	count = 0;
 };
 
 function getUrlParam(name) {
@@ -126,6 +128,20 @@ function createForm(path) {
 	};
 	//TODO send request to servlet; save to database; redirect to a new page
 }
+
+function KeepCount() {
+	var count_temp = count;
+	count_temp+=1;
+	if (count_temp == 4)
+	{
+		alert('Pick Just Three Please');
+		return false;
+	}
+	else{
+		count = count_temp;
+	}
+}
+
 
 
 
